@@ -22,6 +22,7 @@
                   class="visually-hidden"
                   checked
                 />
+                <img :src="getImage(doughSize.image)" :alt="doughSize.name" />
                 <b>{{ doughSize.name }}</b>
                 <span>Из твердых сортов пшеницы</span>
               </label>
@@ -38,14 +39,12 @@
                 v-for="diameter in diameters"
                 :key="diameter.id"
                 class="diameter__input"
-                :class="`diameter__input--${diametersRanges.get(
-                  diameter.name
-                )}`"
+                :class="`diameter__input--${diametersCodes.get(diameter.name)}`"
               >
                 <input
                   type="radio"
                   name="diameter"
-                  :value="diametersRanges.get(diameter.name)"
+                  :value="diametersCodes.get(diameter.name)"
                   class="visually-hidden"
                 />
                 <span>{{ diameter.name }}</span>
@@ -64,13 +63,18 @@
               <div class="ingredients__sauce">
                 <p>Основной соус:</p>
 
-                <label class="radio ingredients__input">
-                  <input type="radio" name="sauce" value="tomato" checked />
-                  <span>Томатный</span>
-                </label>
-                <label class="radio ingredients__input">
-                  <input type="radio" name="sauce" value="creamy" />
-                  <span>Сливочный</span>
+                <label
+                  v-for="sauce in sauces"
+                  :key="sauce.id"
+                  class="radio ingredients__input"
+                >
+                  <input
+                    type="radio"
+                    name="sauce"
+                    :value="saucesCodes.get(sauce.name)"
+                    checked
+                  />
+                  <span>{{ sauce.name }}</span>
                 </label>
               </div>
 
@@ -84,11 +88,13 @@
                     :title="ingredient.name"
                     class="ingredients__item"
                   >
-                    <span
-                      class="filling"
-                      :class="`${ingredientsClassnames.get(ingredient.id)}`"
-                      >{{ ingredient.name }}</span
-                    >
+                    <div class="filling">
+                      <img
+                        :src="getImage(ingredient.image)"
+                        :alt="ingredient.name"
+                      />
+                      {{ ingredient.name }}
+                    </div>
 
                     <div class="counter counter--orange ingredients__counter">
                       <button
@@ -152,13 +158,18 @@
 import ingredients from "../mocks/ingredients.json";
 import doughSizes from "../mocks/dough.json";
 import diameters from "../mocks/sizes.json";
+import sauces from "../mocks/sauces.json";
 
 const ingredientsClassnames = new Map();
 const doughsClassnames = new Map();
-const diametersRanges = new Map([
+const diametersCodes = new Map([
   ["23 см", "small"],
   ["32 см", "normal"],
   ["45 см", "big"],
+]);
+const saucesCodes = new Map([
+  ["Томатный", "tomato"],
+  ["Сливочный", "creamy"],
 ]);
 const re = /[\s\S]*-|\.[\s\S]*/gi;
 
@@ -170,4 +181,9 @@ for (const { id, image } of ingredients) {
 for (const { id, image } of doughSizes) {
   doughsClassnames.set(id, image.replace(re, ""));
 }
+
+const getImage = (image) => {
+  // https://vitejs.dev/guide/assets.html#new-url-url-import-meta-url
+  return new URL(`../assets/img/${image}`, import.meta.url).href;
+};
 </script>
