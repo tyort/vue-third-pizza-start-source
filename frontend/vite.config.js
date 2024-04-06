@@ -1,5 +1,3 @@
-import { fileURLToPath, URL } from "url";
-
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 
@@ -9,9 +7,11 @@ export default defineConfig({
   test: {
     environment: "jsdom",
   },
-  resolve: {
-    alias: {
-      "@": fileURLToPath(new URL("./src", import.meta.url)),
+  settings: {
+    "import/resolver": {
+      alias: {
+        map: [["@", "./src"]],
+      },
     },
   },
   server: {
