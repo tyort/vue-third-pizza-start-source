@@ -2,6 +2,7 @@
   <header class="header">
     <div class="header__logo">
       <a href="index.html" class="logo">
+        <!-- "@" - это алиас, прописанный в vite.config.js -->
         <img
           src="@/assets/img/logo.svg"
           alt="V!U!E! Pizza logo"
