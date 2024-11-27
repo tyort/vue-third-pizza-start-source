@@ -7,24 +7,12 @@
         <div class="content__dough">
           <div class="sheet">
             <h2 class="title title--small sheet__title">Выберите тесто</h2>
-
             <div class="sheet__content dough">
-              <label
+              <dough-card
                 v-for="doughType in doughItems"
                 :key="doughType.id"
-                class="dough__input"
-                :class="`dough__input--${doughType.value}`"
-              >
-                <input
-                  type="radio"
-                  name="dought"
-                  :value="doughType.value"
-                  class="visually-hidden"
-                  checked
-                />
-                <b>{{ doughType.name }}</b>
-                <span>{{ doughType.description }}</span>
-              </label>
+                :dough-data="doughType"
+              />
             </div>
           </div>
         </div>
@@ -32,7 +20,6 @@
         <div class="content__diameter">
           <div class="sheet">
             <h2 class="title title--small sheet__title">Выберите размер</h2>
-
             <div class="sheet__content diameter">
               <label
                 v-for="size in sizeItems"
@@ -125,6 +112,7 @@
 
 <script setup>
 import IngredientCard from "@/modules/constructor/IngredientCard.vue";
+import DoughCard from "../modules/constructor/DoughCard.vue";
 import {
   normalizeDough,
   normalizeIngredients,
