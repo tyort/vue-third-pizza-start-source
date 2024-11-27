@@ -80,41 +80,13 @@
               <div class="ingredients__filling">
                 <p>Начинка:</p>
                 <ul class="ingredients__list">
-                  <li
+                  <!-- все перечисленные атрибуты передаются тегу верхнего уровня данного компонента -->
+                  <ingredient-card
                     v-for="ingredientType in ingredientItems"
                     :key="ingredientType.id"
+                    :ingredient-data="ingredientType"
                     class="ingredients__item"
-                  >
-                    <div class="filling">
-                      <img
-                        :src="getImage(ingredientType.image)"
-                        :alt="ingredientType.name"
-                      />
-                      {{ ingredientType.name }}
-                    </div>
-
-                    <div class="counter counter--orange ingredients__counter">
-                      <button
-                        type="button"
-                        class="counter__button counter__button--minus"
-                        disabled
-                      >
-                        <span class="visually-hidden">Меньше</span>
-                      </button>
-                      <input
-                        type="text"
-                        name="counter"
-                        class="counter__input"
-                        value="0"
-                      />
-                      <button
-                        type="button"
-                        class="counter__button counter__button--plus"
-                      >
-                        <span class="visually-hidden">Больше</span>
-                      </button>
-                    </div>
-                  </li>
+                  />
                 </ul>
               </div>
             </div>
@@ -152,6 +124,7 @@
 </template>
 
 <script setup>
+import IngredientCard from "@/modules/constructor/IngredientCard.vue";
 import {
   normalizeDough,
   normalizeIngredients,
@@ -168,11 +141,6 @@ const doughItems = doughJSON.map(normalizeDough);
 const ingredientItems = ingredientsJSON.map(normalizeIngredients);
 const sauceItems = saucesJSON.map(normalizeSauces);
 const sizeItems = sizesJSON.map(normalizeSize);
-
-const getImage = (image) => {
-  // https://vitejs.dev/guide/assets.html#new-url-url-import-meta-url
-  return new URL(`../assets/img/${image}`, import.meta.url).href;
-};
 </script>
 
 <style lang="scss">
