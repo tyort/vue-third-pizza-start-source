@@ -8,7 +8,7 @@
           <div class="sheet">
             <h2 class="title title--small sheet__title">Выберите тесто</h2>
             <div class="sheet__content dough">
-              <dough-card
+              <dough-block
                 v-for="doughType in doughItems"
                 :key="doughType.id"
                 :dough-data="doughType"
@@ -112,7 +112,7 @@
 
 <script setup>
 import IngredientCard from "@/modules/constructor/IngredientCard.vue";
-import DoughCard from "../modules/constructor/DoughCard.vue";
+import DoughBlock from "../modules/constructor/DoughBlock.vue";
 import {
   normalizeDough,
   normalizeIngredients,
