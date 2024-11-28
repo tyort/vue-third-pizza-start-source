@@ -21,20 +21,11 @@
           <div class="sheet">
             <h2 class="title title--small sheet__title">Выберите размер</h2>
             <div class="sheet__content diameter">
-              <label
+              <pizza-size-block
                 v-for="size in sizeItems"
                 :key="size.id"
-                class="diameter__input"
-                :class="`diameter__input--${size.value}`"
-              >
-                <input
-                  type="radio"
-                  name="diameter"
-                  :value="size.value"
-                  class="visually-hidden"
-                />
-                <span>{{ size.name }}</span>
-              </label>
+                :pizza-size-data="size"
+              />
             </div>
           </div>
         </div>
@@ -113,6 +104,7 @@
 <script setup>
 import IngredientCard from "@/modules/constructor/IngredientCard.vue";
 import DoughBlock from "../modules/constructor/DoughBlock.vue";
+import PizzaSizeBlock from "../modules/constructor/PizzaSizeBlock.vue";
 import {
   normalizeDough,
   normalizeIngredients,
