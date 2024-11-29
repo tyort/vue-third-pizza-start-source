@@ -39,20 +39,12 @@
             <div class="sheet__content ingredients">
               <div class="ingredients__sauce">
                 <p>Основной соус:</p>
-
-                <label
+                <sauce-block
                   v-for="sauce in sauceItems"
                   :key="sauce.id"
                   class="radio ingredients__input"
-                >
-                  <input
-                    type="radio"
-                    name="sauce"
-                    :value="sauce.value"
-                    checked
-                  />
-                  <span>{{ sauce.name }}</span>
-                </label>
+                  :sauce-data="sauce"
+                />
               </div>
 
               <div class="ingredients__filling">
@@ -105,6 +97,7 @@
 import IngredientCard from "@/modules/constructor/IngredientCard.vue";
 import DoughBlock from "../modules/constructor/DoughBlock.vue";
 import PizzaSizeBlock from "../modules/constructor/PizzaSizeBlock.vue";
+import SauceBlock from "../modules/constructor/SauceBlock.vue";
 import {
   normalizeDough,
   normalizeIngredients,
