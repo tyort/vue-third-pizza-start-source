@@ -72,17 +72,7 @@
               placeholder="Введите название пиццы"
             />
           </label>
-
-          <div class="content__constructor">
-            <div class="pizza pizza--foundation--big-tomato">
-              <div class="pizza__wrapper">
-                <div class="pizza__filling pizza__filling--ananas"></div>
-                <div class="pizza__filling pizza__filling--bacon"></div>
-                <div class="pizza__filling pizza__filling--cheddar"></div>
-              </div>
-            </div>
-          </div>
-
+          <main-pizza-visual-block :ingredients="ingredientItems" />
           <div class="content__result">
             <p>Итого: 0 ₽</p>
             <button type="button" class="button" disabled>Готовьте!</button>
@@ -98,6 +88,7 @@ import IngredientCard from "@/modules/constructor/IngredientCard.vue";
 import DoughBlock from "../modules/constructor/DoughBlock.vue";
 import PizzaSizeBlock from "../modules/constructor/PizzaSizeBlock.vue";
 import SauceBlock from "../modules/constructor/SauceBlock.vue";
+import MainPizzaVisualBlock from "../modules/constructor/MainPizzaVisualBlock.vue";
 import {
   normalizeDough,
   normalizeIngredients,
