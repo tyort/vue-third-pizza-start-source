@@ -8,6 +8,7 @@
     <div class="counter counter--orange ingredients__counter">
       <ingredient-card-button
         :class-addition="'minus'"
+        :disabled="count === 0"
         @click="onClick($event, -1)"
       >
         Меньше
@@ -15,6 +16,7 @@
       <ingredient-card-count :ingredient-amount="count" />
       <ingredient-card-button
         :class-addition="'plus'"
+        :disabled="count === 3"
         @click="onClick($event, 1)"
       >
         Больше
