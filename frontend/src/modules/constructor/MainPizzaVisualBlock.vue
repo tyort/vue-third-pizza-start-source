@@ -1,5 +1,5 @@
 <template>
-  <div class="content__constructor">
+  <app-drop class="content__constructor">
     <div class="pizza pizza--foundation--big-tomato">
       <div class="pizza__wrapper">
         <div
@@ -10,10 +10,11 @@
         ></div>
       </div>
     </div>
-  </div>
+  </app-drop>
 </template>
 
 <script setup>
+import AppDrop from "../../common/components/AddDrop.vue";
 defineProps({
   ingredients: {
     type: Object,

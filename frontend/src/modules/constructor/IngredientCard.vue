@@ -1,32 +1,35 @@
 <template>
-  <app-drag class="ingredients__item">
-    <div class="filling">
-      <img :src="getImage(ingredientData.image)" :alt="ingredientData.name" />
-      {{ ingredientData.name }}
-    </div>
-    <div class="counter counter--orange ingredients__counter">
-      <ingredient-card-button
-        :class-addition="'minus'"
-        :disabled="count === 0"
-        @click="onClick($event, -1)"
-      >
-        Меньше
-      </ingredient-card-button>
-      <ingredient-card-count :ingredient-amount="count" />
-      <ingredient-card-button
-        :class-addition="'plus'"
-        :disabled="count === 3"
-        @click="onClick($event, 1)"
-      >
-        Больше
-      </ingredient-card-button>
-    </div>
+  <app-drag class="ingredients__item" @drop="$emit('ingredientDrop', $event)">
+    <app-drop>
+      <div class="filling">
+        <img :src="getImage(ingredientData.image)" :alt="ingredientData.name" />
+        {{ ingredientData.name }}
+      </div>
+      <div class="counter counter--orange ingredients__counter">
+        <ingredient-card-button
+          :class-addition="'minus'"
+          :disabled="count === 0"
+          @click="onClick($event, -1)"
+        >
+          Меньше
+        </ingredient-card-button>
+        <ingredient-card-count :ingredient-amount="count" />
+        <ingredient-card-button
+          :class-addition="'plus'"
+          :disabled="count === 3"
+          @click="onClick($event, 1)"
+        >
+          Больше
+        </ingredient-card-button>
+      </div>
+    </app-drop>
   </app-drag>
 </template>
 
 <script setup>
 import { ref } from "vue";
 import AppDrag from "../../common/components/AddDrag.vue";
+import AppDrop from "../../common/components/AddDrop.vue";
 import IngredientCardButton from "./IngredientCardButton.vue";
 import IngredientCardCount from "./IngredientCardCount.vue";
 import { getImage } from "../../common/helpers/normalize";
@@ -37,6 +40,8 @@ defineProps({
     required: true,
   },
 });
+
+defineEmits(["ingredientDrop"]);
 
 const count = ref(0);
 const onClick = (_event, point) => {
