@@ -6,22 +6,27 @@
     </div>
 
     <div class="counter counter--orange ingredients__counter">
-      <button
-        type="button"
-        class="counter__button counter__button--minus"
-        disabled
+      <ingredient-card-button
+        :class-addition="'minus'"
+        @click="onClick($event, -1)"
       >
-        <span class="visually-hidden">Меньше</span>
-      </button>
-      <input type="text" name="counter" class="counter__input" value="0" />
-      <button type="button" class="counter__button counter__button--plus">
-        <span class="visually-hidden">Больше</span>
-      </button>
+        Меньше
+      </ingredient-card-button>
+      <ingredient-card-count :ingredient-amount="count" />
+      <ingredient-card-button
+        :class-addition="'plus'"
+        @click="onClick($event, 1)"
+      >
+        Больше
+      </ingredient-card-button>
     </div>
   </li>
 </template>
 
 <script setup>
+import { ref } from "vue";
+import IngredientCardButton from "./IngredientCardButton.vue";
+import IngredientCardCount from "./IngredientCardCount.vue";
 import { getImage } from "../../common/helpers/normalize";
 
 defineProps({
@@ -30,9 +35,14 @@ defineProps({
     required: true,
   },
 });
+
+const count = ref(0);
+const onClick = (_event, point) => {
+  count.value = count.value + point;
+};
 </script>
 
-<style lang="scss" scoped>
+<!-- <style lang="scss" scoped>
 @import "@/assets/scss/ds-system/ds-colors.scss";
 @import "@/assets/scss/ds-system/ds-shadows.scss";
 @import "@/assets/scss/ds-system/ds-typography.scss";
@@ -187,4 +197,4 @@ defineProps({
   margin-top: 10px;
   margin-left: 36px;
 }
-</style>
+</style> -->
