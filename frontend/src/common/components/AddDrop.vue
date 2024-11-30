@@ -14,14 +14,13 @@ function onDrop({ dataTransfer }) {
     return;
   }
 
-  let transferData;
   // пользовательский параметр, который мы придумали сами
   const payload = dataTransfer.getData("payload");
   if (payload) {
-    transferData = JSON.parse(payload);
+    const transferData = JSON.parse(payload);
     // без этого не получится использовать этот пропс у родителя
+    // transferData попадет в родительский колбэк в качестве $event
+    emit("drop", transferData);
   }
-
-  emit("drop", transferData);
 }
 </script>

@@ -22,8 +22,10 @@ const props = defineProps({
   },
 });
 
-function setIngredient() {
+function setIngredient(ingred) {
   // Все отображаемые ингредиенты;
   const currentIngredients = props.ingredients;
+
+  console.log(ingred);
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <app-drag class="ingredients__item" @drop="$emit('ingredientDrop', $event)">
+  <app-drag class="ingredients__item" :transfered-data="ingredientData">
     <div class="filling">
       <img :src="getImage(ingredientData.image)" :alt="ingredientData.name" />
       {{ ingredientData.name }}
@@ -27,7 +27,6 @@
 <script setup>
 import { ref } from "vue";
 import AppDrag from "../../common/components/AddDrag.vue";
-import AppDrop from "../../common/components/AddDrop.vue";
 import IngredientCardButton from "./IngredientCardButton.vue";
 import IngredientCardCount from "./IngredientCardCount.vue";
 import { getImage } from "../../common/helpers/normalize";
@@ -38,8 +37,6 @@ defineProps({
     required: true,
   },
 });
-
-defineEmits(["ingredientDrop"]);
 
 const count = ref(0);
 const onClick = (_event, point) => {
