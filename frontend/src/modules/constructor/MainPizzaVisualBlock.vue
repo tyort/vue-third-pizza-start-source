@@ -1,5 +1,5 @@
 <template>
-  <app-drop class="content__constructor">
+  <app-drop class="content__constructor" @drop="setIngredient">
     <div class="pizza pizza--foundation--big-tomato">
       <div class="pizza__wrapper">
         <div
@@ -15,10 +15,15 @@
 
 <script setup>
 import AppDrop from "../../common/components/AddDrop.vue";
-defineProps({
+const props = defineProps({
   ingredients: {
-    type: Object,
+    type: Array,
     required: true,
   },
 });
+
+function setIngredient() {
+  // Все отображаемые ингредиенты;
+  const currentIngredients = props.ingredients;
+}
 </script>
