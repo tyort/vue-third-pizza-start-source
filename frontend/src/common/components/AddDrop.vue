@@ -9,9 +9,16 @@
 // создаем пользовательские события
 const emit = defineEmits(["drop"]);
 
-function onDrop() {
-  console.log("onDrop was called");
-  // для возможности использования события родительским компонентом
-  emit("drop");
+function onDrop({ dataTransfer }) {
+  if (!dataTransfer) {
+    return;
+  }
+  // пользовательский параметр, который мы придумали сами
+  const payload = dataTransfer.getData("payload");
+  if (payload) {
+    const transferData = JSON.parse(payload);
+    // без этого не получится использовать этот пропс у родителя
+    emit("drop", transferData);
+  }
 }
 </script>
