@@ -1,10 +1,9 @@
 <template>
-  <li>
+  <app-drag class="ingredients__item">
     <div class="filling">
       <img :src="getImage(ingredientData.image)" :alt="ingredientData.name" />
       {{ ingredientData.name }}
     </div>
-
     <div class="counter counter--orange ingredients__counter">
       <ingredient-card-button
         :class-addition="'minus'"
@@ -22,11 +21,12 @@
         Больше
       </ingredient-card-button>
     </div>
-  </li>
+  </app-drag>
 </template>
 
 <script setup>
 import { ref } from "vue";
+import AppDrag from "../../common/components/AddDrag.vue";
 import IngredientCardButton from "./IngredientCardButton.vue";
 import IngredientCardCount from "./IngredientCardCount.vue";
 import { getImage } from "../../common/helpers/normalize";

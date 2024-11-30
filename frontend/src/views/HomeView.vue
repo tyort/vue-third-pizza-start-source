@@ -55,7 +55,6 @@
                     v-for="ingredientType in ingredientItems"
                     :key="ingredientType.id"
                     :ingredient-data="ingredientType"
-                    class="ingredients__item"
                   />
                 </ul>
               </div>
