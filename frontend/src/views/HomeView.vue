@@ -71,7 +71,10 @@
               placeholder="Введите название пиццы"
             />
           </label>
-          <main-pizza-visual-block :ingredients="ingredientItems" />
+          <main-pizza-visual-block
+            :ingredients="currentIngredients"
+            @update-ingredients="updateIngredients"
+          />
           <div class="content__result">
             <p>Итого: 0 ₽</p>
             <button type="button" class="button" disabled>Готовьте!</button>
@@ -83,6 +86,7 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
 import IngredientCard from "@/modules/constructor/IngredientCard.vue";
 import DoughBlock from "../modules/constructor/DoughBlock.vue";
 import PizzaSizeBlock from "../modules/constructor/PizzaSizeBlock.vue";
@@ -104,6 +108,11 @@ const doughItems = doughJSON.map(normalizeDough);
 const ingredientItems = ingredientsJSON.map(normalizeIngredients);
 const sauceItems = saucesJSON.map(normalizeSauces);
 const sizeItems = sizesJSON.map(normalizeSize);
+const currentIngredients = ref([]);
+
+function updateIngredients(ingreds) {
+  currentIngredients.value = ingreds;
+}
 </script>
 
 <style lang="scss">

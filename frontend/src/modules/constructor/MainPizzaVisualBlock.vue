@@ -22,10 +22,19 @@ const props = defineProps({
   },
 });
 
+const emit = defineEmits(["updateIngredients"]);
+
 function setIngredient(ingred) {
   // Все отображаемые ингредиенты;
   const currentIngredients = props.ingredients;
+  const isAlreadyExists = currentIngredients.some(
+    // eslint-disable-next-line prettier/prettier
+    ({ id }) => Number(id) === Number(ingred.id)
+  );
 
-  console.log(ingred);
+  if (!isAlreadyExists || currentIngredients.length === 0) {
+    currentIngredients.push(ingred);
+    emit("updateIngredients", currentIngredients);
+  }
 }
 </script>
