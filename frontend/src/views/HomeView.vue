@@ -3,7 +3,7 @@
     <form action="#" method="post">
       <div class="content__wrapper">
         <h1 class="title title--big">Конструктор пиццы</h1>
-        <dough-block :dough-types="doughItems" />
+        <dough-selector :dough-types="doughItems" />
         <div class="content__diameter">
           <div class="sheet">
             <h2 class="title title--small sheet__title">Выберите размер</h2>
@@ -76,7 +76,7 @@
 <script setup>
 import { ref, toRaw } from "vue";
 import IngredientCard from "@/modules/constructor/IngredientCard.vue";
-import DoughBlock from "../modules/constructor/DoughBlock.vue";
+import DoughSelector from "../modules/constructor/DoughSelector.vue";
 import PizzaSizeBlock from "../modules/constructor/PizzaSizeBlock.vue";
 import SauceBlock from "../modules/constructor/SauceBlock.vue";
 import MainPizzaVisualBlock from "../modules/constructor/MainPizzaVisualBlock.vue";
