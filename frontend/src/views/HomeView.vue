@@ -3,20 +3,7 @@
     <form action="#" method="post">
       <div class="content__wrapper">
         <h1 class="title title--big">Конструктор пиццы</h1>
-
-        <div class="content__dough">
-          <div class="sheet">
-            <h2 class="title title--small sheet__title">Выберите тесто</h2>
-            <div class="sheet__content dough">
-              <dough-block
-                v-for="doughType in doughItems"
-                :key="doughType.id"
-                :dough-data="doughType"
-              />
-            </div>
-          </div>
-        </div>
-
+        <dough-block :dough-types="doughItems" />
         <div class="content__diameter">
           <div class="sheet">
             <h2 class="title title--small sheet__title">Выберите размер</h2>
