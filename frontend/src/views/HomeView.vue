@@ -88,7 +88,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, toRaw } from "vue";
 import IngredientCard from "@/modules/constructor/IngredientCard.vue";
 import DoughBlock from "../modules/constructor/DoughBlock.vue";
 import PizzaSizeBlock from "../modules/constructor/PizzaSizeBlock.vue";
@@ -124,7 +124,7 @@ function changeIngredientAmount(ingred) {
     (item) => {
       return Number(item.id) === Number(ingred.id)
         ? { ...ingred }
-        : { ...item };
+        : toRaw({ ...item });
     }
   );
 }

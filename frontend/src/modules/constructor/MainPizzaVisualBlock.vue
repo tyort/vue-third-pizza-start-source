@@ -37,6 +37,8 @@ function setIngredient(ingred) {
     emit("updateIngredients", currentIngredients);
   }
 
-  emit("changeIngredientAmount", { ...ingred, amount: ++ingred.amount });
+  if (ingred.amount < 3) {
+    emit("changeIngredientAmount", { ...ingred, amount: ++ingred.amount });
+  }
 }
 </script>
