@@ -22,7 +22,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["updateIngredients"]);
+const emit = defineEmits(["updateIngredients", "changeIngredientAmount"]);
 
 function setIngredient(ingred) {
   // Все отображаемые ингредиенты;
@@ -36,5 +36,7 @@ function setIngredient(ingred) {
     currentIngredients.push(ingred);
     emit("updateIngredients", currentIngredients);
   }
+
+  emit("changeIngredientAmount", { ...ingred, amount: ++ingred.amount });
 }
 </script>

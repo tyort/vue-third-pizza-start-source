@@ -7,16 +7,26 @@
     <div class="counter counter--orange ingredients__counter">
       <ingredient-card-button
         :class-addition="'minus'"
-        :disabled="count === 0"
-        @click="onClick($event, -1)"
+        :disabled="ingredientData.amount === 0"
+        @click="
+          $emit('changeIngredientAmount', {
+            ...ingredientData,
+            amount: --ingredientData.amount,
+          })
+        "
       >
         Меньше
       </ingredient-card-button>
-      <ingredient-card-count :ingredient-amount="count" />
+      <ingredient-card-count :ingredient-amount="ingredientData.amount" />
       <ingredient-card-button
         :class-addition="'plus'"
-        :disabled="count === 3"
-        @click="onClick($event, 1)"
+        :disabled="ingredientData.amount === 3"
+        @click="
+          $emit('changeIngredientAmount', {
+            ...ingredientData,
+            amount: ++ingredientData.amount,
+          })
+        "
       >
         Больше
       </ingredient-card-button>
@@ -25,23 +35,19 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
 import AppDrag from "../../common/components/AddDrag.vue";
 import IngredientCardButton from "./IngredientCardButton.vue";
 import IngredientCardCount from "./IngredientCardCount.vue";
 import { getImage } from "../../common/helpers/normalize";
 
-defineProps({
+const props = defineProps({
   ingredientData: {
     type: Object,
     required: true,
   },
 });
 
-const count = ref(0);
-const onClick = (_event, point) => {
-  count.value = count.value + point;
-};
+defineEmits(["changeIngredientAmount"]);
 </script>
 
 <!-- <style lang="scss" scoped>

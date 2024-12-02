@@ -52,9 +52,10 @@
                 <ul class="ingredients__list">
                   <!-- все перечисленные атрибуты передаются тегу верхнего уровня данного компонента -->
                   <ingredient-card
-                    v-for="ingredientType in ingredientItems"
+                    v-for="ingredientType in allIngredientsWithAmount"
                     :key="ingredientType.id"
                     :ingredient-data="ingredientType"
+                    @change-ingredient-amount="changeIngredientAmount"
                   />
                 </ul>
               </div>
@@ -74,6 +75,7 @@
           <main-pizza-visual-block
             :ingredients="currentIngredients"
             @update-ingredients="updateIngredients"
+            @change-ingredient-amount="changeIngredientAmount"
           />
           <div class="content__result">
             <p>Итого: 0 ₽</p>
@@ -109,9 +111,22 @@ const ingredientItems = ingredientsJSON.map(normalizeIngredients);
 const sauceItems = saucesJSON.map(normalizeSauces);
 const sizeItems = sizesJSON.map(normalizeSize);
 const currentIngredients = ref([]);
+const allIngredientsWithAmount = ref(
+  ingredientItems.map((ingred) => ({ ...ingred, amount: 0 }))
+);
 
 function updateIngredients(ingreds) {
   currentIngredients.value = ingreds;
+}
+
+function changeIngredientAmount(ingred) {
+  allIngredientsWithAmount.value = allIngredientsWithAmount.value.map(
+    (item) => {
+      return Number(item.id) === Number(ingred.id)
+        ? { ...ingred }
+        : { ...item };
+    }
+  );
 }
 </script>
 
