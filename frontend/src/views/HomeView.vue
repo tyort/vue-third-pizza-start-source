@@ -74,7 +74,6 @@
           </label>
           <main-pizza-visual-block
             :ingredients="currentIngredients"
-            @update-ingredients="updateIngredients"
             @change-ingredient-amount="changeIngredientAmount"
           />
           <div class="content__result">
@@ -115,18 +114,14 @@ const allIngredientsWithAmount = ref(
   ingredientItems.map((ingred) => ({ ...ingred, amount: 0 }))
 );
 
-function updateIngredients(ingreds) {
-  currentIngredients.value = ingreds;
-}
-
 function changeIngredientAmount(ingred) {
-  allIngredientsWithAmount.value = allIngredientsWithAmount.value.map(
-    (item) => {
-      return Number(item.id) === Number(ingred.id)
-        ? { ...ingred }
-        : toRaw({ ...item });
-    }
-  );
+  const data = allIngredientsWithAmount.value.map((item) => {
+    return Number(item.id) === Number(ingred.id)
+      ? { ...ingred }
+      : toRaw({ ...item });
+  });
+  allIngredientsWithAmount.value = data;
+  currentIngredients.value = data.filter(({ amount }) => amount > 0);
 }
 </script>
 

@@ -22,21 +22,9 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["updateIngredients", "changeIngredientAmount"]);
+const emit = defineEmits(["changeIngredientAmount"]);
 
 function setIngredient(ingred) {
-  // Все отображаемые ингредиенты;
-  const currentIngredients = props.ingredients;
-  const isAlreadyExists = currentIngredients.some(
-    // eslint-disable-next-line prettier/prettier
-    ({ id }) => Number(id) === Number(ingred.id)
-  );
-
-  if (!isAlreadyExists || currentIngredients.length === 0) {
-    currentIngredients.push(ingred);
-    emit("updateIngredients", currentIngredients);
-  }
-
   if (ingred.amount < 3) {
     emit("changeIngredientAmount", { ...ingred, amount: ++ingred.amount });
   }
