@@ -3,7 +3,10 @@
     <form action="#" method="post">
       <div class="content__wrapper">
         <h1 class="title title--big">Конструктор пиццы</h1>
-        <dough-selector :dough-types="doughItems" />
+        <dough-selector
+          :dough-types="doughItems"
+          @check-current-input="checkCurrentInput"
+        />
         <div class="content__diameter">
           <div class="sheet">
             <h2 class="title title--small sheet__title">Выберите размер</h2>
@@ -22,18 +25,11 @@
             <h2 class="title title--small sheet__title">
               Выберите ингредиенты
             </h2>
-
             <div class="sheet__content ingredients">
-              <div class="ingredients__sauce">
-                <p>Основной соус:</p>
-                <sauce-selector
-                  v-for="sauce in sauceItems"
-                  :key="sauce.id"
-                  class="radio ingredients__input"
-                  :sauce-data="sauce"
-                />
-              </div>
-
+              <sauce-selector
+                :sauces="sauceItems"
+                @check-current-input="checkCurrentInput"
+              />
               <div class="ingredients__filling">
                 <p>Начинка:</p>
                 <ul class="ingredients__list">
@@ -74,7 +70,7 @@
 </template>
 
 <script setup>
-import { ref, toRaw } from "vue";
+import { ref, toRaw, reactive } from "vue";
 import IngredientCard from "@/modules/constructor/IngredientCard.vue";
 import DoughSelector from "../modules/constructor/DoughSelector.vue";
 import PizzaSizeBlock from "../modules/constructor/PizzaSizeBlock.vue";
@@ -100,6 +96,17 @@ const currentIngredients = ref([]);
 const allIngredientsWithAmount = ref(
   ingredientItems.map((ingred) => ({ ...ingred, amount: 0 }))
 );
+const sauceAndDough = reactive({
+  sauce: "tomato",
+  dough: "large",
+});
+
+function checkCurrentInput(data) {
+  for (const [key, value] of Object.entries(data)) {
+    sauceAndDough[key] = value;
+  }
+  console.log(sauceAndDough);
+}
 
 function changeIngredientAmount(ingred) {
   const data = allIngredientsWithAmount.value.map((item) => {

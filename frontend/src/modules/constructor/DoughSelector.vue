@@ -14,7 +14,8 @@
             name="dough"
             :value="doughData.value"
             class="visually-hidden"
-            checked
+            :checked="doughData.value === currentDough"
+            @input="checkDough($event, doughData.value)"
           />
           <img :src="getImage(doughData.image)" :alt="doughData.name" />
           <b>{{ doughData.name }}</b>
@@ -26,12 +27,22 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
+const currentDough = ref("large");
+
 defineProps({
   doughTypes: {
     type: Array,
     default: () => [],
   },
 });
+
+const emits = defineEmits(["checkCurrentInput"]);
+
+function checkDough(_evt, dough) {
+  currentDough.value = dough;
+  emits("checkCurrentInput", { dough });
+}
 
 const getImage = (image) => {
   return new URL(`../../assets/img/${image}`, import.meta.url).href;
