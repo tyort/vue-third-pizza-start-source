@@ -11,7 +11,7 @@
         @click="
           $emit('changeIngredientAmount', {
             ...ingredientData,
-            amount: --ingredientData.amount,
+            amount: ingredientData.amount - 1,
           })
         "
       >
@@ -24,7 +24,7 @@
         @click="
           $emit('changeIngredientAmount', {
             ...ingredientData,
-            amount: ++ingredientData.amount,
+            amount: ingredientData.amount + 1,
           })
         "
       >
@@ -40,7 +40,7 @@ import IngredientCardButton from "./IngredientCardButton.vue";
 import IngredientCardCount from "./IngredientCardCount.vue";
 import { getImage } from "../../common/helpers/normalize";
 
-const props = defineProps({
+defineProps({
   ingredientData: {
     type: Object,
     required: true,
