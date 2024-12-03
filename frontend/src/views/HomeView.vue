@@ -26,7 +26,7 @@
             <div class="sheet__content ingredients">
               <div class="ingredients__sauce">
                 <p>Основной соус:</p>
-                <sauce-block
+                <sauce-selector
                   v-for="sauce in sauceItems"
                   :key="sauce.id"
                   class="radio ingredients__input"
@@ -78,7 +78,7 @@ import { ref, toRaw } from "vue";
 import IngredientCard from "@/modules/constructor/IngredientCard.vue";
 import DoughSelector from "../modules/constructor/DoughSelector.vue";
 import PizzaSizeBlock from "../modules/constructor/PizzaSizeBlock.vue";
-import SauceBlock from "../modules/constructor/SauceBlock.vue";
+import SauceSelector from "../modules/constructor/SauceSelector.vue";
 import MainPizzaVisualBlock from "../modules/constructor/MainPizzaVisualBlock.vue";
 import {
   normalizeDough,
