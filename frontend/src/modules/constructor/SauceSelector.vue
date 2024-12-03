@@ -10,8 +10,8 @@
         type="radio"
         name="sauce"
         :value="sauce.value"
-        :checked="sauce.value === currentSauce"
-        @input="checkSauce($event, sauce.value)"
+        :checked="sauce.value === checkedSauce"
+        @input="$emit('checkCurrentInput', { sauce: sauce.value })"
       />
       <span>{{ sauce.name }}</span>
     </label>
@@ -19,22 +19,18 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-const currentSauce = ref("tomato");
-
 defineProps({
   sauces: {
     type: Array,
     default: () => [],
   },
+  checkedSauce: {
+    type: String,
+    required: true,
+  },
 });
 
-const emits = defineEmits(["checkCurrentInput"]);
-
-function checkSauce(_evt, sauce) {
-  currentSauce.value = sauce;
-  emits("checkCurrentInput", { sauce });
-}
+defineEmits(["checkCurrentInput"]);
 </script>
 
 <style lang="scss" scoped>

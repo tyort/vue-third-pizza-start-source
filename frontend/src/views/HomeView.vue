@@ -5,6 +5,7 @@
         <h1 class="title title--big">Конструктор пиццы</h1>
         <dough-selector
           :dough-types="doughItems"
+          :checked-dough="sauceAndDough.dough"
           @check-current-input="checkCurrentInput"
         />
         <div class="content__diameter">
@@ -28,6 +29,7 @@
             <div class="sheet__content ingredients">
               <sauce-selector
                 :sauces="sauceItems"
+                :checked-sauce="sauceAndDough.sauce"
                 @check-current-input="checkCurrentInput"
               />
               <div class="ingredients__filling">
