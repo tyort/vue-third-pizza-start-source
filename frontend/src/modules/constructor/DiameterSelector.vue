@@ -14,6 +14,8 @@
             name="diameter"
             :value="size.value"
             class="visually-hidden"
+            :checked="currentSize === size.value"
+            @input="onInput($event, size.value)"
           />
           <span>{{ size.name }}</span>
         </label>
@@ -23,12 +25,20 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
+
+const currentSize = ref("normal");
+
 defineProps({
   pizzaSizes: {
     type: Array,
     default: () => [],
   },
 });
+
+function onInput(_evt, data) {
+  currentSize.value = data;
+}
 </script>
 
 <style lang="scss" scoped>
