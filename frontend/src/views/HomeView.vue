@@ -8,19 +8,7 @@
           :checked-dough="sauceAndDough.dough"
           @check-current-input="checkCurrentInput"
         />
-        <div class="content__diameter">
-          <div class="sheet">
-            <h2 class="title title--small sheet__title">Выберите размер</h2>
-            <div class="sheet__content diameter">
-              <diameter-selector
-                v-for="size in sizeItems"
-                :key="size.id"
-                :pizza-size-data="size"
-              />
-            </div>
-          </div>
-        </div>
-
+        <diameter-selector :pizza-sizes="sizeItems" />
         <div class="content__ingredients">
           <div class="sheet">
             <h2 class="title title--small sheet__title">
