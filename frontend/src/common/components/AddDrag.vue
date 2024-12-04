@@ -6,14 +6,14 @@
   dragover — это событие, которое происходит когда элемент находится над областью, куда он может быть перетащен;
   dragenter — это событие, которое возникает, когда перетаскиваемый элемент входит в область другого элемента.
    -->
-  <li
+  <div
     :draggable="true"
     @dragstart.stop="onDragStart"
     @dragover.prevent
     @dragenter.prevent
   >
     <slot />
-  </li>
+  </div>
 </template>
 
 <script setup>

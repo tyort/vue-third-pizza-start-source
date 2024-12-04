@@ -20,18 +20,10 @@
                 :checked-sauce="sauceAndDough.sauce"
                 @check-current-input="checkCurrentInput"
               />
-              <div class="ingredients__filling">
-                <p>Начинка:</p>
-                <ul class="ingredients__list">
-                  <!-- все перечисленные атрибуты передаются тегу верхнего уровня данного компонента -->
-                  <ingredients-selector
-                    v-for="ingredientType in allIngredientsWithAmount"
-                    :key="ingredientType.id"
-                    :ingredient-data="ingredientType"
-                    @change-ingredient-amount="changeIngredientAmount"
-                  />
-                </ul>
-              </div>
+              <ingredients-selector
+                :ingredients="allIngredientsWithAmount"
+                @change-ingredient-amount="changeIngredientAmount"
+              />
             </div>
           </div>
         </div>
@@ -85,8 +77,9 @@ const sauceItems = saucesJSON.map(normalizeSauces);
 const sizeItems = sizesJSON.map(normalizeSize);
 const currentIngredients = ref([]);
 const allIngredientsWithAmount = ref(
-  ingredientItems.map((ingred) => ({ ...ingred, amount: 0 })),
+  ingredientItems.map((ingred) => ({ ...ingred, amount: 0 }))
 );
+
 const sauceAndDough = reactive({
   sauce: "tomato",
   dough: "large",

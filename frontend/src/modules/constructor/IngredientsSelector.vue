@@ -1,37 +1,46 @@
 <template>
-  <app-drag class="ingredients__item" :transfered-data="ingredientData">
-    <div class="filling">
-      <img :src="getImage(ingredientData.image)" :alt="ingredientData.name" />
-      {{ ingredientData.name }}
-    </div>
-    <div class="counter counter--orange ingredients__counter">
-      <ingredients-selector-button
-        :class-addition="'minus'"
-        :disabled="ingredientData.amount === 0"
-        @click="
-          $emit('changeIngredientAmount', {
-            ...ingredientData,
-            amount: ingredientData.amount - 1,
-          })
-        "
+  <div class="ingredients__filling">
+    <p>Начинка:</p>
+    <ul class="ingredients__list">
+      <li
+        v-for="ingredient in ingredients"
+        :key="ingredient.id"
+        class="ingredients__item"
       >
-        Меньше
-      </ingredients-selector-button>
-      <ingredients-selector-count :ingredient-amount="ingredientData.amount" />
-      <ingredients-selector-button
-        :class-addition="'plus'"
-        :disabled="ingredientData.amount === 3"
-        @click="
-          $emit('changeIngredientAmount', {
-            ...ingredientData,
-            amount: ingredientData.amount + 1,
-          })
-        "
-      >
-        Больше
-      </ingredients-selector-button>
-    </div>
-  </app-drag>
+        <app-drag class="filling" :transfered-data="ingredient">
+          <img :src="getImage(ingredient.image)" :alt="ingredient.name" />
+          {{ ingredient.name }}
+        </app-drag>
+        <div class="counter counter--orange ingredients__counter">
+          <ingredients-selector-button
+            :class-addition="'minus'"
+            :disabled="ingredient.amount === 0"
+            @click="
+              $emit('changeIngredientAmount', {
+                ...ingredient,
+                amount: ingredient.amount - 1,
+              })
+            "
+          >
+            Меньше
+          </ingredients-selector-button>
+          <ingredients-selector-count :ingredient-amount="ingredient.amount" />
+          <ingredients-selector-button
+            :class-addition="'plus'"
+            :disabled="ingredient.amount === 3"
+            @click="
+              $emit('changeIngredientAmount', {
+                ...ingredient,
+                amount: ingredient.amount + 1,
+              })
+            "
+          >
+            Больше
+          </ingredients-selector-button>
+        </div>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script setup>
@@ -40,10 +49,10 @@ import IngredientsSelectorButton from "./IngredientsSelectorButton.vue";
 import IngredientsSelectorCount from "./IngredientsSelectorCount.vue";
 import { getImage } from "../../common/helpers/normalize";
 
-defineProps({
-  ingredientData: {
-    type: Object,
-    required: true,
+const props = defineProps({
+  ingredients: {
+    type: Array,
+    default: () => [],
   },
 });
 
