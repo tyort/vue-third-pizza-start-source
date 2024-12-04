@@ -7,8 +7,16 @@
         :key="ingredient.id"
         class="ingredients__item"
       >
-        <app-drag class="filling" :transfered-data="ingredient">
-          <img :src="getImage(ingredient.image)" :alt="ingredient.name" />
+        <app-drag
+          class="filling"
+          :transfered-data="ingredient"
+          :draggable="ingredient.amount < 3"
+        >
+          <img
+            :draggable="false"
+            :src="getImage(ingredient.image)"
+            :alt="ingredient.name"
+          />
           {{ ingredient.name }}
         </app-drag>
         <div class="counter counter--orange ingredients__counter">
