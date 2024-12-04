@@ -12,7 +12,7 @@
           <div class="sheet">
             <h2 class="title title--small sheet__title">Выберите размер</h2>
             <div class="sheet__content diameter">
-              <pizza-size-block
+              <diameter-selector
                 v-for="size in sizeItems"
                 :key="size.id"
                 :pizza-size-data="size"
@@ -76,7 +76,7 @@
 import { ref, toRaw, reactive } from "vue";
 import IngredientCard from "@/modules/constructor/IngredientCard.vue";
 import DoughSelector from "../modules/constructor/DoughSelector.vue";
-import PizzaSizeBlock from "../modules/constructor/PizzaSizeBlock.vue";
+import DiameterSelector from "../modules/constructor/DiameterSelector.vue";
 import SauceSelector from "../modules/constructor/SauceSelector.vue";
 import MainPizzaVisualBlock from "../modules/constructor/MainPizzaVisualBlock.vue";
 import {
