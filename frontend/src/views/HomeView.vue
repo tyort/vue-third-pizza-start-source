@@ -59,6 +59,7 @@
           </label>
           <main-pizza-visual-block
             :ingredients="currentIngredients"
+            :sauce-and-dough="sauceAndDough"
             @change-ingredient-amount="changeIngredientAmount"
           />
           <div class="content__result">
@@ -107,7 +108,6 @@ function checkCurrentInput(data) {
   for (const [key, value] of Object.entries(data)) {
     sauceAndDough[key] = value;
   }
-  console.log(sauceAndDough);
 }
 
 function changeIngredientAmount(ingred) {
