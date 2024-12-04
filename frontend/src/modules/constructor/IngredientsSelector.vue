@@ -5,7 +5,7 @@
       {{ ingredientData.name }}
     </div>
     <div class="counter counter--orange ingredients__counter">
-      <ingredient-card-button
+      <ingredients-selector-button
         :class-addition="'minus'"
         :disabled="ingredientData.amount === 0"
         @click="
@@ -16,9 +16,9 @@
         "
       >
         Меньше
-      </ingredient-card-button>
-      <ingredient-card-count :ingredient-amount="ingredientData.amount" />
-      <ingredient-card-button
+      </ingredients-selector-button>
+      <ingredients-selector-count :ingredient-amount="ingredientData.amount" />
+      <ingredients-selector-button
         :class-addition="'plus'"
         :disabled="ingredientData.amount === 3"
         @click="
@@ -29,15 +29,15 @@
         "
       >
         Больше
-      </ingredient-card-button>
+      </ingredients-selector-button>
     </div>
   </app-drag>
 </template>
 
 <script setup>
 import AppDrag from "../../common/components/AddDrag.vue";
-import IngredientCardButton from "./IngredientCardButton.vue";
-import IngredientCardCount from "./IngredientCardCount.vue";
+import IngredientsSelectorButton from "./IngredientsSelectorButton.vue";
+import IngredientsSelectorCount from "./IngredientsSelectorCount.vue";
 import { getImage } from "../../common/helpers/normalize";
 
 defineProps({

@@ -24,7 +24,7 @@
                 <p>Начинка:</p>
                 <ul class="ingredients__list">
                   <!-- все перечисленные атрибуты передаются тегу верхнего уровня данного компонента -->
-                  <ingredient-card
+                  <ingredients-selector
                     v-for="ingredientType in allIngredientsWithAmount"
                     :key="ingredientType.id"
                     :ingredient-data="ingredientType"
@@ -62,7 +62,7 @@
 
 <script setup>
 import { ref, toRaw, reactive } from "vue";
-import IngredientCard from "@/modules/constructor/IngredientCard.vue";
+import IngredientsSelector from "@/modules/constructor/IngredientsSelector.vue";
 import DoughSelector from "../modules/constructor/DoughSelector.vue";
 import DiameterSelector from "../modules/constructor/DiameterSelector.vue";
 import SauceSelector from "../modules/constructor/SauceSelector.vue";
@@ -85,7 +85,7 @@ const sauceItems = saucesJSON.map(normalizeSauces);
 const sizeItems = sizesJSON.map(normalizeSize);
 const currentIngredients = ref([]);
 const allIngredientsWithAmount = ref(
-  ingredientItems.map((ingred) => ({ ...ingred, amount: 0 }))
+  ingredientItems.map((ingred) => ({ ...ingred, amount: 0 })),
 );
 const sauceAndDough = reactive({
   sauce: "tomato",
