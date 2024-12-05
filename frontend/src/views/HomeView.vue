@@ -37,7 +37,7 @@
               placeholder="Введите название пиццы"
             />
           </label>
-          <main-pizza-visual-block
+          <pizza-constructor
             :ingredients="currentIngredients"
             :sauce-and-dough="sauceAndDough"
             @change-ingredient-amount="changeIngredientAmount"
@@ -58,7 +58,7 @@ import IngredientsSelector from "@/modules/constructor/IngredientsSelector.vue";
 import DoughSelector from "../modules/constructor/DoughSelector.vue";
 import DiameterSelector from "../modules/constructor/DiameterSelector.vue";
 import SauceSelector from "../modules/constructor/SauceSelector.vue";
-import MainPizzaVisualBlock from "../modules/constructor/MainPizzaVisualBlock.vue";
+import PizzaConstructor from "../modules/constructor/PizzaConstructor.vue";
 import {
   normalizeDough,
   normalizeIngredients,
