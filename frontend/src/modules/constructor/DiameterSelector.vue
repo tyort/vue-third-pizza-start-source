@@ -15,7 +15,7 @@
             :value="size.value"
             class="visually-hidden"
             :checked="currentSize === size.value"
-            @input="onInput($event, size.value)"
+            @input="$emit('update:modelValue', size.value)"
           />
           <span>{{ size.name }}</span>
         </label>
@@ -36,9 +36,7 @@ defineProps({
   },
 });
 
-function onInput(_evt, data) {
-  currentSize.value = data;
-}
+defineEmits(["update:modelValue"]);
 </script>
 
 <style lang="scss" scoped>

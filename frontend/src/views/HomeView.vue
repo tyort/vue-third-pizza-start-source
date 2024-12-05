@@ -8,7 +8,10 @@
           :checked-dough="sauceAndDough.dough"
           @check-current-input="checkCurrentInput"
         />
-        <diameter-selector :pizza-sizes="sizeItems" />
+        <diameter-selector
+          v-model="currentPizzaSize"
+          :pizza-sizes="sizeItems"
+        />
         <div class="content__ingredients">
           <div class="sheet">
             <h2 class="title title--small sheet__title">
@@ -53,7 +56,7 @@
 </template>
 
 <script setup>
-import { ref, toRaw, reactive } from "vue";
+import { ref, toRaw, reactive, computed } from "vue";
 import IngredientsSelector from "@/modules/constructor/IngredientsSelector.vue";
 import DoughSelector from "../modules/constructor/DoughSelector.vue";
 import DiameterSelector from "../modules/constructor/DiameterSelector.vue";
@@ -76,6 +79,7 @@ const ingredientItems = ingredientsJSON.map(normalizeIngredients);
 const sauceItems = saucesJSON.map(normalizeSauces);
 const sizeItems = sizesJSON.map(normalizeSize);
 const currentIngredients = ref([]);
+const currentPizzaSize = ref("normal");
 const allIngredientsWithAmount = ref(
   ingredientItems.map((ingred) => ({ ...ingred, amount: 0 }))
 );
@@ -84,6 +88,10 @@ const sauceAndDough = reactive({
   sauce: "tomato",
   dough: "large",
 });
+
+const getFinalPizzaPrice = computed(() => {
+
+})
 
 function checkCurrentInput(data) {
   for (const [key, value] of Object.entries(data)) {
