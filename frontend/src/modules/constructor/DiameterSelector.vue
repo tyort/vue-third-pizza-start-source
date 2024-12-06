@@ -14,7 +14,7 @@
             name="diameter"
             :value="size.value"
             class="visually-hidden"
-            :checked="currentSize === size.value"
+            :checked="modelValue === size.value"
             @input="$emit('update:modelValue', size.value)"
           />
           <span>{{ size.name }}</span>
@@ -25,11 +25,11 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-
-const currentSize = ref("normal");
-
 defineProps({
+  modelValue: {
+    type: String,
+    default: "",
+  },
   pizzaSizes: {
     type: Array,
     default: () => [],
