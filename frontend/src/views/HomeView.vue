@@ -46,7 +46,7 @@
             @change-ingredient-amount="changeIngredientAmount"
           />
           <div class="content__result">
-            <p>Итого: 0 ₽</p>
+            <p>Итого: {{ getFinalPizzaPrice }} ₽</p>
             <button type="button" class="button" disabled>Готовьте!</button>
           </div>
         </div>
@@ -90,8 +90,27 @@ const sauceAndDough = reactive({
 });
 
 const getFinalPizzaPrice = computed(() => {
+  const sizeFactor = sizeItems.find(
+    (size) => size.value === currentPizzaSize.value
+  ).multiplier;
 
-})
+  const doughPrice = doughItems.find(
+    (dough) => dough.value === sauceAndDough.dough
+  ).price;
+
+  const saucePrice = sauceItems.find(
+    (sauce) => sauce.value === sauceAndDough.sauce
+  ).price;
+
+  const ingredientsPrice = currentIngredients.value
+    .map((ingred) => {
+      const { price, amount } = toRaw(ingred);
+      return price * amount;
+    })
+    .reduce((finalPrice, price) => finalPrice + price, 0);
+
+  return sizeFactor * (doughPrice + saucePrice + ingredientsPrice);
+});
 
 function checkCurrentInput(data) {
   for (const [key, value] of Object.entries(data)) {
