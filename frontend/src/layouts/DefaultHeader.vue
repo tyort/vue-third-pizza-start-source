@@ -1,27 +1,48 @@
 <template>
   <header class="header">
     <div class="header__logo">
-      <a href="index.html" class="logo">
-        <!-- "@" - это алиас, прописанный в vite.config.js -->
+      <router-link :to="{ name: 'home' }" class="logo">
         <img
           src="@/assets/img/logo.svg"
           alt="V!U!E! Pizza logo"
           width="90"
           height="40"
         />
-      </a>
+      </router-link>
     </div>
     <div class="header__cart">
-      <a href="cart.html">0 ₽</a>
+      <router-link :to="{ name: 'cart' }">0 ₽</router-link>
     </div>
     <div class="header__user">
-      <a href="#" class="header__login"><span>Войти</span></a>
+      <router-link :to="{ name: 'profile' }">
+        <picture>
+          <source
+            type="image/webp"
+            srcset="
+              @/assets/img/users/user5.webp    1x,
+              @/assets/img/users/user5@2x.webp 2x
+            "
+          />
+          <img
+            src="@/assets/img/users/user5.jpg"
+            srcset="@/assets/img/users/user5@2x.jpg"
+            alt="Василий Ложкин"
+            width="32"
+            height="32"
+          />
+        </picture>
+        <span>Василий Ложкин</span>
+      </router-link>
+      <router-link :to="{ name: 'home' }" class="header__logout">
+        <span>Выйти</span>
+      </router-link>
     </div>
   </header>
 </template>
 
 <style lang="scss" scoped>
 @import "@/assets/scss/ds-system/ds";
+
 .header {
   position: relative;
   z-index: 2;
@@ -48,10 +69,7 @@
 
     display: block;
 
-    padding-top: 21px;
-    padding-right: 15px;
-    padding-bottom: 21px;
-    padding-left: 58px;
+    padding: 21px 15px 21px 58px;
 
     transition: 0.3s;
 
@@ -83,10 +101,7 @@
   a {
     display: block;
 
-    padding-top: 14px;
-    padding-right: 20px;
-    padding-bottom: 14px;
-    padding-left: 20px;
+    padding: 14px 20px;
 
     transition: 0.3s;
 
@@ -139,7 +154,7 @@
     content: "";
     vertical-align: middle;
 
-    background: url(@/assets/img/login.svg) no-repeat center;
+    background: url("@/assets/img/login.svg") no-repeat center;
     background-size: auto 50%;
   }
 }
@@ -155,7 +170,7 @@
     content: "";
     vertical-align: middle;
 
-    background: url(@/assets/img/login.svg) no-repeat center;
+    background: url("@/assets/img/login.svg") no-repeat center;
     background-size: auto 50%;
   }
 }
