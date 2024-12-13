@@ -1,10 +1,10 @@
 <template>
   <div>
-    <app-header />
+    <default-header />
     <slot />
   </div>
 </template>
 
 <script setup>
-import AppHeader from "./AppHeader.vue";
+import DefaultHeader from "./DefaultHeader.vue";
 </script>
