@@ -1,9 +1,13 @@
 <template>
-  <default-layout>
+  <app-layout>
     <router-view />
-  </default-layout>
+  </app-layout>
 </template>
 
 <script setup>
-import DefaultLayout from "@/layouts/DefaultLayout.vue";
+import AppLayout from "@/layouts/AppLayout.vue";
 </script>
+
+<style lang="scss">
+@import "@/assets/scss/app.scss";
+</style>
