@@ -33,7 +33,7 @@ const setSauceAndDough = computed(() => {
       return "pizza--foundation--big-creamy";
     case "largetomato":
       return "pizza--foundation--big-tomato";
-    case "lighttomato":
+    case "lightcreamy":
       return "pizza--foundation--small-creamy";
     default:
       return "pizza--foundation--small-tomato";
@@ -204,19 +204,19 @@ function setIngredient(ingred) {
   background-position: center;
   background-size: 100%;
 
-  &--foundation--large-creamy {
+  &--foundation--big-creamy {
     background-image: url("@/assets/img/foundation/big-creamy.svg");
   }
 
-  &--foundation--large-tomato {
+  &--foundation--big-tomato {
     background-image: url("@/assets/img/foundation/big-tomato.svg");
   }
 
-  &--foundation--light-creamy {
+  &--foundation--small-creamy {
     background-image: url("@/assets/img/foundation/small-creamy.svg");
   }
 
-  &--foundation--light-tomato {
+  &--foundation--small-tomato {
     background-image: url("@/assets/img/foundation/small-tomato.svg");
   }
 }
