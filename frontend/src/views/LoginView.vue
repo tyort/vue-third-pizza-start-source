@@ -10,20 +10,63 @@
       <div class="sign-form__input">
         <label class="input">
           <span>E-mail</span>
-          <input type="email" name="email" placeholder="example@mail.ru" />
+          <input
+            v-model="userData.email"
+            type="email"
+            name="email"
+            placeholder="example@mail.ru"
+            required
+          />
         </label>
       </div>
 
       <div class="sign-form__input">
         <label class="input">
           <span>Пароль</span>
-          <input type="password" name="pass" placeholder="***********" />
+          <input
+            v-model="userData.password"
+            type="password"
+            name="pass"
+            placeholder="**********"
+            required
+            maxlength="10"
+          />
+          <span v-if="!isFormValid.status" class="error-message">{{
+            isFormValid.message
+          }}</span>
         </label>
       </div>
-      <button type="submit" class="button">Авторизоваться</button>
+      <button
+        type="submit"
+        class="button"
+        :disabled="!isFormValid"
+        @click.prevent="onSubmit"
+      >
+        Авторизоваться
+      </button>
     </form>
   </div>
 </template>
+
+<script setup>
+import { reactive } from "vue";
+import { useRouter } from "vue-router";
+import { getValidationError } from "../common/helpers/normalize";
+
+const router = useRouter();
+const isFormValid = reactive({ status: true, message: "" });
+const userData = reactive({
+  email: "",
+  password: "",
+});
+
+function onSubmit() {
+  const isErrorsAppear = getValidationError(userData);
+  isFormValid.status = !isErrorsAppear;
+  isFormValid.message = isErrorsAppear;
+  !isErrorsAppear && router.push("/");
+}
+</script>
 
 <style lang="scss" scoped>
 @import "@/assets/scss/ds-system/ds.scss";
@@ -284,5 +327,10 @@
     background-color: $white;
     color: $green-500;
   }
+}
+
+.error-message {
+  color: red;
+  font-size: 0.9em;
 }
 </style>
