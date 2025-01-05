@@ -12,8 +12,9 @@ const dataStore = useDataStore();
 
 void dataStore.fetchAddresses();
 void dataStore.fetchDoughs();
+void dataStore.fetchIngredients();
 
-console.log(dataStore.doughItems);
+console.log(dataStore.ingredientItems);
 </script>
 
 <style lang="scss">

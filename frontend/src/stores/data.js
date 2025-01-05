@@ -14,10 +14,10 @@ import {
 export const useDataStore = defineStore("data", {
   state: () => ({
     doughItems: [],
-    ingredientItems: ingredientsJSON.map(normalizeIngredients),
+    ingredientItems: [],
     sauceItems: saucesJSON.map(normalizeSauces),
     sizeItems: sizesJSON.map(normalizeSize),
-    addressesItems: [],
+    addressItems: [],
   }),
   getters: {},
   actions: {
@@ -33,7 +33,7 @@ export const useDataStore = defineStore("data", {
       //     userId: "string",
       //   },
       // ];
-      this.addressesItems = addressesJSON;
+      this.addressItems = addressesJSON;
     },
     async fetchDoughs() {
       // [
@@ -46,6 +46,17 @@ export const useDataStore = defineStore("data", {
       //   },
       // ];
       this.doughItems = doughJSON.map(normalizeDough);
+    },
+    async fetchIngredients() {
+      // [
+      //   {
+      //     id: 0,
+      //     name: "string",
+      //     image: "string",
+      //     price: 0,
+      //   },
+      // ];
+      this.ingredientItems = ingredientsJSON.map(normalizeIngredients);
     },
   },
 });
