@@ -6,15 +6,17 @@
 
 <script setup>
 import AppLayout from "@/layouts/AppLayout.vue";
-import { useDataStore } from "@/stores";
+import { useDataStore, useProfileStore } from "@/stores";
 
 const dataStore = useDataStore();
+const profileStore = useProfileStore();
 
 void dataStore.fetchAddresses();
 void dataStore.fetchDoughs();
 void dataStore.fetchIngredients();
+void profileStore.fetchUserData();
 
-console.log(dataStore.ingredientItems);
+console.log(profileStore.userData);
 </script>
 
 <style lang="scss">
