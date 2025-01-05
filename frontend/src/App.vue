@@ -11,8 +11,9 @@ import { useDataStore } from "@/stores";
 const dataStore = useDataStore();
 
 void dataStore.fetchAddresses();
+void dataStore.fetchDoughs();
 
-console.log(dataStore.addressesItems);
+console.log(dataStore.doughItems);
 </script>
 
 <style lang="scss">

@@ -13,7 +13,7 @@ import {
 
 export const useDataStore = defineStore("data", {
   state: () => ({
-    doughItems: doughJSON.map(normalizeDough),
+    doughItems: [],
     ingredientItems: ingredientsJSON.map(normalizeIngredients),
     sauceItems: saucesJSON.map(normalizeSauces),
     sizeItems: sizesJSON.map(normalizeSize),
@@ -45,7 +45,7 @@ export const useDataStore = defineStore("data", {
       //     price: 0,
       //   },
       // ];
-      this;
+      this.doughItems = doughJSON.map(normalizeDough);
     },
   },
 });
