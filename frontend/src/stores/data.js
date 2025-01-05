@@ -3,7 +3,6 @@ import doughJSON from "@/mocks/dough.json";
 import ingredientsJSON from "@/mocks/ingredients.json";
 import saucesJSON from "@/mocks/sauces.json";
 import sizesJSON from "@/mocks/sizes.json";
-import addressesJSON from "@/mocks/addresses.json";
 import {
   normalizeDough,
   normalizeIngredients,
@@ -17,24 +16,9 @@ export const useDataStore = defineStore("data", {
     ingredientItems: [],
     sauceItems: saucesJSON.map(normalizeSauces),
     sizeItems: sizesJSON.map(normalizeSize),
-    addressItems: [],
   }),
   getters: {},
   actions: {
-    async fetchAddresses() {
-      // [
-      //   {
-      //     id: 0,
-      //     name: "string",
-      //     street: "string",
-      //     building: "string",
-      //     flat: "string",
-      //     comment: "string",
-      //     userId: "string",
-      //   },
-      // ];
-      this.addressItems = addressesJSON;
-    },
     async fetchDoughs() {
       // [
       //   {

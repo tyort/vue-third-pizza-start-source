@@ -11,12 +11,12 @@ import { useDataStore, useProfileStore } from "@/stores";
 const dataStore = useDataStore();
 const profileStore = useProfileStore();
 
-void dataStore.fetchAddresses();
+void profileStore.fetchAddresses();
 void dataStore.fetchDoughs();
 void dataStore.fetchIngredients();
 void profileStore.fetchUserData();
 
-console.log(profileStore.userData);
+console.log(profileStore.addresses);
 </script>
 
 <style lang="scss">
