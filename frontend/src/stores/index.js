@@ -1,4 +1,4 @@
-export { pizza } from "./pizza.js";
-export { cart } from "./cart.js";
-export { profile } from "./profile.js";
-export { data } from "./data.js";
+export { usePizzaStore } from "./pizza.js";
+export { useCartStore } from "./cart.js";
+export { useProfileStore } from "./profile.js";
+export { useDataStore } from "./data.js";
