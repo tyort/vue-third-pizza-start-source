@@ -15,8 +15,9 @@ void profileStore.fetchAddresses();
 void dataStore.fetchDoughs();
 void dataStore.fetchIngredients();
 void profileStore.fetchUserData();
+void dataStore.fetchMisc();
 
-console.log(profileStore.addresses);
+console.log(dataStore.miscItems);
 </script>
 
 <style lang="scss">

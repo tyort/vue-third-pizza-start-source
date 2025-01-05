@@ -3,6 +3,7 @@ import doughJSON from "@/mocks/dough.json";
 import ingredientsJSON from "@/mocks/ingredients.json";
 import saucesJSON from "@/mocks/sauces.json";
 import sizesJSON from "@/mocks/sizes.json";
+import miscJSON from "@/mocks/misc.json";
 import {
   normalizeDough,
   normalizeIngredients,
@@ -16,6 +17,7 @@ export const useDataStore = defineStore("data", {
     ingredientItems: [],
     sauceItems: saucesJSON.map(normalizeSauces),
     sizeItems: sizesJSON.map(normalizeSize),
+    miscItems: [],
   }),
   getters: {},
   actions: {
@@ -41,6 +43,17 @@ export const useDataStore = defineStore("data", {
       //   },
       // ];
       this.ingredientItems = ingredientsJSON.map(normalizeIngredients);
+    },
+    async fetchMisc() {
+      // [
+      //   {
+      //     id: 0,
+      //     name: "string",
+      //     image: "string",
+      //     price: 0,
+      //   },
+      // ];
+      this.miscItems = miscJSON;
     },
   },
 });
