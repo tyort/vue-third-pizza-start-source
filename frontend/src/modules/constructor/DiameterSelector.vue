@@ -4,7 +4,7 @@
       <h2 class="title title--small sheet__title">Выберите размер</h2>
       <div class="sheet__content diameter">
         <label
-          v-for="size in pizzaSizes"
+          v-for="size in dataStore.sizeItems"
           :key="size.id"
           class="diameter__input"
           :class="`diameter__input--${size.value}`"
@@ -25,14 +25,13 @@
 </template>
 
 <script setup>
+import { useDataStore } from "@/stores";
+const dataStore = useDataStore();
+
 defineProps({
   modelValue: {
     type: String,
     default: "",
-  },
-  pizzaSizes: {
-    type: Array,
-    default: () => [],
   },
 });
 
