@@ -18,18 +18,6 @@ export const usePizzaStore = defineStore("pizza", {
     ],
   }),
   getters: {
-    extendedIngredsParams: (state) => {
-      const data = useDataStore();
-      return data.ingredientItems.map((ingred) => {
-        const currentIngredient = state.ingredients.find(
-          ({ ingredientId }) => ingredientId === ingred.id
-        );
-        return {
-          ...ingred,
-          quantity: currentIngredient ? currentIngredient.quantity : 0,
-        };
-      });
-    },
     getFinalPizzaPrice: (state) => {
       const data = useDataStore();
 
@@ -45,8 +33,7 @@ export const usePizzaStore = defineStore("pizza", {
         (sauce) => sauce.id === state.sauceId
       ).price;
 
-      const ingredientsPrice = state.extendedIngredsParams
-        .filter(({ quantity }) => !!quantity && quantity > 0)
+      const ingredientsPrice = data.ingredientItems
         .map(({ price, quantity }) => price * quantity)
         .reduce((finalPrice, price) => finalPrice + price, 0);
 
