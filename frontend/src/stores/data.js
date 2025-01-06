@@ -15,8 +15,8 @@ export const useDataStore = defineStore("data", {
   state: () => ({
     doughItems: [],
     ingredientItems: [],
-    sauceItems: saucesJSON.map(normalizeSauces),
-    sizeItems: sizesJSON.map(normalizeSize),
+    sauceItems: [],
+    sizeItems: [],
     miscItems: [],
   }),
   getters: {},
@@ -54,6 +54,19 @@ export const useDataStore = defineStore("data", {
       //   },
       // ];
       this.miscItems = miscJSON;
+    },
+    async fetchSauces() {
+      // [
+      //   {
+      //     id: 0,
+      //     name: "string",
+      //     price: 0,
+      //   },
+      // ];
+      this.sauceItems = saucesJSON.map(normalizeSauces);
+    },
+    async fetchSizes() {
+      this.sizeItems = sizesJSON.map(normalizeSize);
     },
   },
 });

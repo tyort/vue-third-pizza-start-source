@@ -17,9 +17,11 @@ void dataStore.fetchDoughs();
 void dataStore.fetchIngredients();
 void profileStore.fetchUserData();
 void dataStore.fetchMisc();
+void dataStore.fetchSauces();
 void cartStore.fetchOrders();
+void dataStore.fetchSizes();
 
-console.log(cartStore.orders);
+console.log(dataStore.sizeItems);
 </script>
 
 <style lang="scss">
