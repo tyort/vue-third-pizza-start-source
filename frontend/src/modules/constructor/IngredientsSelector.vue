@@ -3,14 +3,14 @@
     <p>Начинка:</p>
     <ul class="ingredients__list">
       <li
-        v-for="ingredient in ingredients"
+        v-for="ingredient in dataStore.ingredientItems"
         :key="ingredient.id"
         class="ingredients__item"
       >
         <app-drag
           class="filling"
           :transfered-data="ingredient"
-          :draggable="ingredient.amount < 3"
+          :draggable="ingredient.quantity < 3"
         >
           <img
             :draggable="false"
@@ -22,26 +22,18 @@
         <div class="counter counter--orange ingredients__counter">
           <ingredients-selector-button
             :class-addition="'minus'"
-            :disabled="ingredient.amount === 0"
-            @click="
-              $emit('changeIngredientAmount', {
-                ...ingredient,
-                amount: ingredient.amount - 1,
-              })
-            "
+            :disabled="ingredient.quantity === 0"
+            @click="dataStore.changeIngredientQuantity(ingredient, -1)"
           >
             Меньше
           </ingredients-selector-button>
-          <ingredients-selector-count :ingredient-amount="ingredient.amount" />
+          <ingredients-selector-count
+            :ingredient-amount="ingredient.quantity"
+          />
           <ingredients-selector-button
             :class-addition="'plus'"
-            :disabled="ingredient.amount === 3"
-            @click="
-              $emit('changeIngredientAmount', {
-                ...ingredient,
-                amount: ingredient.amount + 1,
-              })
-            "
+            :disabled="ingredient.quantity === 3"
+            @click="dataStore.changeIngredientQuantity(ingredient, 1)"
           >
             Больше
           </ingredients-selector-button>
@@ -56,15 +48,9 @@ import AppDrag from "../../common/components/AddDrag.vue";
 import IngredientsSelectorButton from "./IngredientsSelectorButton.vue";
 import IngredientsSelectorCount from "./IngredientsSelectorCount.vue";
 import { getImage } from "../../common/helpers/normalize";
+import { useDataStore } from "@/stores";
 
-defineProps({
-  ingredients: {
-    type: Array,
-    default: () => [],
-  },
-});
-
-defineEmits(["changeIngredientAmount"]);
+const dataStore = useDataStore();
 </script>
 
 <style lang="scss" scoped>

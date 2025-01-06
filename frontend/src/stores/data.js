@@ -21,6 +21,13 @@ export const useDataStore = defineStore("data", {
   }),
   getters: {},
   actions: {
+    changeIngredientQuantity(currentIngred, increment) {
+      this.ingredientItems = this.ingredientItems.map((ingred) => {
+        return ingred.id == currentIngred.id
+          ? { ...ingred, quantity: ingred.quantity + increment }
+          : { ...ingred };
+      });
+    },
     async fetchDoughs() {
       // [
       //   {
