@@ -14,8 +14,8 @@
             name="diameter"
             :value="size.value"
             class="visually-hidden"
-            :checked="modelValue === size.value"
-            @input="$emit('update:modelValue', size.value)"
+            :checked="pizzaStore.sizeId == size.id"
+            @input="pizzaStore.changePizzaSize(size.id)"
           />
           <span>{{ size.name }}</span>
         </label>
@@ -25,17 +25,10 @@
 </template>
 
 <script setup>
-import { useDataStore } from "@/stores";
+import { useDataStore, usePizzaStore } from "@/stores";
+
 const dataStore = useDataStore();
-
-defineProps({
-  modelValue: {
-    type: String,
-    default: "",
-  },
-});
-
-defineEmits(["update:modelValue"]);
+const pizzaStore = usePizzaStore();
 </script>
 
 <style lang="scss" scoped>
