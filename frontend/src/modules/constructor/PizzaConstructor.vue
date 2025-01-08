@@ -3,7 +3,7 @@
     <div class="pizza" :class="setSauceAndDough">
       <div class="pizza__wrapper">
         <div
-          v-for="ingredient in ingredients"
+          v-for="ingredient in dataStore.ingredientItems"
           :key="ingredient.value"
           class="pizza__filling"
           :class="`pizza__filling--${ingredient.value}`"
@@ -16,19 +16,21 @@
 <script setup>
 import { computed } from "vue";
 import AppDrop from "../../common/components/AddDrop.vue";
-const props = defineProps({
-  ingredients: {
-    type: Array,
-    required: true,
-  },
-  sauceAndDough: {
-    type: Object,
-    required: true,
-  },
-});
+import { useDataStore } from "../../stores/data";
+import { usePizzaStore } from "../../stores/pizza";
+
+const dataStore = useDataStore();
+const pizzaStore = usePizzaStore();
 
 const setSauceAndDough = computed(() => {
-  switch (`${props.sauceAndDough.dough}${props.sauceAndDough.sauce}`) {
+  const currentDough = dataStore.doughItems.find(
+    (dough) => dough.id == pizzaStore.doughId
+  )?.value;
+  const currentSauce = dataStore.sauceItems.find(
+    (sauce) => sauce.id == pizzaStore.sauceId
+  )?.value;
+
+  switch (`${currentDough}${currentSauce}`) {
     case "largecreamy":
       return "pizza--foundation--big-creamy";
     case "largetomato":
@@ -39,14 +41,6 @@ const setSauceAndDough = computed(() => {
       return "pizza--foundation--small-tomato";
   }
 });
-
-const emit = defineEmits(["changeIngredientAmount"]);
-
-function setIngredient(ingred) {
-  if (ingred.amount < 3) {
-    emit("changeIngredientAmount", { ...ingred, amount: ++ingred.amount });
-  }
-}
 </script>
 
 <style lang="scss" scoped>
