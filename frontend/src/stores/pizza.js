@@ -7,7 +7,7 @@ export const usePizzaStore = defineStore("pizza", {
     name: "string",
     sauceId: 0,
     doughId: 0,
-    sizeId: 1,
+    sizeId: 0,
     quantity: 0,
     orderId: 0,
     ingredients: [
@@ -43,6 +43,9 @@ export const usePizzaStore = defineStore("pizza", {
   actions: {
     changePizzaSize(sizeId) {
       this.sizeId = sizeId;
+    },
+    changeDough(doughId) {
+      this.doughId = doughId;
     },
   },
 });

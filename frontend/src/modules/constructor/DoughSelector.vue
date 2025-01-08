@@ -4,7 +4,7 @@
       <h2 class="title title--small sheet__title">Выберите тесто</h2>
       <div class="sheet__content dough">
         <label
-          v-for="doughData in doughTypes"
+          v-for="doughData in dataStore.doughItems"
           :key="doughData.id"
           class="dough__input"
           :class="`dough__input--${doughData.value}`"
@@ -14,8 +14,8 @@
             name="dough"
             :value="doughData.value"
             class="visually-hidden"
-            :checked="doughData.value === checkedDough"
-            @input="$emit('checkCurrentInput', { dough: doughData.value })"
+            :checked="doughData.id === pizzaStore.doughId"
+            @input="pizzaStore.changeDough(doughData.id)"
           />
           <img :src="getImage(doughData.image)" :alt="doughData.name" />
           <b>{{ doughData.name }}</b>
@@ -27,22 +27,11 @@
 </template>
 
 <script setup>
-defineProps({
-  doughTypes: {
-    type: Array,
-    default: () => [],
-  },
-  checkedDough: {
-    type: String,
-    required: true,
-  },
-});
+import { useDataStore, usePizzaStore } from "@/stores";
+import { getImage } from "../../common/helpers/normalize.js";
 
-defineEmits(["checkCurrentInput"]);
-
-const getImage = (image) => {
-  return new URL(`../../assets/img/${image}`, import.meta.url).href;
-};
+const dataStore = useDataStore();
+const pizzaStore = usePizzaStore();
 </script>
 
 <style lang="scss" scoped>
