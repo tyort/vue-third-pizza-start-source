@@ -3,30 +3,16 @@
     <form action="#" method="post">
       <div class="content__wrapper">
         <h1 class="title title--big">Конструктор пиццы</h1>
-        <dough-selector
-          :dough-types="doughItems"
-          :checked-dough="sauceAndDough.dough"
-          @check-current-input="checkCurrentInput"
-        />
-        <diameter-selector
-          v-model="currentPizzaSize"
-          :pizza-sizes="sizeItems"
-        />
+        <dough-selector />
+        <diameter-selector />
         <div class="content__ingredients">
           <div class="sheet">
             <h2 class="title title--small sheet__title">
               Выберите ингредиенты
             </h2>
             <div class="sheet__content ingredients">
-              <sauce-selector
-                :sauces="sauceItems"
-                :checked-sauce="sauceAndDough.sauce"
-                @check-current-input="checkCurrentInput"
-              />
-              <ingredients-selector
-                :ingredients="allIngredientsWithAmount"
-                @change-ingredient-amount="changeIngredientAmount"
-              />
+              <sauce-selector />
+              <ingredients-selector />
             </div>
           </div>
         </div>
@@ -40,11 +26,7 @@
               placeholder="Введите название пиццы"
             />
           </label>
-          <pizza-constructor
-            :ingredients="currentIngredients"
-            :sauce-and-dough="sauceAndDough"
-            @change-ingredient-amount="changeIngredientAmount"
-          />
+          <pizza-constructor />
           <div class="content__result">
             <p>Итого: {{ getFinalPizzaPrice }} ₽</p>
             <button type="button" class="button" disabled>Готовьте!</button>
@@ -56,77 +38,39 @@
 </template>
 
 <script setup>
-import { ref, toRaw, reactive, computed } from "vue";
+import { toRaw, computed } from "vue";
 import IngredientsSelector from "@/modules/constructor/IngredientsSelector.vue";
 import DoughSelector from "../modules/constructor/DoughSelector.vue";
 import DiameterSelector from "../modules/constructor/DiameterSelector.vue";
 import SauceSelector from "../modules/constructor/SauceSelector.vue";
 import PizzaConstructor from "../modules/constructor/PizzaConstructor.vue";
-import {
-  normalizeDough,
-  normalizeIngredients,
-  normalizeSauces,
-  normalizeSize,
-} from "@/common/helpers/normalize";
+import { useDataStore, usePizzaStore } from "@/stores";
 
-import doughJSON from "@/mocks/dough.json";
-import ingredientsJSON from "@/mocks/ingredients.json";
-import saucesJSON from "@/mocks/sauces.json";
-import sizesJSON from "@/mocks/sizes.json";
-
-const doughItems = doughJSON.map(normalizeDough);
-const ingredientItems = ingredientsJSON.map(normalizeIngredients);
-const sauceItems = saucesJSON.map(normalizeSauces);
-const sizeItems = sizesJSON.map(normalizeSize);
-const currentIngredients = ref([]);
-const currentPizzaSize = ref("normal");
-const allIngredientsWithAmount = ref(
-  ingredientItems.map((ingred) => ({ ...ingred, amount: 0 }))
-);
-
-const sauceAndDough = reactive({
-  sauce: "tomato",
-  dough: "large",
-});
+const dataStore = useDataStore();
+const pizzaStore = usePizzaStore();
 
 const getFinalPizzaPrice = computed(() => {
-  const sizeFactor = sizeItems.find(
-    (size) => size.value === currentPizzaSize.value
-  ).multiplier;
+  const sizeFactor =
+    dataStore.sizeItems.find((size) => size.id == pizzaStore.sizeId)
+      ?.multiplier || 1;
 
-  const doughPrice = doughItems.find(
-    (dough) => dough.value === sauceAndDough.dough
-  ).price;
+  const doughPrice =
+    dataStore.doughItems.find((dough) => dough.id == pizzaStore.doughId)
+      ?.price || 0;
 
-  const saucePrice = sauceItems.find(
-    (sauce) => sauce.value === sauceAndDough.sauce
-  ).price;
+  const saucePrice =
+    dataStore.sauceItems.find((sauce) => sauce.id === pizzaStore.sauceId)
+      ?.price || 0;
 
-  const ingredientsPrice = currentIngredients.value
+  const ingredientsPrice = dataStore.ingredientItems
     .map((ingred) => {
-      const { price, amount } = toRaw(ingred);
-      return price * amount;
+      const { price, quantity } = toRaw(ingred);
+      return price * quantity || 0;
     })
     .reduce((finalPrice, price) => finalPrice + price, 0);
 
   return sizeFactor * (doughPrice + saucePrice + ingredientsPrice);
 });
-
-function checkCurrentInput(data) {
-  for (const [key, value] of Object.entries(data)) {
-    sauceAndDough[key] = value;
-  }
-}
-
-function changeIngredientAmount(ingred) {
-  const data = allIngredientsWithAmount.value.map((item) => {
-    return Number(item.id) === Number(ingred.id)
-      ? { ...ingred }
-      : toRaw({ ...item });
-  });
-  allIngredientsWithAmount.value = data;
-  currentIngredients.value = data.filter(({ amount }) => amount > 0);
-}
 </script>
 
 <style lang="scss" scoped>

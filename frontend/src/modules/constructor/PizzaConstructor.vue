@@ -1,9 +1,12 @@
 <template>
-  <app-drop class="content__constructor" @drop="setIngredient">
+  <app-drop
+    class="content__constructor"
+    @drop="dataStore.changeIngredientQuantity"
+  >
     <div class="pizza" :class="setSauceAndDough">
       <div class="pizza__wrapper">
         <div
-          v-for="ingredient in dataStore.ingredientItems"
+          v-for="ingredient in representedIngreds"
           :key="ingredient.value"
           class="pizza__filling"
           :class="`pizza__filling--${ingredient.value}`"
@@ -21,6 +24,10 @@ import { usePizzaStore } from "../../stores/pizza";
 
 const dataStore = useDataStore();
 const pizzaStore = usePizzaStore();
+
+const representedIngreds = computed(() =>
+  dataStore.ingredientItems.filter((ingred) => ingred.quantity > 0)
+);
 
 const setSauceAndDough = computed(() => {
   const currentDough = dataStore.doughItems.find(
