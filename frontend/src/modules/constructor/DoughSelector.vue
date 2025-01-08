@@ -14,7 +14,7 @@
             name="dough"
             :value="doughData.value"
             class="visually-hidden"
-            :checked="doughData.id === pizzaStore.doughId"
+            :checked="doughData.id == pizzaStore.doughId"
             @input="pizzaStore.changeDough(doughData.id)"
           />
           <img :src="getImage(doughData.image)" :alt="doughData.name" />

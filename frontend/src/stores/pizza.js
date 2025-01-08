@@ -47,5 +47,8 @@ export const usePizzaStore = defineStore("pizza", {
     changeDough(doughId) {
       this.doughId = doughId;
     },
+    changeSauce(sauceId) {
+      this.sauceId = sauceId;
+    },
   },
 });
