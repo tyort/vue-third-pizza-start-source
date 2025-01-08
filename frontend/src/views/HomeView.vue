@@ -21,6 +21,7 @@
           <label class="input">
             <span class="visually-hidden">Название пиццы</span>
             <input
+              v-model="pizzaStore.name"
               type="text"
               name="pizza_name"
               placeholder="Введите название пиццы"
@@ -29,7 +30,9 @@
           <pizza-constructor />
           <div class="content__result">
             <p>Итого: {{ pizzaStore.getFinalPizzaPrice }} ₽</p>
-            <button type="button" class="button" disabled>Готовьте!</button>
+            <button type="button" class="button" :disabled="isButtonDisabled">
+              Готовьте!
+            </button>
           </div>
         </div>
       </div>
@@ -38,14 +41,27 @@
 </template>
 
 <script setup>
+import { computed } from "vue";
 import IngredientsSelector from "@/modules/constructor/IngredientsSelector.vue";
 import DoughSelector from "../modules/constructor/DoughSelector.vue";
 import DiameterSelector from "../modules/constructor/DiameterSelector.vue";
 import SauceSelector from "../modules/constructor/SauceSelector.vue";
 import PizzaConstructor from "../modules/constructor/PizzaConstructor.vue";
-import { usePizzaStore } from "@/stores";
+import { usePizzaStore, useDataStore } from "@/stores";
 
 const pizzaStore = usePizzaStore();
+const dataStore = useDataStore();
+
+const isButtonDisabled = computed(() => {
+  const isIngredsUsed =
+    dataStore.ingredientItems.filter(({ quantity }) => quantity > 0).length ===
+    0;
+  return (
+    [pizzaStore.sauceId, pizzaStore.doughId, pizzaStore.sizeId].includes(0) ||
+    isIngredsUsed ||
+    !pizzaStore.name.trim()
+  );
+});
 </script>
 
 <style lang="scss" scoped>

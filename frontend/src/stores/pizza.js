@@ -4,10 +4,10 @@ import { useDataStore } from "./data";
 export const usePizzaStore = defineStore("pizza", {
   state: () => ({
     id: 0,
-    name: "string",
-    sauceId: 1,
-    doughId: 1,
-    sizeId: 1,
+    name: "",
+    sauceId: 0,
+    doughId: 0,
+    sizeId: 0,
     quantity: 0,
     orderId: 0,
     ingredients: [
