@@ -19,22 +19,22 @@ export const usePizzaStore = defineStore("pizza", {
   }),
   getters: {
     getFinalPizzaPrice: (state) => {
-      const data = useDataStore();
+      const dataStore = useDataStore();
 
-      const sizeFactor = data.sizeItems.find(
-        (size) => size.id === state.sizeId
-      ).multiplier;
+      const sizeFactor =
+        dataStore.sizeItems.find((size) => size.id == state.sizeId)
+          ?.multiplier || 1;
 
-      const doughPrice = data.doughItems.find(
-        (dough) => dough.id === state.doughId
-      ).price;
+      const doughPrice =
+        dataStore.doughItems.find((dough) => dough.id == state.doughId)
+          ?.price || 0;
 
-      const saucePrice = data.sauceItems.find(
-        (sauce) => sauce.id === state.sauceId
-      ).price;
+      const saucePrice =
+        dataStore.sauceItems.find((sauce) => sauce.id === state.sauceId)
+          ?.price || 0;
 
-      const ingredientsPrice = data.ingredientItems
-        .map(({ price, quantity }) => price * quantity)
+      const ingredientsPrice = dataStore.ingredientItems
+        .map(({ price, quantity }) => price * quantity || 0)
         .reduce((finalPrice, price) => finalPrice + price, 0);
 
       return sizeFactor * (doughPrice + saucePrice + ingredientsPrice);
