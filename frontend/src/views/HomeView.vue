@@ -30,7 +30,12 @@
           <pizza-constructor />
           <div class="content__result">
             <p>Итого: {{ pizzaStore.getFinalPizzaPrice }} ₽</p>
-            <button type="button" class="button" :disabled="isButtonDisabled">
+            <button
+              type="button"
+              class="button"
+              :disabled="isButtonDisabled"
+              @click="cartStore.putPizzaToCart()"
+            >
               Готовьте!
             </button>
           </div>
@@ -47,10 +52,11 @@ import DoughSelector from "../modules/constructor/DoughSelector.vue";
 import DiameterSelector from "../modules/constructor/DiameterSelector.vue";
 import SauceSelector from "../modules/constructor/SauceSelector.vue";
 import PizzaConstructor from "../modules/constructor/PizzaConstructor.vue";
-import { usePizzaStore, useDataStore } from "@/stores";
+import { usePizzaStore, useDataStore, useCartStore } from "@/stores";
 
 const pizzaStore = usePizzaStore();
 const dataStore = useDataStore();
+const cartStore = useCartStore();
 
 const isButtonDisabled = computed(() => {
   const isIngredsUsed =
