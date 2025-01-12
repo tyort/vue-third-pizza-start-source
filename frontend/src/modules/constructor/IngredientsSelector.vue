@@ -20,23 +20,23 @@
           {{ ingredient.name }}
         </app-drag>
         <div class="counter counter--orange ingredients__counter">
-          <ingredients-selector-button
+          <app-increment-button
             :class-addition="'minus'"
             :disabled="ingredient.quantity === 0"
             @click="dataStore.changeIngredientQuantity(ingredient, -1)"
           >
             Меньше
-          </ingredients-selector-button>
-          <ingredients-selector-count
+          </app-increment-button>
+          <app-increment-count
             :ingredient-amount="ingredient.quantity"
           />
-          <ingredients-selector-button
+          <app-increment-button
             :class-addition="'plus'"
             :disabled="ingredient.quantity === 3"
             @click="dataStore.changeIngredientQuantity(ingredient, 1)"
           >
             Больше
-          </ingredients-selector-button>
+          </app-increment-button>
         </div>
       </li>
     </ul>
@@ -45,8 +45,8 @@
 
 <script setup>
 import AppDrag from "../../common/components/AddDrag.vue";
-import IngredientsSelectorButton from "./IngredientsSelectorButton.vue";
-import IngredientsSelectorCount from "./IngredientsSelectorCount.vue";
+import AppIncrementButton from "./AppIncrementButton.vue";
+import AppIncrementCount from "./AppIncrementCount.vue";
 import { getImage } from "../../common/helpers/normalize";
 import { useDataStore } from "@/stores";
 

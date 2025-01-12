@@ -31,19 +31,19 @@
             </div>
 
             <div class="counter cart-list__counter">
-              <ingredients-selector-button
+              <app-increment-button
                 :class-addition="'minus'"
                 @click="cartStore.changePizzaQuantity(pizza, -1)"
                 >Меньше
-              </ingredients-selector-button>
-              <ingredients-selector-count :ingredient-amount="pizza.quantity" />
-              <ingredients-selector-button
+              </app-increment-button>
+              <app-increment-count :ingredient-amount="pizza.quantity" />
+              <app-increment-button
                 class="counter__button--orange"
                 :class-addition="'plus'"
                 @click="cartStore.changePizzaQuantity(pizza, 1)"
               >
                 Больше
-              </ingredients-selector-button>
+              </app-increment-button>
             </div>
 
             <div class="cart-list__price">
@@ -75,22 +75,20 @@
 
               <div class="additional-list__wrapper">
                 <div class="counter additional-list__counter">
-                  <ingredients-selector-button
+                  <app-increment-button
                     :class-addition="'minus'"
                     :disabled="misc.quantity == 0"
                     @click="cartStore.updateMisc(misc, -1)"
                     >Меньше
-                  </ingredients-selector-button>
-                  <ingredients-selector-count
-                    :ingredient-amount="misc.quantity"
-                  />
-                  <ingredients-selector-button
+                  </app-increment-button>
+                  <app-increment-count :ingredient-amount="misc.quantity" />
+                  <app-increment-button
                     class="counter__button--orange"
                     :class-addition="'plus'"
                     @click="cartStore.updateMisc(misc, 1)"
                   >
                     Больше
-                  </ingredients-selector-button>
+                  </app-increment-button>
                 </div>
 
                 <div class="additional-list__price">
@@ -168,8 +166,8 @@
 
 <script setup>
 import { h, toRaw } from "vue";
-import IngredientsSelectorButton from "@/modules/constructor/IngredientsSelectorButton.vue";
-import IngredientsSelectorCount from "@/modules/constructor/IngredientsSelectorCount.vue";
+import AppIncrementButton from "@/modules/constructor/AppIncrementButton.vue";
+import AppIncrementCount from "@/modules/constructor/AppIncrementCount.vue";
 import { useCartStore, useDataStore } from "@/stores";
 
 const cartStore = useCartStore();
@@ -180,23 +178,23 @@ void cartStore.fetchMisc();
 const render = ({ pizza }) => {
   const { sauceId, doughId, sizeId, ingredients } = toRaw(pizza);
   const currentSauce = toRaw(
-    dataStore.sauceItems.find(({ id }) => id == sauceId)
+    dataStore.sauceItems.find(({ id }) => id == sauceId),
   );
   const currentDough = toRaw(
-    dataStore.doughItems.find(({ id }) => id == doughId)
+    dataStore.doughItems.find(({ id }) => id == doughId),
   );
   const doughText =
     currentDough.value === "large" ? "на толстом тесте" : "на тонком тесте";
   const currentSize = toRaw(dataStore.sizeItems.find(({ id }) => id == sizeId));
   const currentIngredients = dataStore.ingredientItems
     .filter(({ id }) =>
-      ingredients.map(({ ingredientId }) => ingredientId).includes(id)
+      ingredients.map(({ ingredientId }) => ingredientId).includes(id),
     )
     .map((ingred) => toRaw(ingred))
     .reduce(
       (finalText, addition, index) =>
         `${finalText}${index === 0 ? ":" : ","} ${addition.name}`,
-      ""
+      "",
     );
 
   return h("ul", [
