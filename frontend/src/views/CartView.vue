@@ -6,100 +6,44 @@
           <h1 class="title title--big">Корзина</h1>
         </div>
 
-        <!-- <div class="sheet cart__empty">
+        <div v-if="cartStore.pizzas.length === 0" class="sheet cart__empty">
           <p>В корзине нет ни одного товара</p>
-        </div> -->
+        </div>
 
-        <ul class="cart-list sheet">
-          <li class="cart-list__item">
+        <ul v-else class="cart-list sheet">
+          <li
+            v-for="(pizza, index) in cartStore.pizzas"
+            :key="index"
+            class="cart-list__item"
+          >
             <div class="product cart-list__product">
               <img
                 src="@/assets/img/product.svg"
                 class="product__img"
                 width="56"
                 height="56"
-                alt="Капричоза"
+                :alt="pizza.name"
               />
               <div class="product__text">
-                <h2>Капричоза</h2>
-                <ul>
-                  <li>30 см, на тонком тесте</li>
-                  <li>Соус: томатный</li>
-                  <li>Начинка: грибы, лук, ветчина, пармезан, ананас</li>
-                </ul>
+                <h2>{{ pizza.name }}</h2>
+                <render :pizza="pizza" />
               </div>
             </div>
 
             <div class="counter cart-list__counter">
-              <button
-                type="button"
-                class="counter__button counter__button--minus"
+              <ingredients-selector-button
+                :class-addition="'minus'"
+                @click="cartStore.changePizzaQuantity(pizza, -1)"
+                >Меньше
+              </ingredients-selector-button>
+              <ingredients-selector-count :ingredient-amount="pizza.quantity" />
+              <ingredients-selector-button
+                class="counter__button--orange"
+                :class-addition="'plus'"
+                @click="cartStore.changePizzaQuantity(pizza, 1)"
               >
-                <span class="visually-hidden">Меньше</span>
-              </button>
-              <input
-                type="text"
-                name="counter"
-                class="counter__input"
-                value="1"
-              />
-              <button
-                type="button"
-                class="counter__button counter__button--plus counter__button--orange"
-              >
-                <span class="visually-hidden">Больше</span>
-              </button>
-            </div>
-
-            <div class="cart-list__price">
-              <b>782 ₽</b>
-            </div>
-
-            <div class="cart-list__button">
-              <button type="button" class="cart-list__edit">Изменить</button>
-            </div>
-          </li>
-          <li class="cart-list__item">
-            <div class="product cart-list__product">
-              <img
-                src="@/assets/img/product.svg"
-                class="product__img"
-                width="56"
-                height="56"
-                alt="Любимая пицца"
-              />
-              <div class="product__text">
-                <h2>Любимая пицца</h2>
-                <ul>
-                  <li>30 см, на тонком тесте</li>
-                  <li>Соус: томатный</li>
-                  <li>
-                    Начинка: грибы, лук, ветчина, пармезан, ананас, бекон, блю
-                    чиз
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <div class="counter cart-list__counter">
-              <button
-                type="button"
-                class="counter__button counter__button--minus"
-              >
-                <span class="visually-hidden">Меньше</span>
-              </button>
-              <input
-                type="text"
-                name="counter"
-                class="counter__input"
-                value="2"
-              />
-              <button
-                type="button"
-                class="counter__button counter__button--plus counter__button--orange"
-              >
-                <span class="visually-hidden">Больше</span>
-              </button>
+                Больше
+              </ingredients-selector-button>
             </div>
 
             <div class="cart-list__price">
@@ -295,6 +239,45 @@
     </section>
   </form>
 </template>
+
+<script setup>
+import { h, toRaw } from "vue";
+import IngredientsSelectorButton from "@/modules/constructor/IngredientsSelectorButton.vue";
+import IngredientsSelectorCount from "@/modules/constructor/IngredientsSelectorCount.vue";
+import { useCartStore, useDataStore } from "@/stores";
+
+const cartStore = useCartStore();
+const dataStore = useDataStore();
+
+const render = ({ pizza }) => {
+  const { sauceId, doughId, sizeId, ingredients } = toRaw(pizza);
+  const currentSauce = toRaw(
+    dataStore.sauceItems.find(({ id }) => id == sauceId)
+  );
+  const currentDough = toRaw(
+    dataStore.doughItems.find(({ id }) => id == doughId)
+  );
+  const doughText =
+    currentDough.value === "large" ? "на толстом тесте" : "на тонком тесте";
+  const currentSize = toRaw(dataStore.sizeItems.find(({ id }) => id == sizeId));
+  const currentIngredients = dataStore.ingredientItems
+    .filter(({ id }) =>
+      ingredients.map(({ ingredientId }) => ingredientId).includes(id)
+    )
+    .map((ingred) => toRaw(ingred))
+    .reduce(
+      (finalText, addition, index) =>
+        `${finalText}${index === 0 ? ":" : ","} ${addition.name}`,
+      ""
+    );
+
+  return h("ul", [
+    h("li", `${currentSize.name}, ${doughText}`),
+    h("li", `Coус: ${currentSauce.name}`),
+    h("li", `Начинка${currentIngredients}`),
+  ]);
+};
+</script>
 
 <style lang="scss" scoped>
 @import "@/assets/scss/ds-system/ds.scss";

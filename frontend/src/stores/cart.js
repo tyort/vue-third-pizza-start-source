@@ -36,5 +36,14 @@ export const useCartStore = defineStore("cart", {
         },
       ].map((pizza) => toRaw(pizza));
     },
+    changePizzaQuantity(currentPizza, increment) {
+      this.pizzas = this.pizzas
+        .map((pizza) =>
+          pizza.name == currentPizza.name
+            ? { ...pizza, quantity: pizza.quantity + increment }
+            : { ...pizza }
+        )
+        .filter(({ quantity }) => quantity > 0);
+    },
   },
 });
