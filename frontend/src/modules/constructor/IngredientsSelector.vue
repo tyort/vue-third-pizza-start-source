@@ -27,9 +27,7 @@
           >
             Меньше
           </app-increment-button>
-          <app-increment-count
-            :ingredient-amount="ingredient.quantity"
-          />
+          <app-increment-count :counter-indicator="ingredient.quantity" />
           <app-increment-button
             :class-addition="'plus'"
             :disabled="ingredient.quantity === 3"

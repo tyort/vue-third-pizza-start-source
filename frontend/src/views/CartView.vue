@@ -33,10 +33,11 @@
             <div class="counter cart-list__counter">
               <app-increment-button
                 :class-addition="'minus'"
+                :disabled="pizza.quantity == 0"
                 @click="cartStore.changePizzaQuantity(pizza, -1)"
                 >Меньше
               </app-increment-button>
-              <app-increment-count :ingredient-amount="pizza.quantity" />
+              <app-increment-count :counter-indicator="pizza.quantity" />
               <app-increment-button
                 class="counter__button--orange"
                 :class-addition="'plus'"
@@ -81,7 +82,7 @@
                     @click="cartStore.updateMisc(misc, -1)"
                     >Меньше
                   </app-increment-button>
-                  <app-increment-count :ingredient-amount="misc.quantity" />
+                  <app-increment-count :counter-indicator="misc.quantity" />
                   <app-increment-button
                     class="counter__button--orange"
                     :class-addition="'plus'"
@@ -178,23 +179,23 @@ void cartStore.fetchMisc();
 const render = ({ pizza }) => {
   const { sauceId, doughId, sizeId, ingredients } = toRaw(pizza);
   const currentSauce = toRaw(
-    dataStore.sauceItems.find(({ id }) => id == sauceId),
+    dataStore.sauceItems.find(({ id }) => id == sauceId)
   );
   const currentDough = toRaw(
-    dataStore.doughItems.find(({ id }) => id == doughId),
+    dataStore.doughItems.find(({ id }) => id == doughId)
   );
   const doughText =
     currentDough.value === "large" ? "на толстом тесте" : "на тонком тесте";
   const currentSize = toRaw(dataStore.sizeItems.find(({ id }) => id == sizeId));
   const currentIngredients = dataStore.ingredientItems
     .filter(({ id }) =>
-      ingredients.map(({ ingredientId }) => ingredientId).includes(id),
+      ingredients.map(({ ingredientId }) => ingredientId).includes(id)
     )
     .map((ingred) => toRaw(ingred))
     .reduce(
       (finalText, addition, index) =>
         `${finalText}${index === 0 ? ":" : ","} ${addition.name}`,
-      "",
+      ""
     );
 
   return h("ul", [
