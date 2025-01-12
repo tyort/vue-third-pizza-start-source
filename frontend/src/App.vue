@@ -16,7 +16,6 @@ void profileStore.fetchAddresses();
 void dataStore.fetchDoughs();
 void dataStore.fetchIngredients();
 void profileStore.fetchUserData();
-void dataStore.fetchMisc();
 void dataStore.fetchSauces();
 void cartStore.fetchOrders();
 void dataStore.fetchSizes();

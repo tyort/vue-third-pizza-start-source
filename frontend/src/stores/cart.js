@@ -2,16 +2,29 @@ import { toRaw } from "vue";
 import { defineStore } from "pinia";
 import { useDataStore } from "./data";
 import { usePizzaStore } from "./pizza";
+import miscJSON from "@/mocks/misc.json";
 import ordersJSON from "@/mocks/orders.json";
+import { normalizeMisc } from "@/common/helpers/normalize";
 
 export const useCartStore = defineStore("cart", {
   state: () => ({
     pizzas: [],
+    misc: [],
   }),
   getters: {},
   actions: {
+    async fetchMisc() {
+      this.misc = miscJSON.map(normalizeMisc);
+    },
     async fetchOrders() {
       this.orders = ordersJSON;
+    },
+    updateMisc(currentMisc, increment) {
+      this.misc = this.misc.map((item) =>
+        item.id == currentMisc.id
+          ? { ...item, quantity: item.quantity + increment }
+          : { ...item }
+      );
     },
     putPizzaToCart() {
       const dataStore = useDataStore();

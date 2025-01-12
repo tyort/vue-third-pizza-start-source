@@ -25,6 +25,11 @@ export const normalizeSauces = (sauce) => ({
   value: sauces[sauce.id],
 });
 
+export const normalizeMisc = (misc) => ({
+  ...misc,
+  quantity: 0,
+});
+
 export const getImage = (image) => {
   return new URL(`../../assets/img/${image}`, import.meta.url).href;
 };
