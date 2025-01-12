@@ -167,8 +167,8 @@
 
 <script setup>
 import { h, toRaw } from "vue";
-import AppIncrementButton from "@/modules/constructor/AppIncrementButton.vue";
-import AppIncrementCount from "@/modules/constructor/AppIncrementCount.vue";
+import AppIncrementButton from "@/common/components/AppIncrementButton.vue";
+import AppIncrementCount from "@/common/components/AppIncrementCount.vue";
 import { useCartStore, useDataStore } from "@/stores";
 
 const cartStore = useCartStore();

@@ -43,8 +43,8 @@
 
 <script setup>
 import AppDrag from "../../common/components/AddDrag.vue";
-import AppIncrementButton from "./AppIncrementButton.vue";
-import AppIncrementCount from "./AppIncrementCount.vue";
+import AppIncrementButton from "../../common/components/AppIncrementButton.vue";
+import AppIncrementCount from "../../common/components/AppIncrementCount.vue";
 import { getImage } from "../../common/helpers/normalize";
 import { useDataStore } from "@/stores";
 
