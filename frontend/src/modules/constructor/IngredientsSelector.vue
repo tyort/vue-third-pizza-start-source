@@ -3,7 +3,7 @@
     <p>Начинка:</p>
     <ul class="ingredients__list">
       <li
-        v-for="ingredient in dataStore.ingredientItems"
+        v-for="ingredient in pizzaStore.getAllIngredientsQuantities"
         :key="ingredient.id"
         class="ingredients__item"
       >
@@ -23,7 +23,7 @@
           <app-increment-button
             :class-addition="'minus'"
             :disabled="ingredient.quantity === 0"
-            @click="dataStore.changeIngredientQuantity(ingredient, -1)"
+            @click="pizzaStore.updateIngredients(ingredient, -1)"
           >
             Меньше
           </app-increment-button>
@@ -31,7 +31,7 @@
           <app-increment-button
             :class-addition="'plus'"
             :disabled="ingredient.quantity === 3"
-            @click="dataStore.changeIngredientQuantity(ingredient, 1)"
+            @click="pizzaStore.updateIngredients(ingredient, 1)"
           >
             Больше
           </app-increment-button>
@@ -46,9 +46,9 @@ import AppDrag from "../../common/components/AddDrag.vue";
 import AppIncrementButton from "../../common/components/AppIncrementButton.vue";
 import AppIncrementCount from "../../common/components/AppIncrementCount.vue";
 import { getImage } from "../../common/helpers/normalize";
-import { useDataStore } from "@/stores";
+import { usePizzaStore } from "@/stores";
 
-const dataStore = useDataStore();
+const pizzaStore = usePizzaStore();
 </script>
 
 <style lang="scss" scoped>

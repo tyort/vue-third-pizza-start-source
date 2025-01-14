@@ -27,15 +27,7 @@ export const useCartStore = defineStore("cart", {
       );
     },
     putPizzaToCart() {
-      const dataStore = useDataStore();
       const pizzaStore = usePizzaStore();
-
-      const ingredients = dataStore.ingredientItems
-        .filter(({ quantity }) => quantity > 0)
-        .map(({ ingredientId, quantity }) => ({
-          ingredientId,
-          quantity,
-        }));
 
       this.pizzas = [
         ...this.pizzas,
@@ -45,7 +37,7 @@ export const useCartStore = defineStore("cart", {
           doughId: pizzaStore.doughId,
           sizeId: pizzaStore.sizeId,
           quantity: 1,
-          ingredients,
+          ingredients: pizzaStore.ingredients,
         },
       ].map((pizza) => toRaw(pizza));
     },

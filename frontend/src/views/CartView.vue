@@ -187,10 +187,7 @@ const render = ({ pizza }) => {
   const doughText =
     currentDough.value === "large" ? "на толстом тесте" : "на тонком тесте";
   const currentSize = toRaw(dataStore.sizeItems.find(({ id }) => id == sizeId));
-  const currentIngredients = dataStore.ingredientItems
-    .filter(({ id }) =>
-      ingredients.map(({ ingredientId }) => ingredientId).includes(id)
-    )
+  const currentIngredients = ingredients
     .map((ingred) => toRaw(ingred))
     .reduce(
       (finalText, addition, index) =>

@@ -52,22 +52,17 @@ import DoughSelector from "../modules/constructor/DoughSelector.vue";
 import DiameterSelector from "../modules/constructor/DiameterSelector.vue";
 import SauceSelector from "../modules/constructor/SauceSelector.vue";
 import PizzaConstructor from "../modules/constructor/PizzaConstructor.vue";
-import { usePizzaStore, useDataStore, useCartStore } from "@/stores";
+import { usePizzaStore, useCartStore } from "@/stores";
 
 const pizzaStore = usePizzaStore();
-const dataStore = useDataStore();
 const cartStore = useCartStore();
 
-const isButtonDisabled = computed(() => {
-  const isIngredsUsed =
-    dataStore.ingredientItems.filter(({ quantity }) => quantity > 0).length ===
-    0;
-  return (
+const isButtonDisabled = computed(
+  () =>
     [pizzaStore.sauceId, pizzaStore.doughId, pizzaStore.sizeId].includes(0) ||
-    isIngredsUsed ||
+    pizzaStore.ingredients.length === 0 ||
     !pizzaStore.name.trim()
-  );
-});
+);
 </script>
 
 <style lang="scss" scoped>
