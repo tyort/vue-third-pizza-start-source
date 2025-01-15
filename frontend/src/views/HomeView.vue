@@ -33,7 +33,12 @@
               placeholder="Введите название пиццы"
             />
           </label>
-          <pizza-constructor />
+          <pizza-constructor
+            :ingredients="pizzaStore.ingredients"
+            :current-dough="pizzaStore.getDoughData?.value || 'large'"
+            :current-sauce="pizzaStore.getSauceData?.value || 'tomato'"
+            :on-drop="pizzaStore.updateIngredients"
+          />
           <div class="content__result">
             <p>Итого: {{ pizzaStore.getFinalPizzaPrice }} ₽</p>
             <button
@@ -73,7 +78,8 @@ const isButtonDisabled = computed(() => {
 });
 
 pizzaStore.$subscribe(() => {
-  console.log(pizzaStore.sizeId);
+  console.log(pizzaStore.ingredients);
+  console.log(pizzaStore.updateIngredients);
 });
 </script>
 

@@ -12,6 +12,14 @@ export const usePizzaStore = defineStore("pizza", {
     ingredients: [],
   }),
   getters: {
+    getDoughData: (state) => {
+      const dataStore = useDataStore();
+      return dataStore.doughItems.find(({ id }) => state.doughId == id);
+    },
+    getSauceData: (state) => {
+      const dataStore = useDataStore();
+      return dataStore.sauceItems.find(({ id }) => state.sauceId == id);
+    },
     getAllIngredientsQuantities: (state) => {
       const dataStore = useDataStore();
       const appliedIngredsIds = state.ingredients.map(({ id }) => id);

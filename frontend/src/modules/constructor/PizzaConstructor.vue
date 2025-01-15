@@ -1,9 +1,9 @@
 <template>
-  <app-drop class="content__constructor" @drop="pizzaStore.updateIngredients">
+  <app-drop class="content__constructor" @drop="onDrop">
     <div class="pizza" :class="setSauceAndDough">
       <div class="pizza__wrapper">
         <div
-          v-for="ingredient in pizzaStore.ingredients"
+          v-for="ingredient in ingredients"
           :key="ingredient.value"
           class="pizza__filling"
           :class="[
@@ -20,21 +20,28 @@
 <script setup>
 import { computed } from "vue";
 import AppDrop from "../../common/components/AddDrop.vue";
-import { useDataStore } from "../../stores/data";
-import { usePizzaStore } from "../../stores/pizza";
 
-const dataStore = useDataStore();
-const pizzaStore = usePizzaStore();
+const props = defineProps({
+  currentDough: {
+    type: String,
+    required: true,
+  },
+  currentSauce: {
+    type: String,
+    required: true,
+  },
+  ingredients: {
+    type: Array,
+    default: () => [],
+  },
+  onDrop: {
+    type: Function,
+    required: true,
+  },
+});
 
 const setSauceAndDough = computed(() => {
-  const currentDough = dataStore.doughItems.find(
-    (dough) => dough.id == pizzaStore.doughId
-  )?.value;
-  const currentSauce = dataStore.sauceItems.find(
-    (sauce) => sauce.id == pizzaStore.sauceId
-  )?.value;
-
-  switch (`${currentDough}${currentSauce}`) {
+  switch (`${props.currentDough}${props.currentSauce}`) {
     case "largecreamy":
       return "pizza--foundation--big-creamy";
     case "largetomato":
