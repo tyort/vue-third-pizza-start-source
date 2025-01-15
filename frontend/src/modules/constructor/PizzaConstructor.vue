@@ -6,7 +6,11 @@
           v-for="ingredient in pizzaStore.ingredients"
           :key="ingredient.value"
           class="pizza__filling"
-          :class="`pizza__filling--${ingredient.value}`"
+          :class="[
+            `pizza__filling--${ingredient.value}`,
+            { 'pizza__filling--second': ingredient.quantity == 2 },
+            { 'pizza__filling--third': ingredient.quantity == 3 },
+          ]"
         ></div>
       </div>
     </div>
