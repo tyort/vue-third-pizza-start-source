@@ -48,7 +48,7 @@
               type="button"
               class="button"
               :disabled="isButtonDisabled"
-              @click="cartStore.putPizzaToCart()"
+              @click="onButtonClick"
             >
               Готовьте!
             </button>
@@ -61,6 +61,7 @@
 
 <script setup>
 import { computed } from "vue";
+import { useRouter } from "vue-router";
 import IngredientsSelector from "@/modules/constructor/IngredientsSelector.vue";
 import DoughSelector from "../modules/constructor/DoughSelector.vue";
 import DiameterSelector from "../modules/constructor/DiameterSelector.vue";
@@ -68,6 +69,7 @@ import SauceSelector from "../modules/constructor/SauceSelector.vue";
 import PizzaConstructor from "../modules/constructor/PizzaConstructor.vue";
 import { usePizzaStore, useCartStore, useDataStore } from "@/stores";
 
+const router = useRouter();
 const pizzaStore = usePizzaStore();
 const cartStore = useCartStore();
 const dataStore = useDataStore();
@@ -84,6 +86,11 @@ pizzaStore.$subscribe(() => {
   console.log(pizzaStore.ingredients);
   console.log(pizzaStore.updateIngredients);
 });
+
+const onButtonClick = () => {
+  cartStore.putPizzaToCart();
+  router.push({ path: `/cart` });
+};
 </script>
 
 <style lang="scss" scoped>
