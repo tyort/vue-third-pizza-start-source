@@ -17,7 +17,10 @@
               Выберите ингредиенты
             </h2>
             <div class="sheet__content ingredients">
-              <sauce-selector />
+              <sauce-selector
+                v-model="pizzaStore.sauceId"
+                :sauces="dataStore.sauceItems"
+              />
               <ingredients-selector />
             </div>
           </div>

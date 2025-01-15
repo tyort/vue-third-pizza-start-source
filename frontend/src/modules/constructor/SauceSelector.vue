@@ -2,16 +2,16 @@
   <div class="ingredients__sauce">
     <p>Основной соус:</p>
     <label
-      v-for="sauce in dataStore.sauceItems"
+      v-for="sauce in sauces"
       :key="sauce.id"
       class="radio ingredients__input"
     >
       <input
         type="radio"
         name="sauce"
-        :value="sauce.value"
-        :checked="sauce.id == pizzaStore.sauceId"
-        @input="pizzaStore.changeSauce(sauce.id)"
+        :value="sauce.id"
+        :checked="sauce.id == modelValue"
+        @input="$emit('update:modelValue', sauce.id)"
       />
       <span>{{ sauce.name }}</span>
     </label>
@@ -19,11 +19,18 @@
 </template>
 
 <script setup>
-import { usePizzaStore } from "../../stores/pizza";
-import { useDataStore } from "../../stores/data";
+defineProps({
+  modelValue: {
+    type: Number,
+    required: true,
+  },
+  sauces: {
+    type: Array,
+    default: () => [],
+  },
+});
 
-const pizzaStore = usePizzaStore();
-const dataStore = useDataStore();
+defineEmits(["update:modelValue"]);
 </script>
 
 <style lang="scss" scoped>
