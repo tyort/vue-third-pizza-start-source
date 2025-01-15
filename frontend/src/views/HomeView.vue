@@ -7,7 +7,10 @@
           v-model="pizzaStore.doughId"
           :doughs="dataStore.doughItems"
         />
-        <diameter-selector />
+        <diameter-selector
+          v-model="pizzaStore.sizeId"
+          :diameters="dataStore.sizeItems"
+        />
         <div class="content__ingredients">
           <div class="sheet">
             <h2 class="title title--small sheet__title">
@@ -70,8 +73,7 @@ const isButtonDisabled = computed(() => {
 });
 
 pizzaStore.$subscribe(() => {
-  console.log("жопа");
-  console.log(pizzaStore.doughId);
+  console.log(pizzaStore.sizeId);
 });
 </script>
 
