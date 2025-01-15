@@ -4,7 +4,7 @@
       <h2 class="title title--small sheet__title">Выберите тесто</h2>
       <div class="sheet__content dough">
         <label
-          v-for="doughData in dataStore.doughItems"
+          v-for="doughData in doughs"
           :key="doughData.id"
           class="dough__input"
           :class="`dough__input--${doughData.value}`"
@@ -12,10 +12,10 @@
           <input
             type="radio"
             name="dough"
-            :value="doughData.value"
+            :value="doughData.id"
             class="visually-hidden"
-            :checked="doughData.id == pizzaStore.doughId"
-            @input="pizzaStore.changeDough(doughData.id)"
+            :checked="doughData.id == modelValue"
+            @input="emits('update:modelValue', doughData.id)"
           />
           <img :src="getImage(doughData.image)" :alt="doughData.name" />
           <b>{{ doughData.name }}</b>
@@ -27,11 +27,20 @@
 </template>
 
 <script setup>
-import { useDataStore, usePizzaStore } from "@/stores";
 import { getImage } from "../../common/helpers/normalize.js";
 
-const dataStore = useDataStore();
-const pizzaStore = usePizzaStore();
+defineProps({
+  modelValue: {
+    type: Number,
+    required: true,
+  },
+  doughs: {
+    type: Array,
+    default: () => [],
+  },
+});
+
+const emits = defineEmits(["update:modelValue"]);
 </script>
 
 <style lang="scss" scoped>

@@ -3,7 +3,10 @@
     <form action="#" method="post">
       <div class="content__wrapper">
         <h1 class="title title--big">Конструктор пиццы</h1>
-        <dough-selector />
+        <dough-selector
+          v-model="pizzaStore.doughId"
+          :doughs="dataStore.doughItems"
+        />
         <diameter-selector />
         <div class="content__ingredients">
           <div class="sheet">
@@ -52,17 +55,24 @@ import DoughSelector from "../modules/constructor/DoughSelector.vue";
 import DiameterSelector from "../modules/constructor/DiameterSelector.vue";
 import SauceSelector from "../modules/constructor/SauceSelector.vue";
 import PizzaConstructor from "../modules/constructor/PizzaConstructor.vue";
-import { usePizzaStore, useCartStore } from "@/stores";
+import { usePizzaStore, useCartStore, useDataStore } from "@/stores";
 
 const pizzaStore = usePizzaStore();
 const cartStore = useCartStore();
+const dataStore = useDataStore();
 
-const isButtonDisabled = computed(
-  () =>
+const isButtonDisabled = computed(() => {
+  return (
     [pizzaStore.sauceId, pizzaStore.doughId, pizzaStore.sizeId].includes(0) ||
     pizzaStore.ingredients.length === 0 ||
     !pizzaStore.name.trim()
-);
+  );
+});
+
+pizzaStore.$subscribe(() => {
+  console.log("жопа");
+  console.log(pizzaStore.doughId);
+});
 </script>
 
 <style lang="scss" scoped>
