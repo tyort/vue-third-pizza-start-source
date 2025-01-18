@@ -64,7 +64,7 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import IngredientsSelector from "@/modules/constructor/IngredientsSelector.vue";
 import DoughSelector from "../modules/constructor/DoughSelector.vue";
@@ -77,6 +77,10 @@ const router = useRouter();
 const pizzaStore = usePizzaStore();
 const cartStore = useCartStore();
 const dataStore = useDataStore();
+
+onMounted(() => {
+  pizzaStore.$reset();
+});
 
 const isButtonDisabled = computed(() => {
   return (
