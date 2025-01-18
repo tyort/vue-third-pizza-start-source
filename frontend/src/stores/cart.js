@@ -40,6 +40,7 @@ export const useCartStore = defineStore("cart", {
           ingredients: pizzaStore.ingredients,
         },
       ].map((pizza) => toRaw(pizza));
+      pizzaStore.$reset();
     },
     changePizzaQuantity(currentPizza, increment) {
       this.pizzas = this.pizzas

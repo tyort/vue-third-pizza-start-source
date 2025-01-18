@@ -49,15 +49,15 @@ export const usePizzaStore = defineStore("pizza", {
     },
   },
   actions: {
-    changePizzaSize(sizeId) {
-      this.sizeId = sizeId;
-    },
-    changeDough(doughId) {
-      this.doughId = doughId;
-    },
-    changeSauce(sauceId) {
-      this.sauceId = sauceId;
-    },
+    // changePizzaSize(sizeId) {
+    //   this.sizeId = sizeId;
+    // },
+    // changeDough(doughId) {
+    //   this.doughId = doughId;
+    // },
+    // changeSauce(sauceId) {
+    //   this.sauceId = sauceId;
+    // },
     updateIngredients(udatedIngred, increment = 1) {
       const existingIngred = this.ingredients.find(
         (ingred) => udatedIngred.id == ingred?.id

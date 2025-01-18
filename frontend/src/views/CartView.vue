@@ -12,8 +12,8 @@
 
         <ul v-else class="cart-list sheet">
           <li
-            v-for="(pizza, index) in cartStore.pizzas"
-            :key="index"
+            v-for="pizza in cartStore.pizzas"
+            :key="pizza.id"
             class="cart-list__item"
           >
             <div class="product cart-list__product">
@@ -52,7 +52,13 @@
             </div>
 
             <div class="cart-list__button">
-              <button type="button" class="cart-list__edit">Изменить</button>
+              <button
+                type="button"
+                class="cart-list__edit"
+                @click="onButtonClick($event, pizza)"
+              >
+                Изменить
+              </button>
             </div>
           </li>
         </ul>
@@ -171,10 +177,13 @@
 import { h } from "vue";
 import AppIncrementButton from "@/common/components/AppIncrementButton.vue";
 import AppIncrementCount from "@/common/components/AppIncrementCount.vue";
-import { useCartStore, useDataStore } from "@/stores";
+import { useCartStore, useDataStore, usePizzaStore } from "@/stores";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const cartStore = useCartStore();
 const dataStore = useDataStore();
+const pizzaStore = usePizzaStore();
 void cartStore.fetchMisc();
 
 const render = ({ pizza }) => {
@@ -194,6 +203,19 @@ const render = ({ pizza }) => {
     h("li", `Coус: ${currentSauce.name}`),
     h("li", `Начинка${currentIngredients}`),
   ]);
+};
+
+const onButtonClick = (_event, pizzaData) => {
+  pizzaStore.$patch((state) => {
+    state.id = pizzaData.id;
+    state.name = pizzaData.name;
+    state.sauceId = pizzaData.sauceId;
+    state.doughId = pizzaData.doughId;
+    state.sizeId = pizzaData.sizeId;
+    state.quantity = pizzaData.quantity;
+    state.ingredients = pizzaData.ingredients;
+  });
+  router.push("/");
 };
 </script>
 
