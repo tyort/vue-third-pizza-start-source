@@ -4,6 +4,7 @@ import { toRaw } from "vue";
 
 export const usePizzaStore = defineStore("pizza", {
   state: () => ({
+    id: null,
     name: "",
     sauceId: 0,
     doughId: 0,
