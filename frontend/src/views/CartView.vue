@@ -147,8 +147,10 @@
     </main>
     <section class="footer">
       <div class="footer__more">
-        <a href="#" class="button button--border button--arrow"
-          >Хочу еще одну</a
+        <router-link
+          :to="{ name: 'home' }"
+          class="button button--border button--arrow"
+          >Хочу еще одну</router-link
         >
       </div>
       <p class="footer__text">
@@ -166,34 +168,26 @@
 </template>
 
 <script setup>
-import { h, toRaw } from "vue";
+import { h } from "vue";
 import AppIncrementButton from "@/common/components/AppIncrementButton.vue";
 import AppIncrementCount from "@/common/components/AppIncrementCount.vue";
 import { useCartStore, useDataStore } from "@/stores";
 
 const cartStore = useCartStore();
 const dataStore = useDataStore();
-
 void cartStore.fetchMisc();
 
 const render = ({ pizza }) => {
-  const { sauceId, doughId, sizeId, ingredients } = toRaw(pizza);
-  const currentSauce = toRaw(
-    dataStore.sauceItems.find(({ id }) => id == sauceId)
-  );
-  const currentDough = toRaw(
-    dataStore.doughItems.find(({ id }) => id == doughId)
-  );
+  const currentSauce = dataStore.getSauceData(pizza.sauceId);
+  const currentDough = dataStore.getDoughData(pizza.doughId);
   const doughText =
     currentDough.value === "large" ? "на толстом тесте" : "на тонком тесте";
-  const currentSize = toRaw(dataStore.sizeItems.find(({ id }) => id == sizeId));
-  const currentIngredients = ingredients
-    .map((ingred) => toRaw(ingred))
-    .reduce(
-      (finalText, addition, index) =>
-        `${finalText}${index === 0 ? ":" : ","} ${addition.name}`,
-      ""
-    );
+  const currentSize = dataStore.getDoughData(pizza.sizeId);
+  const currentIngredients = pizza.ingredients.reduce(
+    (finalText, addition, index) =>
+      `${finalText}${index === 0 ? ":" : ","} ${addition.name}`,
+    ""
+  );
 
   return h("ul", [
     h("li", `${currentSize.name}, ${doughText}`),

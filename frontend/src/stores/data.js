@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { toRaw } from "vue";
 import doughJSON from "@/mocks/dough.json";
 import ingredientsJSON from "@/mocks/ingredients.json";
 import saucesJSON from "@/mocks/sauces.json";
@@ -17,7 +18,19 @@ export const useDataStore = defineStore("data", {
     sauceItems: [],
     sizeItems: [],
   }),
-  getters: {},
+  getters: {
+    getSauceData: (state) => {
+      return (sauceId) =>
+        toRaw(state.sauceItems.find(({ id }) => sauceId == id));
+    },
+    getDoughData: (state) => {
+      return (doughId) =>
+        toRaw(state.doughItems.find(({ id }) => doughId == id));
+    },
+    getSizeData: (state) => {
+      return (sizeId) => toRaw(state.sizeItems.find(({ id }) => sizeId == id));
+    },
+  },
   actions: {
     async fetchDoughs() {
       // [

@@ -38,8 +38,12 @@
           </label>
           <pizza-constructor
             :ingredients="pizzaStore.ingredients"
-            :current-dough="pizzaStore.getDoughData?.value || 'large'"
-            :current-sauce="pizzaStore.getSauceData?.value || 'tomato'"
+            :current-dough="
+              dataStore.getDoughData(pizzaStore.doughId)?.value || 'large'
+            "
+            :current-sauce="
+              dataStore.getSauceData(pizzaStore.sauceId)?.value || 'tomato'
+            "
             :on-drop="pizzaStore.updateIngredients"
           />
           <div class="content__result">
