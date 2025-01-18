@@ -31,7 +31,6 @@ export const useCartStore = defineStore("cart", {
       this.pizzas = [
         ...this.pizzas,
         {
-          id: Math.max(this.pizzas.map(({ id }) => Number(id))) + 1,
           name: pizzaStore.name,
           sauceId: pizzaStore.sauceId,
           doughId: pizzaStore.doughId,
@@ -40,6 +39,8 @@ export const useCartStore = defineStore("cart", {
           ingredients: pizzaStore.ingredients,
         },
       ].map((pizza) => toRaw(pizza));
+      console.log(this.pizzas);
+
       pizzaStore.$reset();
     },
     changePizzaQuantity(currentPizza, increment) {
