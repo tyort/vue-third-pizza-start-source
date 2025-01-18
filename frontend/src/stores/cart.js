@@ -1,6 +1,5 @@
 import { toRaw } from "vue";
 import { defineStore } from "pinia";
-import { useDataStore } from "./data";
 import { usePizzaStore } from "./pizza";
 import miscJSON from "@/mocks/misc.json";
 import ordersJSON from "@/mocks/orders.json";
