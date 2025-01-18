@@ -38,7 +38,7 @@ export const useCartStore = defineStore("cart", {
           quantity: 1,
           ingredients: pizzaStore.ingredients,
         },
-      ].map((pizza) => toRaw(pizza));
+      ].map((pizza, index) => toRaw({ ...pizza, id: index + 1 }));
       console.log(this.pizzas);
 
       pizzaStore.$reset();
