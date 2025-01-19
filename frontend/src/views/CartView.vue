@@ -191,7 +191,7 @@ const render = ({ pizza }) => {
   const currentDough = dataStore.getDoughData(pizza.doughId);
   const doughText =
     currentDough.value === "large" ? "на толстом тесте" : "на тонком тесте";
-  const currentSize = dataStore.getDoughData(pizza.sizeId);
+  const currentSize = dataStore.getSizeData(pizza.sizeId);
   const currentIngredients = pizza.ingredients.reduce(
     (finalText, addition, index) =>
       `${finalText}${index === 0 ? ":" : ","} ${addition.name}`,
@@ -212,7 +212,6 @@ const onButtonClick = (_event, pizzaData) => {
     state.sauceId = pizzaData.sauceId;
     state.doughId = pizzaData.doughId;
     state.sizeId = pizzaData.sizeId;
-    state.quantity = pizzaData.quantity;
     state.ingredients = pizzaData.ingredients;
   });
   router.push("/");

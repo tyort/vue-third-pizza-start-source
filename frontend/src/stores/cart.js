@@ -27,18 +27,33 @@ export const useCartStore = defineStore("cart", {
     },
     putPizzaToCart() {
       const pizzaStore = usePizzaStore();
+      const pizzaData = {
+        name: pizzaStore.name,
+        sauceId: pizzaStore.sauceId,
+        doughId: pizzaStore.doughId,
+        sizeId: pizzaStore.sizeId,
+        ingredients: pizzaStore.ingredients,
+      };
 
-      this.pizzas = [
-        ...this.pizzas,
-        {
-          name: pizzaStore.name,
-          sauceId: pizzaStore.sauceId,
-          doughId: pizzaStore.doughId,
-          sizeId: pizzaStore.sizeId,
+      if (pizzaStore.id) {
+        this.pizzas = this.pizzas.map((pizza) =>
+          pizza.id == pizzaStore.id
+            ? {
+                ...pizza,
+                ...pizzaData,
+              }
+            : { ...pizza }
+        );
+      } else {
+        this.pizzas.push({
           quantity: 1,
-          ingredients: pizzaStore.ingredients,
-        },
-      ].map((pizza, index) => toRaw({ ...pizza, id: index + 1 }));
+          ...pizzaData,
+        });
+      }
+
+      this.pizzas = this.pizzas.map((pizza, index) =>
+        toRaw({ ...pizza, id: index + 1 })
+      );
       console.log(this.pizzas);
 
       pizzaStore.$reset();

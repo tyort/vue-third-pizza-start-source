@@ -9,7 +9,6 @@ export const usePizzaStore = defineStore("pizza", {
     sauceId: 0,
     doughId: 0,
     sizeId: 0,
-    quantity: 0,
     ingredients: [],
   }),
   getters: {
