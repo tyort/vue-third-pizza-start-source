@@ -54,14 +54,12 @@ export const useCartStore = defineStore("cart", {
       this.pizzas = this.pizzas.map((pizza, index) =>
         toRaw({ ...pizza, id: index + 1 })
       );
-      console.log(this.pizzas);
-
       pizzaStore.$reset();
     },
-    changePizzaQuantity(currentPizza, increment) {
+    changePizzaQuantity({ id }, increment) {
       this.pizzas = this.pizzas
         .map((pizza) =>
-          pizza.name == currentPizza.name
+          pizza.id == id
             ? { ...pizza, quantity: pizza.quantity + increment }
             : { ...pizza }
         )
