@@ -48,7 +48,7 @@
             </div>
 
             <div class="cart-list__price">
-              <b>782 ₽</b>
+              <b>{{ pizza.price * pizza.quantity }} ₽</b>
             </div>
 
             <div class="cart-list__button">

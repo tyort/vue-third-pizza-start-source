@@ -33,6 +33,7 @@ export const useCartStore = defineStore("cart", {
         doughId: pizzaStore.doughId,
         sizeId: pizzaStore.sizeId,
         ingredients: pizzaStore.ingredients,
+        price: pizzaStore.getFinalPizzaPrice,
       };
 
       if (pizzaStore.id) {
