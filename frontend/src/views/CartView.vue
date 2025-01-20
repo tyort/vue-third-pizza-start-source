@@ -1,5 +1,5 @@
 <template>
-  <form action="test.html" method="post" class="layout-form">
+  <form class="layout-form" @submit.prevent="submit">
     <main class="content cart">
       <div class="container">
         <div class="cart__title">
@@ -241,6 +241,10 @@ const onButtonClick = (_event, pizzaData) => {
     state.ingredients = pizzaData.ingredients;
   });
   router.push("/");
+};
+
+const submit = async () => {
+  await router.push({ name: "success" });
 };
 </script>
 
