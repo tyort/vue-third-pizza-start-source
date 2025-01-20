@@ -120,7 +120,13 @@
 
             <label class="input input--big-label">
               <span>Контактный телефон:</span>
-              <input type="text" name="tel" placeholder="+7 999-999-99-99" />
+              <input
+                v-model="cartStore.phone"
+                type="text"
+                name="tel"
+                maxlength="12"
+                placeholder="+7 999-999-99-99"
+              />
             </label>
 
             <div class="cart-form__address">
@@ -129,21 +135,35 @@
               <div class="cart-form__input">
                 <label class="input">
                   <span>Улица*</span>
-                  <input type="text" name="street" />
+                  <input
+                    v-model="cartStore.address.street"
+                    type="text"
+                    name="street"
+                    required
+                  />
                 </label>
               </div>
 
               <div class="cart-form__input cart-form__input--small">
                 <label class="input">
                   <span>Дом*</span>
-                  <input type="text" name="house" />
+                  <input
+                    v-model="cartStore.address.building"
+                    type="text"
+                    name="house"
+                    required
+                  />
                 </label>
               </div>
 
               <div class="cart-form__input cart-form__input--small">
                 <label class="input">
                   <span>Квартира</span>
-                  <input type="text" name="apartment" />
+                  <input
+                    v-model="cartStore.address.flat"
+                    type="text"
+                    name="apartment"
+                  />
                 </label>
               </div>
             </div>
@@ -167,7 +187,13 @@
       </div>
 
       <div class="footer__submit">
-        <button type="submit" class="button">Оформить заказ</button>
+        <button
+          type="submit"
+          class="button"
+          :disabled="!cartStore.isOrderPlacingAcceptable"
+        >
+          Оформить заказ
+        </button>
       </div>
     </section>
   </form>

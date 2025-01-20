@@ -7,10 +7,28 @@ import { normalizeMisc } from "@/common/helpers/normalize";
 
 export const useCartStore = defineStore("cart", {
   state: () => ({
+    phone: "",
+    address: {
+      street: "",
+      building: "",
+      flat: "",
+      comment: "",
+    },
     pizzas: [],
     misc: [],
   }),
   getters: {
+    isOrderPlacingAcceptable: (state) => {
+      const emptyLines = Object.entries(state.address).filter(
+        ([property, value]) =>
+          !["comment", "flat"].includes(property) && value.trim() == ""
+      );
+      return (
+        state.phone.match(/^(\+7|8)[0-9]{10}$/gi) &&
+        emptyLines.length === 0 &&
+        state.getOrderPrice !== 0
+      );
+    },
     getOrderPrice: (state) => {
       const miscsPricesSum = state.misc.reduce(
         (commonPrice, misc) => commonPrice + misc.price * misc.quantity,
