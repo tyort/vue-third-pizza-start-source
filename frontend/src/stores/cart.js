@@ -10,7 +10,18 @@ export const useCartStore = defineStore("cart", {
     pizzas: [],
     misc: [],
   }),
-  getters: {},
+  getters: {
+    getOrderPrice: (state) => {
+      const miscsPricesSum = state.misc.reduce(
+        (commonPrice, misc) => commonPrice + misc.price * misc.quantity,
+        0
+      );
+      return state.pizzas.reduce(
+        (commonPrice, pizza) => commonPrice + pizza.price * pizza.quantity,
+        miscsPricesSum
+      );
+    },
+  },
   actions: {
     async fetchMisc() {
       this.misc = miscJSON.map(normalizeMisc);
