@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 import { usePizzaStore } from "./pizza";
 import miscJSON from "@/mocks/misc.json";
 import ordersJSON from "@/mocks/orders.json";
-import { normalizeMisc } from "@/common/helpers/normalize";
+import { normalizeMisc } from "@/common/normalize";
 
 export const useCartStore = defineStore("cart", {
   state: () => ({

@@ -27,7 +27,7 @@
 </template>
 
 <script setup>
-import { getImage } from "../../common/helpers/normalize.js";
+import { getImage } from "../../common/helpers";
 
 defineProps({
   modelValue: {

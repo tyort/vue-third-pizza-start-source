@@ -51,7 +51,7 @@
 <script setup>
 import { reactive } from "vue";
 import { useRouter } from "vue-router";
-import { getValidationError } from "../common/helpers/normalize";
+import { getValidationError } from "../common/validator";
 
 const router = useRouter();
 const isFormValid = reactive({ status: true, message: "" });

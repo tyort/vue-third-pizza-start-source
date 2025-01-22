@@ -9,7 +9,7 @@ import {
   normalizeIngredients,
   normalizeSauces,
   normalizeSize,
-} from "@/common/helpers/normalize";
+} from "@/common/normalize";
 
 export const useDataStore = defineStore("data", {
   state: () => ({

@@ -45,7 +45,7 @@
 import AppDrag from "../../common/components/AddDrag.vue";
 import AppIncrementButton from "../../common/components/AppIncrementButton.vue";
 import AppIncrementCount from "../../common/components/AppIncrementCount.vue";
-import { getImage } from "../../common/helpers/normalize";
+import { getImage } from "../../common/helpers";
 import { usePizzaStore } from "@/stores";
 
 const pizzaStore = usePizzaStore();
