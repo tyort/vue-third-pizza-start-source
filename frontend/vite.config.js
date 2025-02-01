@@ -20,7 +20,7 @@ export default defineConfig({
     proxy: {
       // Все запросы, начинающиеся с `/api`, будут направляться на этот адрес, а благодаря `rewrite` будет удален префикс `/api` из пути.
       "/api": {
-        target: "https://pizza.vue.pages.academy/",
+        target: "http://backend:3000/",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
