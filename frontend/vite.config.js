@@ -15,9 +15,10 @@ export default defineConfig({
     },
   },
   server: {
-    host: true,
+    host: true, // сервер доступен по IP-адресу, а не только по локальному адресу.
     port: 8080,
     proxy: {
+      // Все запросы, начинающиеся с `/api`, будут направляться на этот адрес, а благодаря `rewrite` будет удален префикс `/api` из пути.
       "/api": {
         target: "https://pizza.vue.pages.academy/",
         changeOrigin: true,
