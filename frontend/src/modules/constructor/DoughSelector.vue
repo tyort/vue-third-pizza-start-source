@@ -17,7 +17,7 @@
             :checked="doughData.id == modelValue"
             @input="emits('update:modelValue', doughData.id)"
           />
-          <img :src="getImage(doughData.image)" :alt="doughData.name" />
+          <img :src="doughData.image" :alt="doughData.name" />
           <b>{{ doughData.name }}</b>
           <span>{{ doughData.description }}</span>
         </label>
@@ -27,8 +27,6 @@
 </template>
 
 <script setup>
-import { getImage } from "../../common/helpers";
-
 defineProps({
   modelValue: {
     type: Number,
