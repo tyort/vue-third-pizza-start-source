@@ -6,12 +6,7 @@ import {
   normalizeSauces,
   normalizeSize,
 } from "@/common/normalize";
-import {
-  doughService,
-  ingredientService,
-  sauceService,
-  sizeService,
-} from "@/services";
+import resources from "@/services/resources";
 
 export const useDataStore = defineStore("data", {
   state: () => ({
@@ -35,20 +30,20 @@ export const useDataStore = defineStore("data", {
   },
   actions: {
     async fetchDoughs() {
-      const doughs = await doughService.getDoughs();
-      this.doughItems = doughs.map(normalizeDough);
+      const { data } = await resources.dough.getDoughs();
+      this.doughItems = data.map(normalizeDough);
     },
     async fetchIngredients() {
-      const ingreds = await ingredientService.getIngredients();
-      this.ingredientItems = ingreds.map(normalizeIngredients);
+      const { data } = await resources.ingredient.getIngredients();
+      this.ingredientItems = data.map(normalizeIngredients);
     },
     async fetchSauces() {
-      const sauces = await sauceService.getSauces();
-      this.sauceItems = sauces.map(normalizeSauces);
+      const { data } = await resources.sauce.getSauces();
+      this.sauceItems = data.map(normalizeSauces);
     },
     async fetchSizes() {
-      const sizes = await sizeService.getSizes();
-      this.sizeItems = sizes.map(normalizeSize);
+      const { data } = await resources.size.getSizes();
+      this.sizeItems = data.map(normalizeSize);
     },
   },
 });

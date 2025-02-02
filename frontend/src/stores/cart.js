@@ -1,9 +1,9 @@
 import { toRaw } from "vue";
 import { defineStore } from "pinia";
 import { usePizzaStore } from "./pizza";
-import miscJSON from "@/mocks/misc.json";
 import ordersJSON from "@/mocks/orders.json";
 import { normalizeMisc } from "@/common/normalize";
+import resources from "@/services/resources";
 
 export const useCartStore = defineStore("cart", {
   state: () => ({
@@ -42,7 +42,8 @@ export const useCartStore = defineStore("cart", {
   },
   actions: {
     async fetchMisc() {
-      this.misc = miscJSON.map(normalizeMisc);
+      const { data } = await resources.misc.getMisc();
+      this.misc = data.map(normalizeMisc);
     },
     async fetchOrders() {
       this.orders = ordersJSON;
