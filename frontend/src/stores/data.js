@@ -9,7 +9,7 @@ import {
   normalizeSauces,
   normalizeSize,
 } from "@/common/normalize";
-import { doughService } from "@/services";
+import { doughService, ingredientService } from "@/services";
 
 export const useDataStore = defineStore("data", {
   state: () => ({
@@ -37,15 +37,8 @@ export const useDataStore = defineStore("data", {
       this.doughItems = doughs.map(normalizeDough);
     },
     async fetchIngredients() {
-      // [
-      //   {
-      //     id: 0,
-      //     name: "string",
-      //     image: "string",
-      //     price: 0,
-      //   },
-      // ];
-      this.ingredientItems = ingredientsJSON.map(normalizeIngredients);
+      const ingreds = await ingredientService.getIngredients();
+      this.ingredientItems = ingreds.map(normalizeIngredients);
     },
     async fetchSauces() {
       // [

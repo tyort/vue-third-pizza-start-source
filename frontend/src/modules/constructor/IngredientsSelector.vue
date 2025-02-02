@@ -14,7 +14,7 @@
         >
           <img
             :draggable="false"
-            :src="getImage(ingredient.image)"
+            :src="ingredient.image"
             :alt="ingredient.name"
           />
           {{ ingredient.name }}
@@ -45,7 +45,6 @@
 import AppDrag from "../../common/components/AddDrag.vue";
 import AppIncrementButton from "../../common/components/AppIncrementButton.vue";
 import AppIncrementCount from "../../common/components/AppIncrementCount.vue";
-import { getImage } from "../../common/helpers";
 import { usePizzaStore } from "@/stores";
 
 const pizzaStore = usePizzaStore();
