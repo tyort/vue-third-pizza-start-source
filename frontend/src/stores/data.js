@@ -1,15 +1,17 @@
 import { defineStore } from "pinia";
 import { toRaw } from "vue";
-import ingredientsJSON from "@/mocks/ingredients.json";
-import saucesJSON from "@/mocks/sauces.json";
-import sizesJSON from "@/mocks/sizes.json";
 import {
   normalizeDough,
   normalizeIngredients,
   normalizeSauces,
   normalizeSize,
 } from "@/common/normalize";
-import { doughService, ingredientService } from "@/services";
+import {
+  doughService,
+  ingredientService,
+  sauceService,
+  sizeService,
+} from "@/services";
 
 export const useDataStore = defineStore("data", {
   state: () => ({
@@ -41,17 +43,12 @@ export const useDataStore = defineStore("data", {
       this.ingredientItems = ingreds.map(normalizeIngredients);
     },
     async fetchSauces() {
-      // [
-      //   {
-      //     id: 0,
-      //     name: "string",
-      //     price: 0,
-      //   },
-      // ];
-      this.sauceItems = saucesJSON.map(normalizeSauces);
+      const sauces = await sauceService.getSauces();
+      this.sauceItems = sauces.map(normalizeSauces);
     },
     async fetchSizes() {
-      this.sizeItems = sizesJSON.map(normalizeSize);
+      const sizes = await sizeService.getSizes();
+      this.sizeItems = sizes.map(normalizeSize);
     },
   },
 });
