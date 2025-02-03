@@ -13,7 +13,7 @@
     <div class="header__cart">
       <router-link :to="{ name: 'cart' }">0 ₽</router-link>
     </div>
-    <div class="header__user">
+    <div v-if="profileStore.userData" class="header__user">
       <router-link :to="{ name: 'profile' }">
         <picture>
           <source
@@ -37,8 +37,19 @@
         <span>Выйти</span>
       </router-link>
     </div>
+    <div v-else class="header__user">
+      <router-link :to="{ name: 'login' }" class="header__login"
+        ><span>Войти</span></router-link
+      >
+    </div>
   </header>
 </template>
+
+<script setup>
+import { useProfileStore } from "@/stores";
+
+const profileStore = useProfileStore();
+</script>
 
 <style lang="scss" scoped>
 @import "@/assets/scss/ds-system/ds";
