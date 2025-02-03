@@ -15,7 +15,6 @@ const cartStore = useCartStore();
 void profileStore.fetchAddresses();
 void dataStore.fetchDoughs();
 void dataStore.fetchIngredients();
-void profileStore.fetchUserData();
 void dataStore.fetchSauces();
 void cartStore.fetchOrders();
 void dataStore.fetchSizes();

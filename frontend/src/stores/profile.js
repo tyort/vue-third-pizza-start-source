@@ -10,8 +10,12 @@ export const useProfileStore = defineStore("profile", {
   }),
   getters: {},
   actions: {
-    async fetchUserData() {
-      console.log("кто я такой?");
+    async whoami() {
+      resources.auth.setAuthHeader(jwtService.getToken());
+      const { __state, data } = await resources.auth.whoami();
+      if (__state == "success") {
+        this.userData = data;
+      }
     },
     async login(params) {
       const res = await resources.auth.login(params);
