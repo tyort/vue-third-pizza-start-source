@@ -29,7 +29,6 @@
             name="pass"
             placeholder="**********"
             required
-            maxlength="10"
           />
         </label>
       </div>
@@ -72,10 +71,11 @@ const onSubmit = async () => {
   }
 
   const res = await profileStore.login(userData);
-  if (res.__state == "error") {
+  if (res.__state == "success") {
+    router.push({ name: "home" });
+  } else {
     isFormValid.value = { status: false, message: res.data.message };
   }
-  // !isErrorsAppear && router.push("/");
 };
 </script>
 

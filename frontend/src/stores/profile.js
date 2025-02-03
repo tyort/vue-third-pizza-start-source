@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import addressesJSON from "@/mocks/addresses.json";
 import resources from "@/services/resources";
+import jwtService from "@/services/jwt/jwt.service";
 
 export const useProfileStore = defineStore("profile", {
   state: () => ({
@@ -13,7 +14,11 @@ export const useProfileStore = defineStore("profile", {
       console.log("кто я такой?");
     },
     async login(params) {
-      return await resources.auth.login(params);
+      const res = await resources.auth.login(params);
+      if (res.__state == "success") {
+        jwtService.saveToken(res.data.token);
+      }
+      return res;
     },
     async fetchAddresses() {
       // [
