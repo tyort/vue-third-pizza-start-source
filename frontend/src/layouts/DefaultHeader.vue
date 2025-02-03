@@ -23,9 +23,9 @@
         />
         <span>{{ profileStore.userData.name }}</span>
       </router-link>
-      <router-link :to="{ name: 'home' }" class="header__logout">
+      <a href="#" class="header__logout" @click.prevent="onClick">
         <span>Выйти</span>
-      </router-link>
+      </a>
     </div>
     <div v-else class="header__user">
       <router-link :to="{ name: 'login' }" class="header__login"
@@ -37,11 +37,17 @@
 
 <script setup>
 import { useProfileStore } from "@/stores";
+import { useRouter } from "vue-router";
 
 const profileStore = useProfileStore();
+const router = useRouter();
+
 void profileStore.whoami();
 
-console.log(profileStore.userData);
+const onClick = async () => {
+  await profileStore.logout();
+  await router.replace({ name: "login" });
+};
 </script>
 
 <style lang="scss" scoped>
@@ -110,6 +116,7 @@ console.log(profileStore.userData);
     transition: 0.3s;
 
     background-color: $green-500;
+    cursor: pointer;
 
     &:hover:not(:active) {
       background-color: $green-400;

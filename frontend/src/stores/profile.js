@@ -24,6 +24,12 @@ export const useProfileStore = defineStore("profile", {
       }
       return res;
     },
+    async logout() {
+      await resources.auth.logout();
+      jwtService.destroyToken();
+      resources.auth.setAuthHeader("");
+      this.userData = null;
+    },
     async fetchAddresses() {
       // [
       //   {
