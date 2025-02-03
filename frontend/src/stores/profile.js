@@ -1,23 +1,19 @@
 import { defineStore } from "pinia";
 import addressesJSON from "@/mocks/addresses.json";
-import userJSON from "@/mocks/user.json";
+import resources from "@/services/resources";
 
 export const useProfileStore = defineStore("profile", {
   state: () => ({
     addresses: [],
-    userData: {},
+    userData: null,
   }),
   getters: {},
   actions: {
     async fetchUserData() {
-      // {
-      //   "id": "string",
-      //   "name": "string",
-      //   "email": "string",
-      //   "avatar": "string",
-      //   "phone": "string"
-      // }
-      this.userData = userJSON;
+      console.log("кто я такой?");
+    },
+    async login(params) {
+      return await resources.auth.login(params);
     },
     async fetchAddresses() {
       // [

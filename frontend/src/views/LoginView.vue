@@ -31,9 +31,6 @@
             required
             maxlength="10"
           />
-          <span v-if="!isFormValid.status" class="error-message">{{
-            isFormValid.message
-          }}</span>
         </label>
       </div>
       <button
@@ -44,28 +41,42 @@
       >
         Авторизоваться
       </button>
+      <div v-if="!isFormValid.status" class="error-message">
+        {{ isFormValid.message }}
+      </div>
     </form>
   </div>
 </template>
 
 <script setup>
-import { reactive } from "vue";
+import { reactive, shallowRef } from "vue";
 import { useRouter } from "vue-router";
 import { getValidationError } from "../common/validator";
+import { useProfileStore } from "@/stores";
 
 const router = useRouter();
-const isFormValid = reactive({ status: true, message: "" });
+const profileStore = useProfileStore();
+
+const isFormValid = shallowRef({ status: true, message: "" });
 const userData = reactive({
   email: "",
   password: "",
 });
 
-function onSubmit() {
+const onSubmit = async () => {
   const isErrorsAppear = getValidationError(userData);
-  isFormValid.status = !isErrorsAppear;
-  isFormValid.message = isErrorsAppear;
-  !isErrorsAppear && router.push("/");
-}
+  isFormValid.value = { status: !isErrorsAppear, message: isErrorsAppear };
+
+  if (!isFormValid.value.status) {
+    return;
+  }
+
+  const res = await profileStore.login(userData);
+  if (res.__state == "error") {
+    isFormValid.value = { status: false, message: res.data.message };
+  }
+  // !isErrorsAppear && router.push("/");
+};
 </script>
 
 <style lang="scss" scoped>
