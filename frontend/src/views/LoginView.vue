@@ -40,7 +40,7 @@
       >
         Авторизоваться
       </button>
-      <div v-if="!isFormValid.status" class="error-message">
+      <div v-if="!isFormValid.status" class="server-error">
         {{ isFormValid.message }}
       </div>
     </form>
@@ -178,8 +178,9 @@ const onSubmit = async () => {
   }
 }
 
-.error-message {
-  color: red;
-  font-size: 0.9em;
+.server-error {
+  height: 16px;
+  color: $red-800;
+  margin-top: 20px;
 }
 </style>
