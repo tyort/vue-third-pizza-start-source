@@ -42,8 +42,6 @@ import { useRouter } from "vue-router";
 const profileStore = useProfileStore();
 const router = useRouter();
 
-void profileStore.whoami();
-
 const onClick = async () => {
   await profileStore.logout();
   await router.replace({ name: "login" });

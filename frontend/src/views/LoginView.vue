@@ -6,7 +6,7 @@
     <div class="sign-form__title">
       <h1 class="title title--small">Авторизуйтесь на сайте</h1>
     </div>
-    <form action="test.html" method="post">
+    <form method="post" @submit.prevent="onSubmit">
       <div class="sign-form__input">
         <label class="input">
           <span>E-mail</span>
@@ -32,12 +32,7 @@
           />
         </label>
       </div>
-      <button
-        type="submit"
-        class="button"
-        :disabled="!isFormValid"
-        @click.prevent="onSubmit"
-      >
+      <button type="submit" class="button" :disabled="!isFormValid">
         Авторизоваться
       </button>
       <div v-if="!isFormValid.status" class="server-error">
@@ -72,6 +67,7 @@ const onSubmit = async () => {
 
   const res = await profileStore.login(userData);
   if (res.__state == "success") {
+    await profileStore.whoami();
     router.push({ name: "home" });
   } else {
     isFormValid.value = { status: false, message: res.data.message };
