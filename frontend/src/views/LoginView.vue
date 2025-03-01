@@ -44,11 +44,12 @@
 
 <script setup>
 import { reactive, shallowRef } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { getValidationError } from "../common/validator";
 import { useProfileStore } from "@/stores";
 
 const router = useRouter();
+const route = useRoute();
 const profileStore = useProfileStore();
 
 const isFormValid = shallowRef({ status: true, message: "" });
@@ -68,7 +69,7 @@ const onSubmit = async () => {
   const res = await profileStore.login(userData);
   if (res.__state == "success") {
     await profileStore.whoami();
-    router.push({ name: "home" });
+    router.push(route.query.redirect || { name: "home" });
   } else {
     isFormValid.value = { status: false, message: res.data.message };
   }

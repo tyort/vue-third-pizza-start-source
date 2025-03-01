@@ -1,5 +1,5 @@
 <template>
-  <form class="layout-form" @submit.prevent="submit">
+  <form action="#" method="post" class="layout-form" @submit.prevent="submit">
     <main class="content cart">
       <div class="container">
         <div class="cart__title">
@@ -72,7 +72,7 @@
             >
               <p class="additional-list__description">
                 <img
-                  :src="`src/assets/img/${misc.image}.svg`"
+                  :src="misc.image"
                   width="39"
                   height="60"
                   :alt="misc.name"
@@ -221,7 +221,7 @@ const render = ({ pizza }) => {
   const currentIngredients = pizza.ingredients.reduce(
     (finalText, addition, index) =>
       `${finalText}${index === 0 ? ":" : ","} ${addition.name}`,
-    ""
+    "",
   );
 
   return h("ul", [
