@@ -1,5 +1,5 @@
 <template>
-  <form action="#" method="post" class="layout-form" @submit.prevent="submit">
+  <form method="post" class="layout-form" @submit.prevent="onSubmit">
     <main class="content cart">
       <div class="container">
         <div class="cart__title">
@@ -122,10 +122,11 @@
               <span>Контактный телефон:</span>
               <input
                 v-model="cartStore.phone"
-                type="text"
+                type="tel"
                 name="tel"
                 maxlength="12"
                 placeholder="+7 999-999-99-99"
+                required
               />
             </label>
 
@@ -187,11 +188,7 @@
       </div>
 
       <div class="footer__submit">
-        <button
-          type="submit"
-          class="button"
-          :disabled="!cartStore.isOrderPlacingAcceptable"
-        >
+        <button type="submit" class="button" :disabled="!isFormValid.status">
           Оформить заказ
         </button>
       </div>
@@ -200,7 +197,7 @@
 </template>
 
 <script setup>
-import { h } from "vue";
+import { h, shallowRef } from "vue";
 import AppIncrementButton from "@/common/components/AppIncrementButton.vue";
 import AppIncrementCount from "@/common/components/AppIncrementCount.vue";
 import { useCartStore, useDataStore, usePizzaStore } from "@/stores";
@@ -212,6 +209,8 @@ const dataStore = useDataStore();
 const pizzaStore = usePizzaStore();
 void cartStore.fetchMisc();
 
+const isFormValid = shallowRef({ status: true, message: "" });
+
 const render = ({ pizza }) => {
   const currentSauce = dataStore.getSauceData(pizza.sauceId);
   const currentDough = dataStore.getDoughData(pizza.doughId);
@@ -221,7 +220,7 @@ const render = ({ pizza }) => {
   const currentIngredients = pizza.ingredients.reduce(
     (finalText, addition, index) =>
       `${finalText}${index === 0 ? ":" : ","} ${addition.name}`,
-    "",
+    ""
   );
 
   return h("ul", [
@@ -243,8 +242,21 @@ const onButtonClick = (_event, pizzaData) => {
   router.push("/");
 };
 
-const submit = async () => {
-  await router.push({ name: "success" });
+cartStore.$subscribe((_mutation, state) => {
+  const emptyLines = Object.entries(state.address).filter(
+    ([property, value]) =>
+      !["comment", "flat"].includes(property) && value.trim() == ""
+  );
+  const status =
+    state.phone.match(/^(\+7|8)[0-9]{10}$/gi) &&
+    emptyLines.length == 0 &&
+    cartStore.getOrderPrice !== 0;
+  isFormValid.value = { status, message: "" };
+});
+
+const onSubmit = async () => {
+  console.log(cartStore.phone);
+  // await router.push({ name: "success" });
 };
 </script>
 
