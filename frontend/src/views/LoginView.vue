@@ -32,7 +32,7 @@
           />
         </label>
       </div>
-      <button type="submit" class="button" :disabled="!isFormValid">
+      <button type="submit" class="button" :disabled="!isFormValid.status">
         Авторизоваться
       </button>
       <div v-if="!isFormValid.status" class="server-error">
@@ -43,7 +43,7 @@
 </template>
 
 <script setup>
-import { reactive, shallowRef } from "vue";
+import { reactive, shallowRef, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { getValidationError } from "../common/validator";
 import { useProfileStore } from "@/stores";
@@ -56,6 +56,10 @@ const isFormValid = shallowRef({ status: true, message: "" });
 const userData = reactive({
   email: "",
   password: "",
+});
+
+watch(userData, () => {
+  isFormValid.value = { status: true, message: "" };
 });
 
 const onSubmit = async () => {
