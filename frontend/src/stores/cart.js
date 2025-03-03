@@ -48,6 +48,45 @@ export const useCartStore = defineStore("cart", {
     async fetchOrders() {
       this.orders = ordersJSON;
     },
+    async createOrder() {
+      const pizzas = this.pizzas.map(
+        ({
+          name,
+          sauceId,
+          doughId,
+          sizeId,
+          quantity,
+          ingredients: unparsedData,
+        }) => {
+          const ingredients = unparsedData.map(
+            ({ ingredientId, quantity }) => ({
+              ingredientId,
+              quantity,
+            })
+          );
+          return {
+            name,
+            sauceId,
+            doughId,
+            sizeId,
+            quantity,
+            ingredients,
+          };
+        }
+      );
+      const misc = this.misc.map(({ id, quantity }) => ({
+        quantity,
+        miscId: id,
+      }));
+
+      return resources.order.createOrder({
+        userId: null,
+        phone: this.phone,
+        address: toRaw(this.address),
+        pizzas,
+        misc,
+      });
+    },
     updateMisc(currentMisc, increment) {
       this.misc = this.misc.map((item) =>
         item.id == currentMisc.id

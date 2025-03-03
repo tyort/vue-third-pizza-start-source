@@ -255,8 +255,11 @@ cartStore.$subscribe((_mutation, state) => {
 });
 
 const onSubmit = async () => {
-  console.log(cartStore.phone);
-  // await router.push({ name: "success" });
+  const res = await cartStore.createOrder();
+  if (res.__state === "success") {
+    await router.push({ name: "success" });
+    cartStore.$reset();
+  }
 };
 </script>
 
