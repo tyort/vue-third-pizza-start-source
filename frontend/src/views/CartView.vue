@@ -111,10 +111,14 @@
             <label class="cart-form__select">
               <span class="cart-form__label">Получение заказа:</span>
 
-              <select name="test" class="select">
-                <option value="1">Заберу сам</option>
-                <option value="2">Новый адрес</option>
-                <option value="3">Дом</option>
+              <select name="test" class="select" @input="onInput">
+                <option
+                  v-for="{ value, title } in filteredFulfillments"
+                  :key="value"
+                  :value="value"
+                >
+                  {{ title }}
+                </option>
               </select>
             </label>
 
@@ -197,19 +201,35 @@
 </template>
 
 <script setup>
-import { h, shallowRef } from "vue";
+import { h, shallowRef, ref, computed } from "vue";
 import AppIncrementButton from "@/common/components/AppIncrementButton.vue";
 import AppIncrementCount from "@/common/components/AppIncrementCount.vue";
-import { useCartStore, useDataStore, usePizzaStore } from "@/stores";
+import {
+  useCartStore,
+  useDataStore,
+  usePizzaStore,
+  useProfileStore,
+} from "@/stores";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
 const cartStore = useCartStore();
 const dataStore = useDataStore();
 const pizzaStore = usePizzaStore();
+const profileStore = useProfileStore();
 void cartStore.fetchMisc();
 
 const isFormValid = shallowRef({ status: true, message: "" });
+const fulfillments = ref([
+  { title: "Получу сам", value: 1 },
+  { title: "Новый адрес", value: 2 },
+  { title: "Дом", value: 3 },
+]);
+const filteredFulfillments = computed(() =>
+  fulfillments.value.filter(
+    ({ title }) => !(!profileStore.userData && title == "Дом")
+  )
+);
 
 const render = ({ pizza }) => {
   const currentSauce = dataStore.getSauceData(pizza.sauceId);
@@ -242,6 +262,18 @@ const onButtonClick = (_event, pizzaData) => {
   router.push("/");
 };
 
+const onSubmit = async () => {
+  const res = await cartStore.createOrder();
+  if (res.__state === "success") {
+    await router.push({ name: "success" });
+    cartStore.$reset();
+  }
+};
+
+const onInput = (evt) => {
+  console.log(evt.target.value);
+};
+
 cartStore.$subscribe((_mutation, state) => {
   const emptyLines = Object.entries(state.address).filter(
     ([property, value]) =>
@@ -253,14 +285,6 @@ cartStore.$subscribe((_mutation, state) => {
     cartStore.getOrderPrice !== 0;
   isFormValid.value = { status, message: "" };
 });
-
-const onSubmit = async () => {
-  const res = await cartStore.createOrder();
-  if (res.__state === "success") {
-    await router.push({ name: "success" });
-    cartStore.$reset();
-  }
-};
 </script>
 
 <style lang="scss" scoped>
