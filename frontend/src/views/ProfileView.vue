@@ -44,7 +44,7 @@
       </div>
     </div>
 
-    <div class="layout__address">
+    <div v-if="!isAddingNewAddressAllow" class="layout__address">
       <form
         action="test.html"
         method="post"
@@ -59,6 +59,7 @@
             <label class="input">
               <span>Название адреса*</span>
               <input
+                v-model="addressData.title"
                 type="text"
                 name="addr-name"
                 placeholder="Введите название адреса"
@@ -70,6 +71,7 @@
             <label class="input">
               <span>Улица*</span>
               <input
+                v-model="addressData.street"
                 type="text"
                 name="addr-street"
                 placeholder="Введите название улицы"
@@ -81,6 +83,7 @@
             <label class="input">
               <span>Дом*</span>
               <input
+                v-model="addressData.house"
                 type="text"
                 name="addr-house"
                 placeholder="Введите номер дома"
@@ -92,6 +95,7 @@
             <label class="input">
               <span>Квартира</span>
               <input
+                v-model="addressData.apartment"
                 type="text"
                 name="addr-apartment"
                 placeholder="Введите № квартиры"
@@ -102,6 +106,7 @@
             <label class="input">
               <span>Комментарий</span>
               <input
+                v-model="addressData.comment"
                 type="text"
                 name="addr-comment"
                 placeholder="Введите комментарий"
@@ -114,18 +119,47 @@
           <button type="button" class="button button--transparent">
             Удалить
           </button>
-          <button type="submit" class="button">Сохранить</button>
+          <button type="submit" class="button" @submit.prevent="onSubmit">
+            Сохранить
+          </button>
         </div>
       </form>
     </div>
 
-    <div class="layout__button">
-      <button type="button" class="button button--border">
+    <div v-else class="layout__button">
+      <button
+        type="button"
+        class="button button--border"
+        @click="isAddingNewAddressAllow = !isAddingNewAddressAllow"
+      >
         Добавить новый адрес
       </button>
     </div>
   </div>
 </template>
+
+<script setup>
+import { reactive, watch, ref } from "vue";
+import { useProfileStore } from "@/stores";
+
+const profileStore = useProfileStore();
+void profileStore.fetchAddresses();
+
+const isAddingNewAddressAllow = ref(true);
+const addressData = reactive({
+  title: "",
+  street: "",
+  house: "",
+  apartment: "",
+  comment: "",
+});
+
+watch(addressData, () => {
+  console.log(addressData);
+});
+
+const onSubmit = () => {};
+</script>
 
 <style lang="scss" scoped>
 @import "@/assets/scss/ds-system/ds.scss";
