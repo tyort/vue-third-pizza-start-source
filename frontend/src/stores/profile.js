@@ -1,5 +1,4 @@
 import { defineStore } from "pinia";
-import addressesJSON from "@/mocks/addresses.json";
 import resources from "@/services/resources";
 import jwtService from "@/services/jwt/jwt.service";
 
@@ -31,18 +30,17 @@ export const useProfileStore = defineStore("profile", {
       this.userData = null;
     },
     async fetchAddresses() {
-      // [
-      //   {
-      //     id: 0,
-      //     name: "string",
-      //     street: "string",
-      //     building: "string",
-      //     flat: "string",
-      //     comment: "string",
-      //     userId: "string",
-      //   },
-      // ];
-      this.addresses = addressesJSON;
+      const { __state, data } = await resources.address.getAddresses();
+      if (__state == "success") {
+        this.addresses = data;
+      }
+    },
+
+    async addAddress(data) {
+      return await resources.address.addAddress({
+        ...data,
+        userId: this.userData.id,
+      });
     },
   },
 });

@@ -43,12 +43,27 @@
         <small>Позвоните, пожалуйста, от проходной</small>
       </div>
     </div>
+    <div class="layout__address">
+      <div class="sheet address-form">
+        <div class="address-form__header">
+          <b>Адрес №1. Тест</b>
+          <div class="address-form__edit">
+            <button type="button" class="icon">
+              <span class="visually-hidden">Изменить адрес</span>
+            </button>
+          </div>
+        </div>
+        <p>Невский пр., д. 22, кв. 46</p>
+        <small>Позвоните, пожалуйста, от проходной</small>
+      </div>
+    </div>
 
     <div v-if="!isAddingNewAddressAllow" class="layout__address">
       <form
         action="test.html"
         method="post"
         class="address-form address-form--opened sheet"
+        @submit.prevent="onSubmit"
       >
         <div class="address-form__header">
           <b>Адрес №1</b>
@@ -59,7 +74,7 @@
             <label class="input">
               <span>Название адреса*</span>
               <input
-                v-model="addressData.title"
+                v-model="addressData.name"
                 type="text"
                 name="addr-name"
                 placeholder="Введите название адреса"
@@ -83,7 +98,7 @@
             <label class="input">
               <span>Дом*</span>
               <input
-                v-model="addressData.house"
+                v-model="addressData.building"
                 type="text"
                 name="addr-house"
                 placeholder="Введите номер дома"
@@ -95,7 +110,7 @@
             <label class="input">
               <span>Квартира</span>
               <input
-                v-model="addressData.apartment"
+                v-model="addressData.flat"
                 type="text"
                 name="addr-apartment"
                 placeholder="Введите № квартиры"
@@ -119,9 +134,7 @@
           <button type="button" class="button button--transparent">
             Удалить
           </button>
-          <button type="submit" class="button" @submit.prevent="onSubmit">
-            Сохранить
-          </button>
+          <button type="submit" class="button">Сохранить</button>
         </div>
       </form>
     </div>
@@ -139,26 +152,36 @@
 </template>
 
 <script setup>
-import { reactive, watch, ref } from "vue";
+import { reactive, ref } from "vue";
 import { useProfileStore } from "@/stores";
+import { getAddressValidationError } from "@/common/validator";
 
 const profileStore = useProfileStore();
 void profileStore.fetchAddresses();
 
 const isAddingNewAddressAllow = ref(true);
 const addressData = reactive({
-  title: "",
+  name: "",
   street: "",
-  house: "",
-  apartment: "",
+  building: "",
+  flat: "",
   comment: "",
 });
 
-watch(addressData, () => {
-  console.log(addressData);
-});
+const onSubmit = async () => {
+  if (getAddressValidationError(addressData)) {
+    return;
+  }
 
-const onSubmit = () => {};
+  const { __state } = await profileStore.addAddress(addressData);
+  if (__state == "success") {
+    await profileStore.fetchAddresses();
+  }
+};
+
+profileStore.$subscribe((mutation, state) => {
+  console.log(profileStore.addresses);
+});
 </script>
 
 <style lang="scss" scoped>
@@ -243,6 +266,36 @@ const onSubmit = () => {};
   padding: 10px 16px;
 
   border-bottom: 1px solid rgba($green-500, 0.1);
+}
+
+.icon {
+  display: block;
+  overflow: hidden;
+
+  width: 32px;
+  height: 32px;
+
+  transition: 0.3s;
+
+  border: none;
+  border-radius: 50%;
+  outline: none;
+  background-color: $white;
+  background-image: url("@/assets/img/edit.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+
+  &:hover {
+    box-shadow: $shadow-light;
+  }
+
+  &:active {
+    box-shadow: $shadow-large;
+  }
+
+  &:focus {
+    box-shadow: $shadow-regular;
+  }
 }
 
 .user {

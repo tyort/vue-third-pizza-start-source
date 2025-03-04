@@ -45,7 +45,7 @@
 <script setup>
 import { reactive, shallowRef, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import { getValidationError } from "../common/validator";
+import { getAuthValidationError } from "../common/validator";
 import { useProfileStore } from "@/stores";
 
 const router = useRouter();
@@ -63,7 +63,7 @@ watch(userData, () => {
 });
 
 const onSubmit = async () => {
-  const isErrorsAppear = getValidationError(userData);
+  const isErrorsAppear = getAuthValidationError(userData);
   isFormValid.value = { status: !isErrorsAppear, message: isErrorsAppear };
 
   if (!isFormValid.value.status) {
