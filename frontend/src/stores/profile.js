@@ -36,12 +36,14 @@ export const useProfileStore = defineStore("profile", {
         return { __state };
       }
     },
-
     async addAddress(data) {
       return await resources.address.addAddress({
         ...data,
         userId: this.userData.id,
       });
+    },
+    async updateAddress(data) {
+      return await resources.address.updateAddress(data);
     },
   },
 });

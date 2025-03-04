@@ -30,25 +30,31 @@
     </div>
 
     <div
-      v-for="(
-        { id, name, street, flat, building, comment }, index
-      ) in profileStore.addresses"
-      :key="id"
+      v-for="address in profileStore.addresses"
+      :key="address.id"
       class="layout__address"
     >
       <div class="sheet address-form">
         <div class="address-form__header">
-          <b>Адрес №{{ index + 1 }}. {{ name }}</b>
+          <b>Адрес №{{ address.id }}. {{ address.name }}</b>
           <div class="address-form__edit">
-            <button type="button" class="icon">
+            <button
+              type="button"
+              class="icon"
+              @click="addressChangeHandler($event, address)"
+            >
               <span class="visually-hidden">Изменить адрес</span>
             </button>
           </div>
         </div>
         <p>
-          {{ `${street}, д. ${building}${flat ? ", кв. " + flat : ""}` }}
+          {{
+            `${address.street}, д. ${address.building}${
+              address.flat ? ", кв. " + address.flat : ""
+            }`
+          }}
         </p>
-        <small>{{ comment }}</small>
+        <small>{{ address.comment }}</small>
       </div>
     </div>
 
@@ -68,6 +74,7 @@
             <label class="input">
               <span>Название адреса*</span>
               <input
+                ref="addressName"
                 v-model="addressData.name"
                 type="text"
                 name="addr-name"
@@ -146,16 +153,23 @@
 </template>
 
 <script setup>
-import { ref, shallowRef } from "vue";
+import { ref, shallowRef, nextTick } from "vue";
 import { useProfileStore } from "@/stores";
 import { getAddressValidationError } from "@/common/validator";
 
 const profileStore = useProfileStore();
 void profileStore.fetchAddresses();
 
+const addressName = ref(null);
 const isAddingNewAddressAllow = ref(true);
 const addressData = shallowRef({});
 
+const addressChangeHandler = async (_evt, data) => {
+  addressData.value = data;
+  isAddingNewAddressAllow.value = false;
+  await nextTick(); // необходимо убедиться что обновление addressData.value завершилось и DOM обновился, иначе фокус не отработает
+  addressName.value.focus();
+};
 const addressAddingHandler = () => {
   isAddingNewAddressAllow.value = !isAddingNewAddressAllow.value;
   addressData.value = {
@@ -166,13 +180,17 @@ const addressAddingHandler = () => {
     comment: "",
   };
 };
-
 const onSubmit = async () => {
   if (getAddressValidationError(addressData.value)) return;
-  const { __state: addingAddressSuccess } = await profileStore.addAddress(
-    addressData.value
-  );
-  if (addingAddressSuccess != "success") return;
+
+  let res;
+  if (addressData.value.id) {
+    res = await profileStore.updateAddress(addressData.value);
+  } else {
+    res = await profileStore.addAddress(addressData.value);
+  }
+
+  if (res.__state != "success") return;
   const { __state: fetchingAddressesSuccess } =
     await profileStore.fetchAddresses();
   if (fetchingAddressesSuccess != "success") return;
