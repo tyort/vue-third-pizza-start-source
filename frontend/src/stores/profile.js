@@ -33,6 +33,7 @@ export const useProfileStore = defineStore("profile", {
       const { __state, data } = await resources.address.getAddresses();
       if (__state == "success") {
         this.addresses = data;
+        return { __state };
       }
     },
 

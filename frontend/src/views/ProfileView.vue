@@ -29,32 +29,26 @@
       </p>
     </div>
 
-    <div class="layout__address">
+    <div
+      v-for="(
+        { id, name, street, flat, building, comment }, index
+      ) in profileStore.addresses"
+      :key="id"
+      class="layout__address"
+    >
       <div class="sheet address-form">
         <div class="address-form__header">
-          <b>Адрес №1. Тест</b>
+          <b>Адрес №{{ index + 1 }}. {{ name }}</b>
           <div class="address-form__edit">
             <button type="button" class="icon">
               <span class="visually-hidden">Изменить адрес</span>
             </button>
           </div>
         </div>
-        <p>Невский пр., д. 22, кв. 46</p>
-        <small>Позвоните, пожалуйста, от проходной</small>
-      </div>
-    </div>
-    <div class="layout__address">
-      <div class="sheet address-form">
-        <div class="address-form__header">
-          <b>Адрес №1. Тест</b>
-          <div class="address-form__edit">
-            <button type="button" class="icon">
-              <span class="visually-hidden">Изменить адрес</span>
-            </button>
-          </div>
-        </div>
-        <p>Невский пр., д. 22, кв. 46</p>
-        <small>Позвоните, пожалуйста, от проходной</small>
+        <p>
+          {{ `${street}, д. ${building}${flat ? ", кв. " + flat : ""}` }}
+        </p>
+        <small>{{ comment }}</small>
       </div>
     </div>
 
@@ -143,7 +137,7 @@
       <button
         type="button"
         class="button button--border"
-        @click="isAddingNewAddressAllow = !isAddingNewAddressAllow"
+        @click="addressAddingHandler"
       >
         Добавить новый адрес
       </button>
@@ -152,7 +146,7 @@
 </template>
 
 <script setup>
-import { reactive, ref } from "vue";
+import { ref, shallowRef } from "vue";
 import { useProfileStore } from "@/stores";
 import { getAddressValidationError } from "@/common/validator";
 
@@ -160,28 +154,30 @@ const profileStore = useProfileStore();
 void profileStore.fetchAddresses();
 
 const isAddingNewAddressAllow = ref(true);
-const addressData = reactive({
-  name: "",
-  street: "",
-  building: "",
-  flat: "",
-  comment: "",
-});
+const addressData = shallowRef({});
 
-const onSubmit = async () => {
-  if (getAddressValidationError(addressData)) {
-    return;
-  }
-
-  const { __state } = await profileStore.addAddress(addressData);
-  if (__state == "success") {
-    await profileStore.fetchAddresses();
-  }
+const addressAddingHandler = () => {
+  isAddingNewAddressAllow.value = !isAddingNewAddressAllow.value;
+  addressData.value = {
+    name: "",
+    street: "",
+    building: "",
+    flat: "",
+    comment: "",
+  };
 };
 
-profileStore.$subscribe((mutation, state) => {
-  console.log(profileStore.addresses);
-});
+const onSubmit = async () => {
+  if (getAddressValidationError(addressData.value)) return;
+  const { __state: addingAddressSuccess } = await profileStore.addAddress(
+    addressData.value
+  );
+  if (addingAddressSuccess != "success") return;
+  const { __state: fetchingAddressesSuccess } =
+    await profileStore.fetchAddresses();
+  if (fetchingAddressesSuccess != "success") return;
+  isAddingNewAddressAllow.value = true;
+};
 </script>
 
 <style lang="scss" scoped>
