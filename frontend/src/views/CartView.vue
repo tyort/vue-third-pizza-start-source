@@ -113,11 +113,11 @@
 
               <select name="test" class="select" @input="onInput">
                 <option
-                  v-for="{ value, title } in filteredFulfillments"
+                  v-for="{ value, name } in filteredFulfillments"
                   :key="value"
                   :value="value"
                 >
-                  {{ title }}
+                  {{ name }}
                 </option>
               </select>
             </label>
@@ -221,12 +221,12 @@ void cartStore.fetchMisc();
 
 const isFormValid = shallowRef({ status: true, message: "" });
 const fulfillments = ref([
-  { title: "Получу сам", value: 1 },
-  { title: "Новый адрес", value: 2 },
+  { name: "Получу сам", value: 1 },
+  { name: "Новый адрес", value: 2 },
 ]);
 const filteredFulfillments = computed(() => {
-  const userAddresses = profileStore.addresses.map(({ name }, index) => ({
-    title: name,
+  const userAddresses = profileStore.addresses.map((address, index) => ({
+    ...address,
     value: 3 + index,
   }));
   return [...fulfillments.value, ...userAddresses];
@@ -272,7 +272,15 @@ const onSubmit = async () => {
 };
 
 const onInput = (evt) => {
-  console.log(evt.target.value);
+  const currentFulfillment = filteredFulfillments.value.find(
+    ({ value }) => value == evt.target.value
+  );
+  cartStore.address = {
+    street: currentFulfillment.street || "",
+    building: currentFulfillment.building || "",
+    flat: currentFulfillment.flat || "",
+    comment: currentFulfillment.comment || "",
+  };
 };
 
 cartStore.$subscribe((_mutation, state) => {
