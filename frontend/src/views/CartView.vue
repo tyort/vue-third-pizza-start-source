@@ -145,6 +145,7 @@
                     type="text"
                     name="street"
                     required
+                    :disabled="isAddressFieldsDisabled"
                   />
                 </label>
               </div>
@@ -157,6 +158,7 @@
                     type="text"
                     name="house"
                     required
+                    :disabled="isAddressFieldsDisabled"
                   />
                 </label>
               </div>
@@ -168,6 +170,7 @@
                     v-model="cartStore.address.flat"
                     type="text"
                     name="apartment"
+                    :disabled="isAddressFieldsDisabled"
                   />
                 </label>
               </div>
@@ -224,6 +227,7 @@ const fulfillments = ref([
   { name: "Получу сам", value: 1 },
   { name: "Новый адрес", value: 2 },
 ]);
+const isAddressFieldsDisabled = ref(false);
 const filteredFulfillments = computed(() => {
   const userAddresses = profileStore.addresses.map((address, index) => ({
     ...address,
@@ -281,6 +285,8 @@ const onInput = (evt) => {
     flat: currentFulfillment.flat || "",
     comment: currentFulfillment.comment || "",
   };
+
+  isAddressFieldsDisabled.value = !!currentFulfillment.id;
 };
 
 cartStore.$subscribe((_mutation, state) => {
