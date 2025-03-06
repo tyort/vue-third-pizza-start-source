@@ -132,7 +132,11 @@
         </div>
 
         <div class="address-form__buttons">
-          <button type="button" class="button button--transparent">
+          <button
+            v-if="addressData.id"
+            type="button"
+            class="button button--transparent"
+          >
             Удалить
           </button>
           <button type="submit" class="button">Сохранить</button>
