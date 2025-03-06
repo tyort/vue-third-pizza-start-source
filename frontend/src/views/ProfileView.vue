@@ -162,7 +162,6 @@ import { useProfileStore } from "@/stores";
 import { getAddressValidationError } from "@/common/validator";
 
 const profileStore = useProfileStore();
-void profileStore.fetchAddresses();
 
 const addressName = ref(null);
 const isAddingNewAddressAllow = ref(true);
@@ -195,9 +194,7 @@ const onSubmit = async () => {
   }
 
   if (res.__state != "success") return;
-  const { __state: fetchingAddressesSuccess } =
-    await profileStore.fetchAddresses();
-  if (fetchingAddressesSuccess != "success") return;
+  await profileStore.fetchAddresses();
   isAddingNewAddressAllow.value = true;
 };
 </script>

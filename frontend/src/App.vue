@@ -12,7 +12,7 @@ const dataStore = useDataStore();
 const profileStore = useProfileStore();
 const cartStore = useCartStore();
 
-void profileStore.fetchAddresses();
+void profileStore.whoami();
 void dataStore.fetchDoughs();
 void dataStore.fetchIngredients();
 void dataStore.fetchSauces();

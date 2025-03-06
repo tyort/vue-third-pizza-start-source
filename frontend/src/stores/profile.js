@@ -14,7 +14,11 @@ export const useProfileStore = defineStore("profile", {
       const { __state, data } = await resources.auth.whoami();
       if (__state == "success") {
         this.userData = data;
+      } else {
+        await this.logout();
       }
+
+      await this.fetchAddresses();
     },
     async login(params) {
       const res = await resources.auth.login(params);
@@ -33,7 +37,8 @@ export const useProfileStore = defineStore("profile", {
       const { __state, data } = await resources.address.getAddresses();
       if (__state == "success") {
         this.addresses = data;
-        return { __state };
+      } else {
+        await this.logout();
       }
     },
     async addAddress(data) {
