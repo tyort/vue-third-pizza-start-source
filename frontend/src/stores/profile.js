@@ -12,12 +12,8 @@ export const useProfileStore = defineStore("profile", {
     async whoami() {
       resources.auth.setAuthHeader(jwtService.getToken());
       const { __state, data } = await resources.auth.whoami();
-      if (__state == "success") {
-        this.userData = data;
-      } else {
-        await this.logout();
-      }
-
+      if (__state != "success") return;
+      this.userData = data;
       await this.fetchAddresses();
     },
     async login(params) {
@@ -32,6 +28,7 @@ export const useProfileStore = defineStore("profile", {
       jwtService.destroyToken();
       resources.auth.setAuthHeader("");
       this.userData = null;
+      this.addresses = [];
     },
     async fetchAddresses() {
       const { __state, data } = await resources.address.getAddresses();

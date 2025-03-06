@@ -223,13 +223,14 @@ const isFormValid = shallowRef({ status: true, message: "" });
 const fulfillments = ref([
   { title: "Получу сам", value: 1 },
   { title: "Новый адрес", value: 2 },
-  { title: "Дом", value: 3 },
 ]);
-const filteredFulfillments = computed(() =>
-  fulfillments.value.filter(
-    ({ title }) => !(!profileStore.userData && title == "Дом")
-  )
-);
+const filteredFulfillments = computed(() => {
+  const userAddresses = profileStore.addresses.map(({ name }, index) => ({
+    title: name,
+    value: 3 + index,
+  }));
+  return [...fulfillments.value, ...userAddresses];
+});
 
 const render = ({ pizza }) => {
   const currentSauce = dataStore.getSauceData(pizza.sauceId);
