@@ -134,7 +134,7 @@
               />
             </label>
 
-            <div class="cart-form__address">
+            <div v-show="isAddressFieldsShow" class="cart-form__address">
               <span class="cart-form__label">Новый адрес:</span>
 
               <div class="cart-form__input">
@@ -228,6 +228,7 @@ const fulfillments = ref([
   { name: "Новый адрес", value: 2 },
 ]);
 const isAddressFieldsDisabled = ref(false);
+const isAddressFieldsShow = ref(false);
 const filteredFulfillments = computed(() => {
   const userAddresses = profileStore.addresses.map((address, index) => ({
     ...address,
@@ -279,6 +280,7 @@ const onInput = (evt) => {
   const currentFulfillment = filteredFulfillments.value.find(
     ({ value }) => value == evt.target.value
   );
+  isAddressFieldsShow.value = currentFulfillment.value != 1;
   cartStore.address = {
     street: currentFulfillment.street || "",
     building: currentFulfillment.building || "",
