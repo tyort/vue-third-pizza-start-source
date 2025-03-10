@@ -5,6 +5,7 @@ import jwtService from "@/services/jwt/jwt.service";
 export const useProfileStore = defineStore("profile", {
   state: () => ({
     addresses: [],
+    orders: [],
     userData: null,
   }),
   getters: {},
@@ -15,6 +16,7 @@ export const useProfileStore = defineStore("profile", {
       if (__state != "success") return;
       this.userData = data;
       await this.fetchAddresses();
+      await this.fetchOrders();
     },
     async login(params) {
       const res = await resources.auth.login(params);
@@ -34,6 +36,14 @@ export const useProfileStore = defineStore("profile", {
       const { __state, data } = await resources.address.getAddresses();
       if (__state == "success") {
         this.addresses = data;
+      } else {
+        await this.logout();
+      }
+    },
+    async fetchOrders() {
+      const { __state, data } = await resources.order.getOrders();
+      if (__state == "success") {
+        this.orders = data;
       } else {
         await this.logout();
       }
