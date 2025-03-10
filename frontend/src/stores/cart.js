@@ -1,6 +1,6 @@
 import { toRaw } from "vue";
 import { defineStore } from "pinia";
-import { usePizzaStore } from "./pizza";
+import { usePizzaStore, useProfileStore } from "@/stores/index";
 import ordersJSON from "@/mocks/orders.json";
 import { normalizeMisc } from "@/common/normalize";
 import resources from "@/services/resources";
@@ -49,6 +49,7 @@ export const useCartStore = defineStore("cart", {
       this.orders = ordersJSON;
     },
     async createOrder() {
+      const profileStore = useProfileStore();
       const pizzas = this.pizzas.map(
         ({
           name,
@@ -80,7 +81,7 @@ export const useCartStore = defineStore("cart", {
       }));
 
       return resources.order.createOrder({
-        userId: null,
+        userId: profileStore.userData?.id || null,
         phone: this.phone,
         address: toRaw(this.address),
         pizzas,

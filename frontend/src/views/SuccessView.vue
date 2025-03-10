@@ -1,6 +1,6 @@
 <template>
   <div class="popup">
-    <router-link :to="{ name: 'home' }" class="close">
+    <router-link :to="{ name: pathName }" class="close">
       <span class="visually-hidden">Закрыть попап</span>
     </router-link>
     <div class="popup__title">
@@ -8,12 +8,20 @@
     </div>
     <p>Мы начали готовить Ваш заказ, скоро привезём его вам ;)</p>
     <div class="popup__button">
-      <router-link :to="{ name: 'home' }" class="button">
+      <router-link :to="{ name: pathName }" class="button">
         Отлично, я жду!
       </router-link>
     </div>
   </div>
 </template>
+
+<script setup>
+import { useProfileStore } from "@/stores";
+import { ref } from "vue";
+
+const profileStore = useProfileStore();
+const pathName = ref(profileStore.userData?.id ? "orders" : "home");
+</script>
 
 <style lang="scss" scoped>
 @import "@/assets/scss/ds-system/ds.scss";

@@ -215,6 +215,9 @@ import {
 } from "@/stores";
 import { useRouter } from "vue-router";
 
+const NEW_ADDRESS_VALUE = 1;
+const GET_MYSELF_VALUE = 2;
+
 const router = useRouter();
 const cartStore = useCartStore();
 const dataStore = useDataStore();
@@ -224,11 +227,11 @@ void cartStore.fetchMisc();
 
 const isFormValid = shallowRef({ status: true, message: "" });
 const fulfillments = ref([
-  { name: "Получу сам", value: 1 },
-  { name: "Новый адрес", value: 2 },
+  { name: "Новый адрес", value: NEW_ADDRESS_VALUE },
+  { name: "Получу сам", value: GET_MYSELF_VALUE },
 ]);
 const isAddressFieldsDisabled = ref(false);
-const isAddressFieldsShow = ref(false);
+const isAddressFieldsShow = ref(true);
 const filteredFulfillments = computed(() => {
   const userAddresses = profileStore.addresses.map((address, index) => ({
     ...address,
@@ -280,22 +283,30 @@ const onInput = (evt) => {
   const currentFulfillment = filteredFulfillments.value.find(
     ({ value }) => value == evt.target.value
   );
-  isAddressFieldsShow.value = currentFulfillment.value != 1;
   cartStore.address = {
-    street: currentFulfillment.street || "",
-    building: currentFulfillment.building || "",
+    street:
+      currentFulfillment.value == GET_MYSELF_VALUE
+        ? "Нет данных"
+        : currentFulfillment.street || "",
+    building:
+      currentFulfillment.value == GET_MYSELF_VALUE
+        ? "Нет данных"
+        : currentFulfillment.building || "",
     flat: currentFulfillment.flat || "",
     comment: currentFulfillment.comment || "",
   };
 
+  isAddressFieldsShow.value = currentFulfillment.value != GET_MYSELF_VALUE;
   isAddressFieldsDisabled.value = !!currentFulfillment.id;
 };
 
 cartStore.$subscribe((_mutation, state) => {
-  const emptyLines = Object.entries(state.address).filter(
-    ([property, value]) =>
-      !["comment", "flat"].includes(property) && value.trim() == ""
-  );
+  const emptyLines = isAddressFieldsShow.value
+    ? Object.entries(state.address).filter(
+        ([property, value]) =>
+          !["comment", "flat"].includes(property) && value.trim() == ""
+      )
+    : [];
   const status =
     state.phone.match(/^(\+7|8)[0-9]{10}$/gi) &&
     emptyLines.length == 0 &&
