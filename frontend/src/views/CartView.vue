@@ -223,7 +223,6 @@ const cartStore = useCartStore();
 const dataStore = useDataStore();
 const pizzaStore = usePizzaStore();
 const profileStore = useProfileStore();
-void cartStore.fetchMisc();
 
 const isFormValid = shallowRef({ status: true, message: "" });
 const fulfillments = ref([

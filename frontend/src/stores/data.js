@@ -27,6 +27,10 @@ export const useDataStore = defineStore("data", {
     getSizeData: (state) => {
       return (sizeId) => toRaw(state.sizeItems.find(({ id }) => sizeId == id));
     },
+    getIngredientData: (state) => {
+      return (ingredientId) =>
+        toRaw(state.ingredientItems.find(({ id }) => ingredientId == id));
+    },
   },
   actions: {
     async fetchDoughs() {
