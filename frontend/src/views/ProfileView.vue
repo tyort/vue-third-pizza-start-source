@@ -136,6 +136,7 @@
             v-if="addressData.id"
             type="button"
             class="button button--transparent"
+            @click="profileStore.deleteAddress(addressData.id)"
           >
             Удалить
           </button>

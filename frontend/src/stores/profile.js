@@ -57,5 +57,8 @@ export const useProfileStore = defineStore("profile", {
     async updateAddress(data) {
       return await resources.address.updateAddress(data);
     },
+    async deleteAddress(id) {
+      await resources.address.removeAddress(id);
+    },
   },
 });
