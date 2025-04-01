@@ -284,18 +284,16 @@ const onInput = (evt) => {
   const currentFulfillment = filteredFulfillments.value.find(
     ({ value }) => value == evt.target.value
   );
-  cartStore.address = {
-    street:
-      currentFulfillment.value == GET_MYSELF_VALUE
-        ? "Нет данных"
-        : currentFulfillment.street || "",
-    building:
-      currentFulfillment.value == GET_MYSELF_VALUE
-        ? "Нет данных"
-        : currentFulfillment.building || "",
-    flat: currentFulfillment.flat || "",
-    comment: currentFulfillment.comment || "",
-  };
+
+  cartStore.address =
+    currentFulfillment.value == GET_MYSELF_VALUE
+      ? null
+      : {
+          street: currentFulfillment.street || "",
+          building: currentFulfillment.building || "",
+          flat: currentFulfillment.flat || "",
+          comment: currentFulfillment.comment || "",
+        };
 
   isAddressFieldsShow.value = currentFulfillment.value != GET_MYSELF_VALUE;
   isAddressFieldsDisabled.value = !!currentFulfillment.id;
