@@ -134,7 +134,7 @@
               />
             </label>
 
-            <div v-show="isAddressFieldsShow" class="cart-form__address">
+            <div v-if="isAddressFieldsShow" class="cart-form__address">
               <span class="cart-form__label">Новый адрес:</span>
 
               <div class="cart-form__input">
@@ -227,10 +227,6 @@ const profileStore = useProfileStore();
 void cartStore.fetchMisc();
 
 const isFormValid = shallowRef({ status: true, message: "" });
-const fulfillments = ref([
-  { name: "Новый адрес", value: NEW_ADDRESS_VALUE },
-  { name: "Получу сам", value: GET_MYSELF_VALUE },
-]);
 const isAddressFieldsDisabled = ref(false);
 const isAddressFieldsShow = ref(true);
 const filteredFulfillments = computed(() => {
@@ -238,7 +234,15 @@ const filteredFulfillments = computed(() => {
     ...address,
     value: 3 + index,
   }));
-  return [...fulfillments.value, ...userAddresses];
+  return [
+    { name: "Новый адрес", value: NEW_ADDRESS_VALUE },
+    { name: "Получу сам", value: GET_MYSELF_VALUE },
+    ...userAddresses,
+  ];
+});
+const currentFulfillment = ref({
+  name: "Новый адрес",
+  value: NEW_ADDRESS_VALUE,
 });
 
 const render = ({ pizza }) => {
@@ -281,22 +285,23 @@ const onSubmit = async () => {
 };
 
 const onInput = (evt) => {
-  const currentFulfillment = filteredFulfillments.value.find(
+  currentFulfillment.value = filteredFulfillments.value.find(
     ({ value }) => value == evt.target.value
   );
 
   cartStore.address =
-    currentFulfillment.value == GET_MYSELF_VALUE
+    currentFulfillment.value.value == GET_MYSELF_VALUE
       ? null
       : {
-          street: currentFulfillment.street || "",
-          building: currentFulfillment.building || "",
-          flat: currentFulfillment.flat || "",
-          comment: currentFulfillment.comment || "",
+          street: currentFulfillment.value?.street || "",
+          building: currentFulfillment.value?.building || "",
+          flat: currentFulfillment.value?.flat || "",
+          comment: currentFulfillment.value?.comment || "",
         };
 
-  isAddressFieldsShow.value = currentFulfillment.value != GET_MYSELF_VALUE;
-  isAddressFieldsDisabled.value = !!currentFulfillment.id;
+  isAddressFieldsShow.value =
+    currentFulfillment.value.value != GET_MYSELF_VALUE;
+  isAddressFieldsDisabled.value = !!currentFulfillment.value.id;
 };
 
 cartStore.$subscribe((_mutation, state) => {
