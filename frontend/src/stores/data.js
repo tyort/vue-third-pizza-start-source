@@ -49,5 +49,16 @@ export const useDataStore = defineStore("data", {
       const { data } = await resources.size.getSizes();
       this.sizeItems = data.map(normalizeSize);
     },
+
+    getFinalPizzaPrice(sizeId, doughId, sauceId, ingredients) {
+      const sizeFactor = this.getSizeData(sizeId)?.multiplier || 1;
+      const doughPrice = this.getDoughData(doughId)?.price || 0;
+      const saucePrice = this.getSauceData(sauceId)?.price || 0;
+      const ingredientsPrice = ingredients
+        .map(({ price, quantity }) => price * quantity || 0)
+        .reduce((finalPrice, price) => finalPrice + price, 0);
+
+      return sizeFactor * (doughPrice + saucePrice + ingredientsPrice);
+    },
   },
 });

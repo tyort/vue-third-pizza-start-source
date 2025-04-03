@@ -1,6 +1,6 @@
 import { toRaw } from "vue";
 import { defineStore } from "pinia";
-import { usePizzaStore, useProfileStore } from "@/stores/index";
+import { usePizzaStore, useProfileStore, useDataStore } from "@/stores/index";
 import { normalizeMisc } from "@/common/normalize";
 import resources from "@/services/resources";
 
@@ -93,13 +93,20 @@ export const useCartStore = defineStore("cart", {
     },
     putPizzaToCart() {
       const pizzaStore = usePizzaStore();
+      const dataStore = useDataStore();
+
       const pizzaData = {
         name: pizzaStore.name,
         sauceId: pizzaStore.sauceId,
         doughId: pizzaStore.doughId,
         sizeId: pizzaStore.sizeId,
         ingredients: pizzaStore.ingredients,
-        price: pizzaStore.getFinalPizzaPrice,
+        price: dataStore.getFinalPizzaPrice(
+          pizzaStore.sizeId,
+          pizzaStore.doughId,
+          pizzaStore.sauceId,
+          pizzaStore.ingredients
+        ),
       };
 
       if (pizzaStore.id) {

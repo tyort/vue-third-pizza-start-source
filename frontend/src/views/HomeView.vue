@@ -47,7 +47,18 @@
             :on-drop="pizzaStore.updateIngredients"
           />
           <div class="content__result">
-            <p>Итого: {{ pizzaStore.getFinalPizzaPrice }} ₽</p>
+            <p>
+              Итого:
+              {{
+                dataStore.getFinalPizzaPrice(
+                  pizzaStore.sizeId,
+                  pizzaStore.doughId,
+                  pizzaStore.sauceId,
+                  pizzaStore.ingredients
+                )
+              }}
+              ₽
+            </p>
             <button
               type="button"
               class="button"

@@ -4,11 +4,7 @@
       <h1 class="title title--big">История заказов</h1>
     </div>
 
-    <section
-      v-for="order in profileStore.orders"
-      :key="order.id"
-      class="sheet order"
-    >
+    <section v-for="order in orders" :key="order.id" class="sheet order">
       <div class="order__wrapper">
         <div class="order__number">
           <b>Заказ #{{ order.id }}</b>
@@ -46,7 +42,7 @@
             </div>
           </div>
 
-          <p class="order__price">782 ₽</p>
+          <p class="order__price">{{ pizza.price }} ₽</p>
         </li>
       </ul>
 
@@ -97,11 +93,27 @@
 </template>
 
 <script setup>
-import { h } from "vue";
+import { h, computed } from "vue";
 import { useProfileStore, useDataStore } from "@/stores";
 
 const profileStore = useProfileStore();
 const dataStore = useDataStore();
+
+const orders = computed(() => {
+  return profileStore.orders.map((order) => {
+    const orderPizzas = order.orderPizzas.map((pizza) => ({
+      ...pizza,
+      price: dataStore.getFinalPizzaPrice(
+        pizza.sizeId,
+        pizza.doughId,
+        pizza.sauceId,
+        pizza.ingredients
+      ),
+    }));
+    return { ...order, orderPizzas };
+  });
+});
+console.log(orders.value);
 
 const render = ({ pizza }) => {
   const currentSauce = dataStore.getSauceData(pizza.sauceId);
@@ -109,9 +121,6 @@ const render = ({ pizza }) => {
   const doughText =
     currentDough.value === "large" ? "на толстом тесте" : "на тонком тесте";
   const currentSize = dataStore.getSizeData(pizza.sizeId);
-
-  console.log(currentSauce);
-  console.log(currentSauce);
 
   const currentIngredients = pizza.ingredients
     .map((ingred) => dataStore.getIngredientData(ingred.ingredientId))
