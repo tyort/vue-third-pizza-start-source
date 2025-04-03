@@ -20,6 +20,8 @@ import { useProfileStore } from "@/stores";
 import { ref } from "vue";
 
 const profileStore = useProfileStore();
+void profileStore.whoami();
+
 const pathName = ref(profileStore.userData?.id ? "orders" : "home");
 </script>
 
