@@ -42,7 +42,9 @@
             </div>
           </div>
 
-          <p class="order__price">{{ pizza.price }} ₽</p>
+          <p class="order__price">
+            {{ getQuantityText(pizza.quantity) }}{{ pizza.price }} ₽
+          </p>
         </li>
       </ul>
 
@@ -135,6 +137,10 @@ const render = ({ pizza }) => {
     h("li", `Coус: ${currentSauce.name}`),
     h("li", `Начинка${currentIngredients}`),
   ]);
+};
+
+const getQuantityText = (amount) => {
+  return amount == 1 ? "" : `${amount}x`;
 };
 </script>
 
