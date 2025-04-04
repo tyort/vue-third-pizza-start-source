@@ -224,7 +224,7 @@ const dataStore = useDataStore();
 const pizzaStore = usePizzaStore();
 const profileStore = useProfileStore();
 
-void cartStore.fetchMisc();
+void dataStore.fetchMisc();
 
 const isFormValid = shallowRef({ status: true, message: "" });
 const isAddressFieldsDisabled = ref(false);
@@ -316,6 +316,10 @@ cartStore.$subscribe((_mutation, state) => {
     emptyLines.length == 0 &&
     cartStore.getOrderPrice !== 0;
   isFormValid.value = { status, message: "" };
+});
+
+dataStore.$subscribe((_mutation, state) => {
+  cartStore.misc = state.miscItems;
 });
 </script>
 

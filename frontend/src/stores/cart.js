@@ -1,7 +1,6 @@
 import { toRaw } from "vue";
 import { defineStore } from "pinia";
 import { usePizzaStore, useProfileStore, useDataStore } from "@/stores/index";
-import { normalizeMisc } from "@/common/normalize";
 import resources from "@/services/resources";
 
 export const useCartStore = defineStore("cart", {
@@ -40,10 +39,6 @@ export const useCartStore = defineStore("cart", {
     },
   },
   actions: {
-    async fetchMisc() {
-      const { data } = await resources.misc.getMisc();
-      this.misc = data.map(normalizeMisc);
-    },
     async createOrder() {
       const profileStore = useProfileStore();
       const pizzas = this.pizzas.map(

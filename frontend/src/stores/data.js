@@ -5,6 +5,7 @@ import {
   normalizeIngredients,
   normalizeSauces,
   normalizeSize,
+  normalizeMisc,
 } from "@/common/normalize";
 import resources from "@/services/resources";
 
@@ -14,6 +15,7 @@ export const useDataStore = defineStore("data", {
     ingredientItems: [],
     sauceItems: [],
     sizeItems: [],
+    miscItems: [],
   }),
   getters: {
     getSauceData: (state) => {
@@ -33,6 +35,10 @@ export const useDataStore = defineStore("data", {
     },
   },
   actions: {
+    async fetchMisc() {
+      const { data } = await resources.misc.getMisc();
+      this.miscItems = data.map(normalizeMisc);
+    },
     async fetchDoughs() {
       const { data } = await resources.dough.getDoughs();
       this.doughItems = data.map(normalizeDough);
