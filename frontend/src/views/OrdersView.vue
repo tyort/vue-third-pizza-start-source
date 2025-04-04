@@ -49,40 +49,11 @@
       </ul>
 
       <ul class="order__additional">
-        <li>
-          <img
-            src="@/assets/img/cola.svg"
-            width="20"
-            height="30"
-            alt="Coca-Cola 0,5 литра"
-          />
+        <li v-for="misc in order.orderMisc" :key="misc.id">
+          <img :src="misc.image" width="20" height="30" :alt="misc.name" />
           <p>
-            <span>Coca-Cola 0,5 литра</span>
-            <b>56 ₽</b>
-          </p>
-        </li>
-        <li>
-          <img
-            src="@/assets/img/sauce.svg"
-            width="20"
-            height="30"
-            alt="Острый соус"
-          />
-          <p>
-            <span>Острый соус</span>
-            <b>30 ₽</b>
-          </p>
-        </li>
-        <li>
-          <img
-            src="@/assets/img/potato.svg"
-            width="20"
-            height="30"
-            alt="Картошка из печи"
-          />
-          <p>
-            <span>Картошка из печи</span>
-            <b>170 ₽</b>
+            <span>{{ misc.name }}</span>
+            <b>{{ getQuantityText(misc.quantity) }}{{ misc.price }} ₽</b>
           </p>
         </li>
       </ul>
@@ -101,8 +72,23 @@ import { useProfileStore, useDataStore } from "@/stores";
 const profileStore = useProfileStore();
 const dataStore = useDataStore();
 
+void dataStore.fetchMisc();
+
 const orders = computed(() => {
   return profileStore.orders.map((order) => {
+    const orderMisc = order.orderMisc
+      .map((misc) => {
+        const miscDataStore = dataStore.miscItems.find(
+          ({ id }) => id == misc.miscId
+        );
+        return {
+          ...misc,
+          price: miscDataStore?.price || 0,
+          name: miscDataStore?.name || "",
+          image: miscDataStore?.image || "",
+        };
+      })
+      .filter((misc) => misc.quantity > 0);
     const orderPizzas = order.orderPizzas.map((pizza) => ({
       ...pizza,
       price: dataStore.getFinalPizzaPrice(
@@ -112,10 +98,10 @@ const orders = computed(() => {
         pizza.ingredients
       ),
     }));
-    return { ...order, orderPizzas };
+
+    return { ...order, orderPizzas, orderMisc };
   });
 });
-console.log(orders.value);
 
 const render = ({ pizza }) => {
   const currentSauce = dataStore.getSauceData(pizza.sauceId);
