@@ -48,6 +48,14 @@ export const useProfileStore = defineStore("profile", {
         await this.logout();
       }
     },
+    async deleteOrder(id) {
+      const { __state } = await resources.order.removeOrder(id);
+      if (__state == "success") {
+        await this.fetchOrders();
+      } else {
+        await this.logout();
+      }
+    },
     async addAddress(data) {
       return await resources.address.addAddress({
         ...data,
