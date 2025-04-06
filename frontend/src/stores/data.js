@@ -60,11 +60,22 @@ export const useDataStore = defineStore("data", {
       const sizeFactor = this.getSizeData(sizeId)?.multiplier || 1;
       const doughPrice = this.getDoughData(doughId)?.price || 0;
       const saucePrice = this.getSauceData(sauceId)?.price || 0;
-      const ingredientsPrice = ingredients
+      return (
+        sizeFactor *
+        (doughPrice + saucePrice + this.getPizzaIngredientsPrice(ingredients))
+      );
+    },
+
+    getPizzaIngredientsPrice(ingredients) {
+      return ingredients
+        .map((ingred) => {
+          const { price } = this.ingredientItems.find(
+            ({ id }) => id == ingred.ingredientId
+          );
+          return { ...ingred, price };
+        })
         .map(({ price, quantity }) => price * quantity || 0)
         .reduce((finalPrice, price) => finalPrice + price, 0);
-
-      return sizeFactor * (doughPrice + saucePrice + ingredientsPrice);
     },
 
     getOrderPrice(misc, pizzas) {
@@ -72,10 +83,12 @@ export const useDataStore = defineStore("data", {
         (commonPrice, misc) => commonPrice + misc.price * misc.quantity,
         0
       );
-      return pizzas.reduce(
-        (commonPrice, pizza) => commonPrice + pizza.price * pizza.quantity,
-        miscsPricesSum
-      );
+      return Array.isArray(pizzas)
+        ? pizzas.reduce(
+            (commonPrice, pizza) => commonPrice + pizza.price * pizza.quantity,
+            miscsPricesSum
+          )
+        : miscsPricesSum;
     },
   },
 });

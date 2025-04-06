@@ -11,7 +11,7 @@
         </div>
 
         <div class="order__sum">
-          <span>Сумма заказа: 1 564 ₽</span>
+          <span>Сумма заказа: {{ order.price }} ₽</span>
         </div>
 
         <div class="order__button">
@@ -71,7 +71,6 @@ import { useProfileStore, useDataStore } from "@/stores";
 
 const profileStore = useProfileStore();
 const dataStore = useDataStore();
-
 void dataStore.fetchMisc();
 
 const orders = computed(() => {
@@ -89,6 +88,7 @@ const orders = computed(() => {
         };
       })
       .filter((misc) => misc.quantity > 0);
+
     const orderPizzas =
       Array.isArray(order.orderPizzas) &&
       order.orderPizzas.map((pizza) => ({
@@ -101,7 +101,8 @@ const orders = computed(() => {
         ),
       }));
 
-    return { ...order, orderPizzas, orderMisc };
+    const price = dataStore.getOrderPrice(orderMisc, orderPizzas);
+    return { ...order, orderPizzas, orderMisc, price };
   });
 });
 
