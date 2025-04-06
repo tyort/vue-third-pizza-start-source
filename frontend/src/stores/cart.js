@@ -17,6 +17,7 @@ export const useCartStore = defineStore("cart", {
   }),
   getters: {
     isOrderPlacingAcceptable: (state) => {
+      const dataStore = useDataStore();
       const emptyLines = Object.entries(state.address).filter(
         ([property, value]) =>
           !["comment", "flat"].includes(property) && value.trim() == ""
@@ -24,17 +25,7 @@ export const useCartStore = defineStore("cart", {
       return (
         state.phone.match(/^(\+7|8)[0-9]{10}$/gi) &&
         emptyLines.length === 0 &&
-        state.getOrderPrice !== 0
-      );
-    },
-    getOrderPrice: (state) => {
-      const miscsPricesSum = state.misc.reduce(
-        (commonPrice, misc) => commonPrice + misc.price * misc.quantity,
-        0
-      );
-      return state.pizzas.reduce(
-        (commonPrice, pizza) => commonPrice + pizza.price * pizza.quantity,
-        miscsPricesSum
+        dataStore.getOrderPrice(state.misc, state.pizzas) !== 0
       );
     },
   },

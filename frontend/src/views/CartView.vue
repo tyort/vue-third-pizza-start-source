@@ -191,7 +191,10 @@
         Перейти к конструктору<br />чтоб собрать ещё одну пиццу
       </p>
       <div class="footer__price">
-        <b>Итого: {{ cartStore.getOrderPrice }} ₽</b>
+        <b
+          >Итого:
+          {{ dataStore.getOrderPrice(cartStore.misc, cartStore.pizzas) }} ₽</b
+        >
       </div>
 
       <div class="footer__submit">
@@ -314,7 +317,7 @@ cartStore.$subscribe((_mutation, state) => {
   const status =
     state.phone.match(/^(\+7|8)[0-9]{10}$/gi) &&
     emptyLines.length == 0 &&
-    cartStore.getOrderPrice !== 0;
+    dataStore.getOrderPrice(state.misc, state.pizzas) !== 0;
   isFormValid.value = { status, message: "" };
 });
 

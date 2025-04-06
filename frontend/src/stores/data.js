@@ -66,5 +66,16 @@ export const useDataStore = defineStore("data", {
 
       return sizeFactor * (doughPrice + saucePrice + ingredientsPrice);
     },
+
+    getOrderPrice(misc, pizzas) {
+      const miscsPricesSum = misc.reduce(
+        (commonPrice, misc) => commonPrice + misc.price * misc.quantity,
+        0
+      );
+      return pizzas.reduce(
+        (commonPrice, pizza) => commonPrice + pizza.price * pizza.quantity,
+        miscsPricesSum
+      );
+    },
   },
 });

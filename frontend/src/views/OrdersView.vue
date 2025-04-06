@@ -89,15 +89,17 @@ const orders = computed(() => {
         };
       })
       .filter((misc) => misc.quantity > 0);
-    const orderPizzas = order.orderPizzas.map((pizza) => ({
-      ...pizza,
-      price: dataStore.getFinalPizzaPrice(
-        pizza.sizeId,
-        pizza.doughId,
-        pizza.sauceId,
-        pizza.ingredients
-      ),
-    }));
+    const orderPizzas =
+      Array.isArray(order.orderPizzas) &&
+      order.orderPizzas.map((pizza) => ({
+        ...pizza,
+        price: dataStore.getFinalPizzaPrice(
+          pizza.sizeId,
+          pizza.doughId,
+          pizza.sauceId,
+          pizza.ingredients
+        ),
+      }));
 
     return { ...order, orderPizzas, orderMisc };
   });
