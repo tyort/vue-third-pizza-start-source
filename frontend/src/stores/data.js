@@ -36,22 +36,27 @@ export const useDataStore = defineStore("data", {
   },
   actions: {
     async fetchMisc() {
+      if (this.miscItems.length > 0) return;
       const { data } = await resources.misc.getMisc();
       this.miscItems = data.map(normalizeMisc);
     },
     async fetchDoughs() {
+      if (this.doughItems.length > 0) return;
       const { data } = await resources.dough.getDoughs();
       this.doughItems = data.map(normalizeDough);
     },
     async fetchIngredients() {
+      if (this.ingredientItems.length > 0) return;
       const { data } = await resources.ingredient.getIngredients();
       this.ingredientItems = data.map(normalizeIngredients);
     },
     async fetchSauces() {
+      if (this.sauceItems.length > 0) return;
       const { data } = await resources.sauce.getSauces();
       this.sauceItems = data.map(normalizeSauces);
     },
     async fetchSizes() {
+      if (this.sizeItems.length > 0) return;
       const { data } = await resources.size.getSizes();
       this.sizeItems = data.map(normalizeSize);
     },
