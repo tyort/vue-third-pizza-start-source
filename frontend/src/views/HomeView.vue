@@ -97,11 +97,6 @@ const isButtonDisabled = computed(() => {
   );
 });
 
-// pizzaStore.$subscribe(() => {
-//   console.log(pizzaStore.ingredients);
-//   console.log(pizzaStore.updateIngredients);
-// });
-
 const onButtonClick = () => {
   cartStore.putPizzaToCart();
   router.push({ path: `/cart` });

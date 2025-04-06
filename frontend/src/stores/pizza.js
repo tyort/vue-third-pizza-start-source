@@ -22,30 +22,21 @@ export const usePizzaStore = defineStore("pizza", {
               quantity: state.ingredients.find(({ id }) => ingred.id == id)
                 .quantity,
             }
-          : { ...ingred }
+          : { ...ingred },
       );
     },
   },
   actions: {
-    // changePizzaSize(sizeId) {
-    //   this.sizeId = sizeId;
-    // },
-    // changeDough(doughId) {
-    //   this.doughId = doughId;
-    // },
-    // changeSauce(sauceId) {
-    //   this.sauceId = sauceId;
-    // },
     updateIngredients(udatedIngred, increment = 1) {
       const existingIngred = this.ingredients.find(
-        (ingred) => udatedIngred.id == ingred?.id
+        (ingred) => udatedIngred.id == ingred?.id,
       );
 
       if (existingIngred) {
         this.ingredients = this.ingredients.map((ingred) =>
           existingIngred.id == ingred?.id
             ? { ...ingred, quantity: existingIngred.quantity + increment }
-            : { ...ingred }
+            : { ...ingred },
         );
       } else {
         this.ingredients.push({ ...udatedIngred, quantity: increment });
