@@ -65,7 +65,7 @@
       </ul>
 
       <p class="order__address">
-        Адрес доставки: Тест (или если адрес новый - писать целиком)
+        Адрес доставки: {{ getAddressText(order.orderAddress) }}
       </p>
     </section>
   </div>
@@ -136,6 +136,12 @@ const render = ({ pizza }) => {
 
 const getQuantityText = (amount) => {
   return amount == 1 ? "" : `${amount}x`;
+};
+const getAddressText = (data) => {
+  const street = data?.street ? `ул. ${data.street}, ` : "";
+  const building = data?.building ? `д. ${data.building}, ` : "";
+  const flat = data?.flat ? `кв. ${data.flat}.` : "без квартиры.";
+  return street + building + flat;
 };
 </script>
 
