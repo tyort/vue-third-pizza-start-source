@@ -7,6 +7,7 @@ export const useCartStore = defineStore("cart", {
   state: () => ({
     phone: "",
     address: {
+      id: null,
       street: "",
       building: "",
       flat: "",
@@ -15,20 +16,7 @@ export const useCartStore = defineStore("cart", {
     pizzas: [],
     misc: [],
   }),
-  getters: {
-    isOrderPlacingAcceptable: (state) => {
-      const dataStore = useDataStore();
-      const emptyLines = Object.entries(state.address).filter(
-        ([property, value]) =>
-          !["comment", "flat"].includes(property) && value.trim() == ""
-      );
-      return (
-        state.phone.match(/^(\+7|8)[0-9]{10}$/gi) &&
-        emptyLines.length === 0 &&
-        dataStore.getOrderPrice(state.misc, state.pizzas) !== 0
-      );
-    },
-  },
+  getters: {},
   actions: {
     async createOrder() {
       const profileStore = useProfileStore();

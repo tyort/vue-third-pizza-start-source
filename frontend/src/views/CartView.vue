@@ -311,7 +311,7 @@ cartStore.$subscribe((_mutation, state) => {
   const emptyLines = isAddressFieldsShow.value
     ? Object.entries(state.address).filter(
         ([property, value]) =>
-          !["comment", "flat"].includes(property) && value.trim() == ""
+          !["comment", "flat", "id"].includes(property) && value.trim() == ""
       )
     : [];
   const status =
