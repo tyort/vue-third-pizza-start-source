@@ -36,7 +36,6 @@ export const useDataStore = defineStore("data", {
   },
   actions: {
     async fetchMisc() {
-      if (this.miscItems.length > 0) return;
       const { data } = await resources.misc.getMisc();
       this.miscItems = data.map(normalizeMisc);
     },
