@@ -134,7 +134,10 @@
               />
             </label>
 
-            <div v-if="isAddressFieldsShow" class="cart-form__address">
+            <div
+              v-if="currentFulfillment.value != GET_MYSELF_VALUE"
+              class="cart-form__address"
+            >
               <span class="cart-form__label">Новый адрес:</span>
 
               <div class="cart-form__input">
@@ -145,7 +148,7 @@
                     type="text"
                     name="street"
                     required
-                    :disabled="isAddressFieldsDisabled"
+                    :disabled="cartStore.address.id"
                   />
                 </label>
               </div>
@@ -158,7 +161,7 @@
                     type="text"
                     name="house"
                     required
-                    :disabled="isAddressFieldsDisabled"
+                    :disabled="cartStore.address.id"
                   />
                 </label>
               </div>
@@ -170,7 +173,7 @@
                     v-model="cartStore.address.flat"
                     type="text"
                     name="apartment"
-                    :disabled="isAddressFieldsDisabled"
+                    :disabled="cartStore.address.id"
                   />
                 </label>
               </div>
@@ -230,8 +233,6 @@ const profileStore = useProfileStore();
 void dataStore.fetchMisc();
 
 const isFormValid = shallowRef({ status: true, message: "" });
-const isAddressFieldsDisabled = ref(false);
-const isAddressFieldsShow = ref(true);
 const filteredFulfillments = computed(() => {
   const userAddresses = profileStore.addresses.map((address, index) => ({
     ...address,
@@ -247,6 +248,9 @@ const currentFulfillment = ref({
   name: "Новый адрес",
   value: NEW_ADDRESS_VALUE,
 });
+
+console.log(filteredFulfillments.value);
+console.log(currentFulfillment.value);
 
 const render = ({ pizza }) => {
   const currentSauce = dataStore.getSauceData(pizza.sauceId);
@@ -296,24 +300,23 @@ const onInput = (evt) => {
     currentFulfillment.value.value == GET_MYSELF_VALUE
       ? null
       : {
+          id: currentFulfillment.value?.id || null,
           street: currentFulfillment.value?.street || "",
           building: currentFulfillment.value?.building || "",
           flat: currentFulfillment.value?.flat || "",
           comment: currentFulfillment.value?.comment || "",
         };
-
-  isAddressFieldsShow.value =
-    currentFulfillment.value.value != GET_MYSELF_VALUE;
-  isAddressFieldsDisabled.value = !!currentFulfillment.value.id;
 };
 
+// при cartStore.$reset() почему-то не срабатывает $subscribe
 cartStore.$subscribe((_mutation, state) => {
-  const emptyLines = isAddressFieldsShow.value
-    ? Object.entries(state.address).filter(
-        ([property, value]) =>
-          !["comment", "flat", "id"].includes(property) && value.trim() == ""
-      )
-    : [];
+  const emptyLines =
+    currentFulfillment.value.value != GET_MYSELF_VALUE
+      ? Object.entries(state.address).filter(
+          ([property, value]) =>
+            !["comment", "flat", "id"].includes(property) && value.trim() == ""
+        )
+      : [];
   const status =
     state.phone.match(/^(\+7|8)[0-9]{10}$/gi) &&
     emptyLines.length == 0 &&
@@ -321,8 +324,10 @@ cartStore.$subscribe((_mutation, state) => {
   isFormValid.value = { status, message: "" };
 });
 
-dataStore.$subscribe((_mutation, state) => {
-  cartStore.misc = state.miscItems;
+dataStore.$subscribe((mutation, state) => {
+  if (mutation.events.key == "miscItems" && mutation.events.type == "set") {
+    cartStore.misc = state.miscItems;
+  }
 });
 </script>
 
