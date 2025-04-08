@@ -249,9 +249,6 @@ const currentFulfillment = ref({
   value: NEW_ADDRESS_VALUE,
 });
 
-console.log(filteredFulfillments.value);
-console.log(currentFulfillment.value);
-
 const render = ({ pizza }) => {
   const currentSauce = dataStore.getSauceData(pizza.sauceId);
   const currentDough = dataStore.getDoughData(pizza.doughId);
