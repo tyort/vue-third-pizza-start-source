@@ -136,7 +136,7 @@
             v-if="addressData.id"
             type="button"
             class="button button--transparent"
-            @click="profileStore.deleteAddress(addressData.id)"
+            @click="addressRemovingHandler($event, addressData.id)"
           >
             Удалить
           </button>
@@ -183,6 +183,10 @@ const addressAddingHandler = () => {
     flat: "",
     comment: "",
   };
+};
+const addressRemovingHandler = (_evt, addressId) => {
+  profileStore.deleteAddress(addressId);
+  isAddingNewAddressAllow.value = !isAddingNewAddressAllow.value;
 };
 const onSubmit = async () => {
   if (getAddressValidationError(addressData.value)) return;

@@ -66,7 +66,12 @@ export const useProfileStore = defineStore("profile", {
       return await resources.address.updateAddress(data);
     },
     async deleteAddress(id) {
-      await resources.address.removeAddress(id);
+      const { __state } = await resources.address.removeAddress(id);
+      if (__state == "success") {
+        await this.fetchAddresses();
+      } else {
+        await this.logout();
+      }
     },
   },
 });
