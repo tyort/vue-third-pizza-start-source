@@ -57,13 +57,23 @@ export const useProfileStore = defineStore("profile", {
       }
     },
     async addAddress(data) {
-      return await resources.address.addAddress({
+      const { __state } = await resources.address.addAddress({
         ...data,
         userId: this.userData.id,
       });
+      if (__state == "success") {
+        await this.fetchAddresses();
+      } else {
+        await this.logout();
+      }
     },
     async updateAddress(data) {
-      return await resources.address.updateAddress(data);
+      const { __state } = await resources.address.updateAddress(data);
+      if (__state == "success") {
+        await this.fetchAddresses();
+      } else {
+        await this.logout();
+      }
     },
     async deleteAddress(id) {
       const { __state } = await resources.address.removeAddress(id);

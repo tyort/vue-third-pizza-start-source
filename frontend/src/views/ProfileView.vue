@@ -191,16 +191,13 @@ const addressRemovingHandler = (_evt, addressId) => {
 const onSubmit = async () => {
   if (getAddressValidationError(addressData.value)) return;
 
-  let res;
   if (addressData.value.id) {
-    res = await profileStore.updateAddress(addressData.value);
+    await profileStore.updateAddress(addressData.value);
   } else {
-    res = await profileStore.addAddress(addressData.value);
+    await profileStore.addAddress(addressData.value);
   }
 
-  if (res.__state != "success") return;
-  await profileStore.fetchAddresses();
-  isAddingNewAddressAllow.value = true;
+  isAddingNewAddressAllow.value = !isAddingNewAddressAllow.value;
 };
 </script>
 
