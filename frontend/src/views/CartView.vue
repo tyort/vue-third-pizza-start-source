@@ -284,7 +284,7 @@ const getDeliveryMethodValue = computed(() => {
   } else if (cartStore.address.id == null) {
     return NEW_ADDRESS_VALUE;
   }
-  const addressData = profileStore.addresses.find(
+  const addressData = profileStore.getDeliveryMethods.find(
     ({ id }) => cartStore.address.id == id
   );
   return addressData.value;
