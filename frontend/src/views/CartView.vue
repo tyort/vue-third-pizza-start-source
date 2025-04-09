@@ -114,6 +114,7 @@
               <select
                 name="test"
                 class="select"
+                :value="cartStore.deliveryMethod.value"
                 @input="cartStore.updateDeliveryMethod($event.target.value)"
               >
                 <option
