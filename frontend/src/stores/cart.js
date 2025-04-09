@@ -18,19 +18,18 @@ export const useCartStore = defineStore("cart", {
     },
     pizzas: [],
     misc: [],
-    deliveryMethod: { name: "Новый адрес", value: NEW_ADDRESS_VALUE },
   }),
   getters: {},
   actions: {
     updateDeliveryMethod(value, id) {
       const profileStore = useProfileStore();
-      this.deliveryMethod = profileStore.getDeliveryMethods.find((method) =>
+      const deliveryMethod = profileStore.getDeliveryMethods.find((method) =>
         id ? method.id == id : method.value == value
       );
 
-      if (this.deliveryMethod.value == GET_MYSELF_VALUE) {
+      if (deliveryMethod.value == GET_MYSELF_VALUE) {
         this.address = null;
-      } else if (this.deliveryMethod.value == NEW_ADDRESS_VALUE) {
+      } else if (deliveryMethod.value == NEW_ADDRESS_VALUE) {
         this.address = {
           id: null,
           street: "",
@@ -40,11 +39,11 @@ export const useCartStore = defineStore("cart", {
         };
       } else {
         this.address = {
-          id: this.deliveryMethod.id,
-          street: this.deliveryMethod.street,
-          building: this.deliveryMethod.building,
-          flat: this.deliveryMethod.flat,
-          comment: this.deliveryMethod.comment,
+          id: deliveryMethod.id,
+          street: deliveryMethod.street,
+          building: deliveryMethod.building,
+          flat: deliveryMethod.flat,
+          comment: deliveryMethod.comment,
         };
       }
     },

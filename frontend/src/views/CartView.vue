@@ -114,7 +114,7 @@
               <select
                 name="test"
                 class="select"
-                :value="cartStore.deliveryMethod.value"
+                :value="getDeliveryMethodValue"
                 @input="cartStore.updateDeliveryMethod($event.target.value)"
               >
                 <option
@@ -140,7 +140,7 @@
             </label>
 
             <div
-              v-if="cartStore.deliveryMethod.value != GET_MYSELF_VALUE"
+              v-if="getDeliveryMethodValue != GET_MYSELF_VALUE"
               class="cart-form__address"
             >
               <span class="cart-form__label">Новый адрес:</span>
@@ -215,7 +215,7 @@
 </template>
 
 <script setup>
-import { h, shallowRef } from "vue";
+import { h, shallowRef, computed } from "vue";
 import AppIncrementButton from "@/common/components/AppIncrementButton.vue";
 import AppIncrementCount from "@/common/components/AppIncrementCount.vue";
 import {
@@ -227,6 +227,7 @@ import {
 import { useRouter } from "vue-router";
 
 const GET_MYSELF_VALUE = 2;
+const NEW_ADDRESS_VALUE = 1;
 
 const router = useRouter();
 const cartStore = useCartStore();
@@ -277,10 +278,22 @@ const onSubmit = async () => {
   }
 };
 
+const getDeliveryMethodValue = computed(() => {
+  if (cartStore.address == null) {
+    return GET_MYSELF_VALUE;
+  } else if (cartStore.address.id == null) {
+    return NEW_ADDRESS_VALUE;
+  }
+  const addressData = profileStore.addresses.find(
+    ({ id }) => cartStore.address.id == id
+  );
+  return addressData.value;
+});
+
 // при cartStore.$reset() почему-то не срабатывает $subscribe
 cartStore.$subscribe((_mutation, state) => {
   const emptyLines =
-    cartStore.deliveryMethod.value != GET_MYSELF_VALUE
+    getDeliveryMethodValue.value != GET_MYSELF_VALUE
       ? Object.entries(state.address).filter(
           ([property, value]) =>
             !["comment", "flat", "id"].includes(property) && value.trim() == ""
