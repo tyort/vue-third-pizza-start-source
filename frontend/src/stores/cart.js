@@ -3,6 +3,9 @@ import { defineStore } from "pinia";
 import { usePizzaStore, useProfileStore, useDataStore } from "@/stores/index";
 import resources from "@/services/resources";
 
+const NEW_ADDRESS_VALUE = 1;
+const GET_MYSELF_VALUE = 2;
+
 export const useCartStore = defineStore("cart", {
   state: () => ({
     phone: "",
@@ -15,9 +18,36 @@ export const useCartStore = defineStore("cart", {
     },
     pizzas: [],
     misc: [],
+    deliveryMethod: { name: "Новый адрес", value: NEW_ADDRESS_VALUE },
   }),
   getters: {},
   actions: {
+    updateDeliveryMethod(value, id) {
+      const profileStore = useProfileStore();
+      this.deliveryMethod = profileStore.getDeliveryMethods.find((method) =>
+        id ? method.id == id : method.value == value
+      );
+
+      if (this.deliveryMethod.value == GET_MYSELF_VALUE) {
+        this.address = null;
+      } else if (this.deliveryMethod.value == NEW_ADDRESS_VALUE) {
+        this.address = {
+          id: null,
+          street: "",
+          building: "",
+          flat: "",
+          comment: "",
+        };
+      } else {
+        this.address = {
+          id: this.deliveryMethod.id,
+          street: this.deliveryMethod.street,
+          building: this.deliveryMethod.building,
+          flat: this.deliveryMethod.flat,
+          comment: this.deliveryMethod.comment,
+        };
+      }
+    },
     async createOrder() {
       const profileStore = useProfileStore();
       const pizzas = this.pizzas.map(

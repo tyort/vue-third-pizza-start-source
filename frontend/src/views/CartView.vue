@@ -111,7 +111,11 @@
             <label class="cart-form__select">
               <span class="cart-form__label">Получение заказа:</span>
 
-              <select name="test" class="select" @input="onInput">
+              <select
+                name="test"
+                class="select"
+                @input="cartStore.updateDeliveryMethod($event.target.value)"
+              >
                 <option
                   v-for="{ value, name } in profileStore.getDeliveryMethods"
                   :key="value"
@@ -135,7 +139,7 @@
             </label>
 
             <div
-              v-if="currentFulfillment.value != GET_MYSELF_VALUE"
+              v-if="cartStore.deliveryMethod.value != GET_MYSELF_VALUE"
               class="cart-form__address"
             >
               <span class="cart-form__label">Новый адрес:</span>
@@ -210,7 +214,7 @@
 </template>
 
 <script setup>
-import { h, shallowRef, ref, computed } from "vue";
+import { h, shallowRef } from "vue";
 import AppIncrementButton from "@/common/components/AppIncrementButton.vue";
 import AppIncrementCount from "@/common/components/AppIncrementCount.vue";
 import {
@@ -221,7 +225,6 @@ import {
 } from "@/stores";
 import { useRouter } from "vue-router";
 
-const NEW_ADDRESS_VALUE = 1;
 const GET_MYSELF_VALUE = 2;
 
 const router = useRouter();
@@ -233,10 +236,6 @@ const profileStore = useProfileStore();
 void dataStore.fetchMisc();
 
 const isFormValid = shallowRef({ status: true, message: "" });
-const currentFulfillment = ref({
-  name: "Новый адрес",
-  value: NEW_ADDRESS_VALUE,
-});
 
 const render = ({ pizza }) => {
   const currentSauce = dataStore.getSauceData(pizza.sauceId);
@@ -277,27 +276,10 @@ const onSubmit = async () => {
   }
 };
 
-const onInput = (evt) => {
-  currentFulfillment.value = profileStore.getDeliveryMethods.find(
-    ({ value }) => value == evt.target.value
-  );
-
-  cartStore.address =
-    currentFulfillment.value.value == GET_MYSELF_VALUE
-      ? null
-      : {
-          id: currentFulfillment.value?.id || null,
-          street: currentFulfillment.value?.street || "",
-          building: currentFulfillment.value?.building || "",
-          flat: currentFulfillment.value?.flat || "",
-          comment: currentFulfillment.value?.comment || "",
-        };
-};
-
 // при cartStore.$reset() почему-то не срабатывает $subscribe
 cartStore.$subscribe((_mutation, state) => {
   const emptyLines =
-    currentFulfillment.value.value != GET_MYSELF_VALUE
+    cartStore.deliveryMethod.value != GET_MYSELF_VALUE
       ? Object.entries(state.address).filter(
           ([property, value]) =>
             !["comment", "flat", "id"].includes(property) && value.trim() == ""

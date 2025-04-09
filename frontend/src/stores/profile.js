@@ -2,13 +2,28 @@ import { defineStore } from "pinia";
 import resources from "@/services/resources";
 import jwtService from "@/services/jwt/jwt.service";
 
+const NEW_ADDRESS_VALUE = 1;
+const GET_MYSELF_VALUE = 2;
+
 export const useProfileStore = defineStore("profile", {
   state: () => ({
     addresses: [],
     orders: [],
     userData: null,
   }),
-  getters: {},
+  getters: {
+    getDeliveryMethods: (state) => {
+      const userDeliveryMethods = state.addresses.map((address, index) => ({
+        ...address,
+        value: 3 + index,
+      }));
+      return [
+        { name: "Новый адрес", value: NEW_ADDRESS_VALUE },
+        { name: "Получу сам", value: GET_MYSELF_VALUE },
+        ...userDeliveryMethods,
+      ];
+    }
+  },
   actions: {
     async whoami() {
       resources.auth.setAuthHeader(jwtService.getToken());

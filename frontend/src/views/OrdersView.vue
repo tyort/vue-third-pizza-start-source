@@ -24,7 +24,13 @@
           </button>
         </div>
         <div class="order__button">
-          <button type="button" class="button">Повторить</button>
+          <button
+            type="button"
+            class="button"
+            @click="onButtonClick($event, order)"
+          >
+            Повторить
+          </button>
         </div>
       </div>
 
@@ -73,10 +79,15 @@
 
 <script setup>
 import { h, computed } from "vue";
-import { useProfileStore, useDataStore } from "@/stores";
+import { useProfileStore, useDataStore, useCartStore } from "@/stores";
+import { useRouter } from "vue-router";
 
+const GET_MYSELF_VALUE = 2;
+
+const router = useRouter();
 const profileStore = useProfileStore();
 const dataStore = useDataStore();
+const cartStore = useCartStore();
 void dataStore.fetchMisc();
 
 const orders = computed(() => {
@@ -132,6 +143,21 @@ const render = ({ pizza }) => {
     h("li", `Coус: ${currentSauce.name}`),
     h("li", `Начинка${currentIngredients}`),
   ]);
+};
+
+const onButtonClick = (_evt, order) => {
+  cartStore.$patch((state) => {
+    state.pizzas = order.orderPizzas;
+    state.misc = order.orderMisc;
+    state.phone = order.phone;
+  });
+
+  if (order.addressId) {
+    cartStore.updateDeliveryMethod(undefined, order.addressId);
+  } else {
+    cartStore.updateDeliveryMethod(GET_MYSELF_VALUE);
+  }
+  router.push({ path: `/cart` });
 };
 
 const getQuantityText = (amount) => {
