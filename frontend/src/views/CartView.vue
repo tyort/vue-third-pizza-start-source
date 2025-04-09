@@ -113,7 +113,7 @@
 
               <select name="test" class="select" @input="onInput">
                 <option
-                  v-for="{ value, name } in filteredFulfillments"
+                  v-for="{ value, name } in profileStore.getDeliveryMethods"
                   :key="value"
                   :value="value"
                 >
@@ -233,17 +233,6 @@ const profileStore = useProfileStore();
 void dataStore.fetchMisc();
 
 const isFormValid = shallowRef({ status: true, message: "" });
-const filteredFulfillments = computed(() => {
-  const userAddresses = profileStore.addresses.map((address, index) => ({
-    ...address,
-    value: 3 + index,
-  }));
-  return [
-    { name: "Новый адрес", value: NEW_ADDRESS_VALUE },
-    { name: "Получу сам", value: GET_MYSELF_VALUE },
-    ...userAddresses,
-  ];
-});
 const currentFulfillment = ref({
   name: "Новый адрес",
   value: NEW_ADDRESS_VALUE,
@@ -289,7 +278,7 @@ const onSubmit = async () => {
 };
 
 const onInput = (evt) => {
-  currentFulfillment.value = filteredFulfillments.value.find(
+  currentFulfillment.value = profileStore.getDeliveryMethods.find(
     ({ value }) => value == evt.target.value
   );
 
