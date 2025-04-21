@@ -18,6 +18,15 @@ export const useDataStore = defineStore("data", {
     miscItems: [],
   }),
   getters: {
+    isDataLoaded() {
+      return (
+        this.doughItems.length > 0 &&
+        this.ingredientItems.length > 0 &&
+        this.sauceItems.length > 0 &&
+        this.sizeItems.length > 0 &&
+        this.miscItems.length > 0
+      );
+    },
     getSauceData: (state) => {
       return (sauceId) =>
         toRaw(state.sauceItems.find(({ id }) => sauceId == id));
@@ -35,6 +44,15 @@ export const useDataStore = defineStore("data", {
     },
   },
   actions: {
+    async loadData() {
+      await Promise.all([
+        this.fetchMisc(),
+        this.fetchDoughs(),
+        this.fetchIngredients(),
+        this.fetchSauces(),
+        this.fetchSizes(),
+      ]);
+    },
     async fetchMisc() {
       const { data } = await resources.misc.getMisc();
       this.miscItems = data.map(normalizeMisc);

@@ -1,21 +1,45 @@
 <template>
   <app-layout>
-    <router-view />
+    <router-view v-if="isLoaded" />
   </app-layout>
 </template>
 
 <script setup>
+import { onMounted, ref } from "vue";
 import AppLayout from "@/layouts/AppLayout.vue";
 import { useDataStore, useProfileStore } from "@/stores";
+import JwtService from "@/services/jwt/jwt.service";
+import { router } from "@/router";
+import { useRoute } from "vue-router";
 
 const dataStore = useDataStore();
-const profileStore = useProfileStore();
+const route = useRoute();
+const isLoaded = ref(false);
 
-void profileStore.whoami();
-void dataStore.fetchDoughs();
-void dataStore.fetchIngredients();
-void dataStore.fetchSauces();
-void dataStore.fetchSizes();
+const checkLoggedIn = async () => {
+  const profileStore = useProfileStore();
+  const token = JwtService.getToken();
+  if (!token) {
+    isLoaded.value = true;
+    return;
+  }
+
+  try {
+    await profileStore.whoami();
+    const { redirect } = route.query;
+    await router.push(redirect ? redirect : { name: "home" });
+  } catch (e) {
+    JwtService.destroyToken();
+    console.error(e);
+  } finally {
+    isLoaded.value = true;
+  }
+};
+
+onMounted(() => {
+  checkLoggedIn();
+  dataStore.loadData();
+});
 </script>
 
 <style lang="scss">

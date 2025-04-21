@@ -4,28 +4,20 @@
       <h1 class="title title--big">Мои данные</h1>
     </div>
 
-    <div class="user">
+    <div v-if="profileStore.userData" class="user">
       <picture>
-        <source
-          type="image/webp"
-          srcset="
-            @/assets/img/users/user5@2x.webp 1x,
-            @/assets/img/users/user5@4x.webp 2x
-          "
-        />
         <img
-          src="@/assets/img/users/user5@2x.jpg"
-          srcset="@/assets/img/users/user5@4x.jpg"
-          alt="Василий Ложкин"
+          :src="getPublicImage(profileStore.userData.avatar)"
+          :alt="profileStore.userData.name"
           width="72"
           height="72"
         />
       </picture>
       <div class="user__name">
-        <span>Василий Ложкин</span>
+        <span>{{ profileStore.userData.name }}</span>
       </div>
       <p class="user__phone">
-        Контактный телефон: <span>+7 999-999-99-99</span>
+        Контактный телефон: <span>{{ profileStore.userData.phone }}</span>
       </p>
     </div>
 
@@ -161,6 +153,7 @@
 import { ref, shallowRef, nextTick } from "vue";
 import { useProfileStore } from "@/stores";
 import { getAddressValidationError } from "@/common/validator";
+import { getPublicImage } from "@/common/helpers";
 
 const profileStore = useProfileStore();
 

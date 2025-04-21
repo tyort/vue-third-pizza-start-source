@@ -3,7 +3,7 @@
     <div class="header__logo">
       <router-link :to="{ name: 'home' }" class="logo">
         <img
-          src="@/assets/img/logo.svg"
+          :src="getPublicImage('/public/img/logo.svg')"
           alt="V!U!E! Pizza logo"
           width="90"
           height="40"
@@ -14,9 +14,9 @@
       <router-link :to="{ name: 'cart' }">0 ₽</router-link>
     </div>
     <div v-if="profileStore.userData" class="header__user">
-      <router-link :to="{ name: 'profile' }">
+      <router-link v-if="profileStore.userData" :to="{ name: 'profile' }">
         <img
-          :src="profileStore.userData.avatar"
+          :src="getPublicImage(profileStore.userData.avatar)"
           :alt="profileStore.userData.name"
           width="32"
           height="32"
@@ -38,6 +38,7 @@
 <script setup>
 import { useProfileStore } from "@/stores";
 import { useRouter } from "vue-router";
+import { getPublicImage } from "@/common/helpers";
 
 const profileStore = useProfileStore();
 const router = useRouter();
@@ -83,7 +84,7 @@ const onClick = async () => {
 
     color: $white;
     background-color: $green-500;
-    background-image: url("@/assets/img/cart.svg");
+    background-image: url("/api/public/img/cart.svg");
     background-repeat: no-repeat;
     background-position: 20px center;
     background-size: 29px 27px;
@@ -163,7 +164,7 @@ const onClick = async () => {
     content: "";
     vertical-align: middle;
 
-    background: url("@/assets/img/login.svg") no-repeat center;
+    background: url("/api/public/img/login.svg") no-repeat center;
     background-size: auto 50%;
   }
 }
@@ -179,7 +180,7 @@ const onClick = async () => {
     content: "";
     vertical-align: middle;
 
-    background: url("@/assets/img/login.svg") no-repeat center;
+    background: url("/api/public/img/login.svg") no-repeat center;
     background-size: auto 50%;
   }
 }
