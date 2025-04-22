@@ -1,6 +1,11 @@
 <template>
   <app-layout>
-    <router-view v-if="isLoaded" />
+    <!-- Библиотека vue-router передаёт в v-slot компонент, который должен быть отображен в соответствии с текущим маршрутом. -->
+    <router-view v-slot="{ Component }">
+      <transition name="slide" mode="out-in">
+        <component :is="Component" />
+      </transition>
+    </router-view>
   </app-layout>
 </template>
 

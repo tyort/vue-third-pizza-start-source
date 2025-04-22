@@ -2,16 +2,18 @@
   <app-drop class="content__constructor" @drop="onDrop">
     <div class="pizza" :class="setSauceAndDough">
       <div class="pizza__wrapper">
-        <div
-          v-for="ingredient in ingredients"
-          :key="ingredient.value"
-          class="pizza__filling"
-          :class="[
-            `pizza__filling--${ingredient.value}`,
-            { 'pizza__filling--second': ingredient.quantity == 2 },
-            { 'pizza__filling--third': ingredient.quantity == 3 },
-          ]"
-        ></div>
+        <transition-group name="scale">
+          <div
+            v-for="ingredient in ingredients"
+            :key="ingredient.value"
+            class="pizza__filling"
+            :class="[
+              `pizza__filling--${ingredient.value}`,
+              { 'pizza__filling--second': ingredient.quantity == 2 },
+              { 'pizza__filling--third': ingredient.quantity == 3 },
+            ]"
+          ></div>
+        </transition-group>
       </div>
     </div>
   </app-drop>
